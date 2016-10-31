@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.bytebuilding.affairmanager.R;
 
-/*something test*/
-//some text
 public class MainActivity extends AppCompatActivity {
 
     @Override
