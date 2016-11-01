@@ -2,13 +2,23 @@ package com.bytebuilding.affairmanager.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.mikepenz.materialdrawer.Drawer;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Drawer drawer;
+    private int selectedDrawerItem = 0;
+
+    private FrameLayout fragmentContainer;
+
+    private Toolbar toolbar;
 
     private FloatingActionsMenu floatingActionsMenu;
     private com.getbase.floatingactionbutton.FloatingActionButton floatingActionButtonAddAffair;
@@ -22,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        fragmentContainer = (FrameLayout) findViewById(R.id.drawer_container);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
 
         floatingActionButtonAddAffair = (com.getbase.floatingactionbutton.FloatingActionButton)
