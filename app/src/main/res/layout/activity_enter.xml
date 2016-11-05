@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_primary_light">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_enter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_primary_light"
+        tools:context="com.bytebuilding.affairmanager.activities.EnterActivity">
+
+        <ImageView
+            android:id="@+id/imgView_calendar_enterActivity"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/titlecalendar_icon" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imgView_calendar_enterActivity"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:background="@color/color_primary"
+            android:ems="10"
+            android:hint="@string/enter_email"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/padding_sign_buttons" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/etEmail"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:background="@color/color_primary"
+            android:ems="10"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:padding="@dimen/padding_sign_buttons" />
+
+        <Button
+            android:id="@+id/btn_sign_in_enterActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_sign_up"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/etPassword"
+            android:padding="@dimen/padding_sign_buttons"
+            android:text="@string/sign_in"
+            android:textStyle="normal|bold|italic"
+            android:theme="@style/SignButtons" />
+
+        <Button
+            android:id="@+id/btn_sign_in_offline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btn_sign_in_enterActivity"
+            android:padding="@dimen/padding_sign_buttons"
+            android:text="@string/sign_in_offline"
+            android:textStyle="normal|bold|italic"
+            android:theme="@style/SignButtons" />
+
+    </RelativeLayout>
+</ScrollView>
