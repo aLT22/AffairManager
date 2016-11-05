@@ -23,7 +23,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View container = inflater.inflate(R.layout.dialog_affair, null);
+        View container = inflater.inflate(R.layout.dialog_add_affair, null);
 
         alertDialogBuilder.setView(container);
 

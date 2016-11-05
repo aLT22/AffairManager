@@ -1,17 +1,15 @@
 package com.bytebuilding.affairmanager.activities;
 
-import android.accounts.AccountManager;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
 
-public class EnterActivity extends AppCompatActivity implements View.OnClickListener{
+public class EnterActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String BUNDLE_EMAIL_KEY = "email from et";
     public static final String BUNDLE_PASSWORD_KEY = "password from et";
@@ -48,10 +46,12 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_sign_in_enterActivity:
-
+                Intent startAppInOnline = new Intent(getApplicationContext(), MainOnlineActivity.class);
+                startActivity(startAppInOnline);
+                finish();
                 break;
             case R.id.btn_sign_in_offline:
-                Intent startAppInOffline = new Intent(getApplicationContext(), MainActivity.class);
+                Intent startAppInOffline = new Intent(getApplicationContext(), MainOfflineActivity.class);
                 startActivity(startAppInOffline);
                 finish();
                 break;

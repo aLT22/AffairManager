@@ -1,15 +1,14 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.bytebuilding.affairmanager.R;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnSignUp;
     private Button btnSignIn;
@@ -23,16 +22,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         initViews();
-
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-                LoginActivity.this.startActivity(intent);
-                LoginActivity.this.finish();
-            }
-        }, 5000);*/
     }
 
     private void initViews() {
