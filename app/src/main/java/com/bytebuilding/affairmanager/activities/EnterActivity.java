@@ -9,52 +9,42 @@ import android.widget.EditText;
 
 import com.bytebuilding.affairmanager.R;
 
-public class EnterActivity extends AppCompatActivity implements View.OnClickListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class EnterActivity extends AppCompatActivity {
 
     public static final String BUNDLE_EMAIL_KEY = "email from et";
     public static final String BUNDLE_PASSWORD_KEY = "password from et";
+    @BindView(R.id.etEmail)
+    EditText etEmail;
+    @BindView(R.id.etPassword)
+    EditText etPassword;
+    @BindView(R.id.btn_sign_in_enterActivity)
+    Button btnSignInEnterActivity;
+    @BindView(R.id.btn_sign_in_offline)
+    Button btnSignInOffline;
 
-    private EditText etEnterEmail;
-    private EditText etEnterPassword;
-
-    private Button btnSignIn;
-    private Button btnSignInOffline;
-
-    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter);
-
-        initViews();
+        ButterKnife.bind(this);
     }
 
-    private void initViews() {
-        etEnterEmail = (EditText) findViewById(R.id.etEmail);
-        etEnterPassword = (EditText) findViewById(R.id.etPassword);
-
-        btnSignIn = (Button) findViewById(R.id.btn_sign_in_enterActivity);
-        btnSignIn.setOnClickListener(this);
-        btnSignInOffline = (Button) findViewById(R.id.btn_sign_in_offline);
-        btnSignInOffline.setOnClickListener(this);
-
-        bundle = new Bundle();
+    @OnClick(R.id.btn_sign_in_enterActivity)
+    public void onSignInEnterActivityButtonClick() {
+        Intent startAppInOnline = new Intent(getApplicationContext(), MainOnlineActivity.class);
+        startActivity(startAppInOnline);
+        finish();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_sign_in_enterActivity:
-                Intent startAppInOnline = new Intent(getApplicationContext(), MainOnlineActivity.class);
-                startActivity(startAppInOnline);
-                finish();
-                break;
-            case R.id.btn_sign_in_offline:
-                Intent startAppInOffline = new Intent(getApplicationContext(), MainOfflineActivity.class);
-                startActivity(startAppInOffline);
-                finish();
-                break;
-        }
+    @OnClick(R.id.btn_sign_in_offline)
+    public void onSignInOffline() {
+        Intent startAppInOffline = new Intent(getApplicationContext(), MainOfflineActivity.class);
+        startActivity(startAppInOffline);
+        finish();
     }
 }

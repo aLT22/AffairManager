@@ -8,57 +8,43 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.mikepenz.materialdrawer.Drawer;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainOnlineActivity extends AppCompatActivity {
 
-    private Drawer drawer;
-    private int selectedDrawerItem = 0;
-
-    private FrameLayout fragmentContainer;
-
-    private Toolbar toolbar;
-
-    private FloatingActionsMenu floatingActionsMenu;
-    private com.getbase.floatingactionbutton.FloatingActionButton floatingActionButtonAddAffair;
-    private com.getbase.floatingactionbutton.FloatingActionButton floatingActionButtonAddGroup;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab_add_group)
+    FloatingActionButton fabAddGroup;
+    @BindView(R.id.fab_add_affair)
+    FloatingActionButton fabAddAffair;
+    @BindView(R.id.fab_menu)
+    FloatingActionsMenu fabMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_online);
-        initComponents();
+        ButterKnife.bind(this);
     }
 
-    private void initComponents() {
-        fragmentContainer = (FrameLayout) findViewById(R.id.drawer_container);
+    @OnClick(R.id.fab_add_affair)
+    public void onAddAffairFabClick() {
+        Toast.makeText(getApplicationContext(), "Add Affair Clicked", Toast.LENGTH_LONG)
+                .show();
+        fabMenu.collapse();
+    }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
-
-        floatingActionButtonAddAffair = (com.getbase.floatingactionbutton.FloatingActionButton)
-                findViewById(R.id.fab_add_affair);
-        floatingActionButtonAddAffair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Add Affair Clicked", Toast.LENGTH_LONG)
-                        .show();
-                floatingActionsMenu.collapse();
-            }
-        });
-
-        floatingActionButtonAddGroup = (com.getbase.floatingactionbutton.FloatingActionButton)
-                findViewById(R.id.fab_add_group);
-        floatingActionButtonAddGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
-                        .show();
-                floatingActionsMenu.collapse();
-            }
-        });
+    @OnClick(R.id.fab_add_group)
+    public void onAddGroupFabClick() {
+        Toast.makeText(getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
+                .show();
+        fabMenu.collapse();
     }
 }
