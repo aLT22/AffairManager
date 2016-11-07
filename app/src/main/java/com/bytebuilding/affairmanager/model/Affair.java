@@ -15,12 +15,13 @@ public class Affair implements Item {
     private String type;
     private String place;
     private long repeatTimestamp;
+    private long timestamp;
 
     public Affair() {
     }
 
     public Affair(String title, String description, long date, long time, int priority,
-                  String object, String type, String place, long repeatTimestamp) {
+                  String object, String type, String place, long repeatTimestamp, long timestamp) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -30,6 +31,7 @@ public class Affair implements Item {
         this.type = type;
         this.place = place;
         this.repeatTimestamp = repeatTimestamp;
+        this.timestamp = timestamp;
     }
 
     public String getTitle() {
@@ -102,6 +104,14 @@ public class Affair implements Item {
 
     public void setRepeatTimestamp(long repeatTimestamp) {
         this.repeatTimestamp = repeatTimestamp;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override

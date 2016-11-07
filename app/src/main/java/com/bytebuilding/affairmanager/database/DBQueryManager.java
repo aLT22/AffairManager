@@ -39,9 +39,10 @@ public class DBQueryManager {
                 String place = cursor.getString(cursor.getColumnIndex(DBHelper.COLOUMN_PLACE));
                 long repeateTimestamp = cursor.getLong(cursor.getColumnIndex(DBHelper
                         .COLOUMN_REPEATE_TIMESTAMP));
+                long timestamp = cursor.getLong(cursor.getColumnIndex(DBHelper.COLOUMN_TIMESTAMP));
 
                 Affair affair = new Affair(title, description, date, time, priority,
-                        object, type, place, repeateTimestamp);
+                        object, type, place, repeateTimestamp, timestamp);
                 affairList.add(affair);
             } while (cursor.moveToNext());
         }
