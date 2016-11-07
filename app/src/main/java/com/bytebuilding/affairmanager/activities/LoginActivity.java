@@ -10,6 +10,7 @@ import com.bytebuilding.affairmanager.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,11 +25,13 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btn_sign_in_facebook)
     Button btnSignInFacebook;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
     }
 
     @OnClick(R.id.btn_sign_in)
@@ -36,5 +39,13 @@ public class LoginActivity extends AppCompatActivity {
         Intent enterActivityIntent = new Intent(getApplicationContext(),
                 EnterActivity.class);
         startActivity(enterActivityIntent);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unbinder.unbind();
     }
 }

@@ -15,8 +15,6 @@ import butterknife.OnClick;
 
 public class EnterActivity extends AppCompatActivity {
 
-    public static final String BUNDLE_EMAIL_KEY = "email from et";
-    public static final String BUNDLE_PASSWORD_KEY = "password from et";
     @BindView(R.id.etEmail)
     EditText etEmail;
     @BindView(R.id.etPassword)
