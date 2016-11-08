@@ -6,4 +6,6 @@
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_elevation">16dp</dimen>
+
+    <dimen name="bottom_padding_for_advertising">88dp</dimen>
 </resources>

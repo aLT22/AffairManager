@@ -2,8 +2,8 @@ package com.bytebuilding.affairmanager.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.bytebuilding.affairmanager.R;
@@ -17,8 +17,8 @@ public class MainOfflineActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-    @BindView(R.id.recView_offline)
-    RecyclerView recViewOffline;
+    @BindView(R.id.vp_main_offline_activity)
+    ViewPager vpMainOfflineActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

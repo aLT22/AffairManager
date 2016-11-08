@@ -8,6 +8,7 @@
     tools:context="com.bytebuilding.affairmanager.activities.MainOfflineActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_offline_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -33,6 +34,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_main_offline_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_layout"
+        android:paddingTop="?attr/actionBarSize" />
+
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,10 +50,5 @@
         android:padding="@dimen/fab_margin"
         android:src="@drawable/add_affair_icon"
         app:fabSize="normal" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recView_offline"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>

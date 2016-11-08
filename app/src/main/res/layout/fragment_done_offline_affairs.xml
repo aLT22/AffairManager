@@ -4,9 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_done_offline_affairs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/bottom_padding_for_advertising"
+        android:scrollbars="vertical" />
 
 </FrameLayout>
