@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,17 +26,40 @@ public class MainOfflineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_offline);
         ButterKnife.bind(this);
-    }
-
-    private void initViews() {
-
+        initTabs();
     }
 
     private void initTabs() {
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.current_affairs));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.done_affairs));
 
+        initTabsBehavior();
     }
 
     private void initTabsBehavior() {
+        MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter =
+                new MainOfflineActivityPagerAdapter(getSupportFragmentManager(), (byte) 2);
 
+        vpMainOfflineActivity.setAdapter(mainOfflineActivityPagerAdapter);
+
+        vpMainOfflineActivity.setOnPageChangeListener(new TabLayout
+                .TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                vpMainOfflineActivity.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }
