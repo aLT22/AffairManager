@@ -8,6 +8,7 @@
         android:id="@+id/rv_current_offline_affairs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_accent"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/bottom_padding_for_advertising"
         android:scrollbars="vertical" />

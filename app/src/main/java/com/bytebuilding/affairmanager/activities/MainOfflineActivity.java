@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
+import com.bytebuilding.affairmanager.animations.DepthPageAnimation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,5 +62,7 @@ public class MainOfflineActivity extends AppCompatActivity {
 
             }
         });
+
+        vpMainOfflineActivity.setPageTransformer(true, new DepthPageAnimation());
     }
 }
