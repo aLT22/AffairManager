@@ -14,6 +14,9 @@ import com.bytebuilding.affairmanager.model.Affair;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    private DBQueryManager dbQueryManager;
+    private DBUpdateManager dbUpdateManager;
+
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "affair_manager_database";
 
@@ -41,8 +44,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_DROP_SCRIPT = "DROP TABLE " + TABLE_NAME;
 
+    public static final String SELECTION_BY_TITLE = DBHelper.COLOUMN_TITLE + " = ?";
+    public static final String SELECTION_BY_DESCRIPTION = DBHelper.COLOUMN_DESCRIPTION + " = ?";
+    public static final String SELECTION_BY_DATE = DBHelper.COLOUMN_DATE + " = ?";
+    public static final String SELECTION_BY_TIME = DBHelper.COLOUMN_TIME + " = ?";
+    public static final String SELECTION_BY_PRIORITY = DBHelper.COLOUMN_PRIORITY + " = ?";
+    public static final String SELECTION_BY_OBJECT = DBHelper.COLOUMN_OBJECT + " = ?";
+    public static final String SELECTION_BY_TYPE = DBHelper.COLOUMN_TYPE + " = ?";
+    public static final String SELECTION_BY_PLACE = DBHelper.COLOUMN_PLACE + " = ?";
+    public static final String SELECTION_BY_REPEATE_TIMESTAMP = DBHelper.COLOUMN_TIMESTAMP + " = ?";
+    public static final String SELECTION_BY_TIMESTAMP = DBHelper.COLOUMN_TIMESTAMP + " = ?";
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        dbQueryManager = new DBQueryManager(getReadableDatabase());
+        dbUpdateManager = new DBUpdateManager(getWritableDatabase());
     }
 
     @Override
@@ -77,5 +93,13 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLOUMN_TIMESTAMP, affair.getTimestamp());
 
         getWritableDatabase().insert(TABLE_NAME, null, contentValues);
+    }
+
+    public DBQueryManager getDbQueryManager() {
+        return dbQueryManager;
+    }
+
+    public DBUpdateManager getDbUpdateManager() {
+        return dbUpdateManager;
     }
 }
