@@ -19,6 +19,7 @@
             android:background="@color/color_primary"
             android:minHeight="?attr/actionBarSize"
             android:title="@string/app_name"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/Theme.AppCompat"
             app:title="@string/app_name"
             app:titleTextColor="@color/color_white" />
@@ -30,7 +31,8 @@
             android:layout_below="@+id/toolbar"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -39,7 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tab_layout"
-        android:paddingTop="?attr/actionBarSize" />
+        android:paddingTop="?attr/actionBarSize"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

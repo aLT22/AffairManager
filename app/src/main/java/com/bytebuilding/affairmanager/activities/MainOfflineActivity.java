@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.animations.DepthPageAnimation;
+import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
+import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +23,11 @@ public class MainOfflineActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.vp_main_offline_activity)
     ViewPager vpMainOfflineActivity;
+
+    private MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter;
+
+    private CurrentOfflineAffairsFragment currentOfflineAffairsFragment;
+    private DoneOfflineAffairsFragment doneOfflineAffairsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,7 @@ public class MainOfflineActivity extends AppCompatActivity {
     }
 
     private void initTabsBehavior() {
-        MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter =
+        mainOfflineActivityPagerAdapter =
                 new MainOfflineActivityPagerAdapter(getSupportFragmentManager(), (byte) 2);
 
         vpMainOfflineActivity.setAdapter(mainOfflineActivityPagerAdapter);
@@ -62,6 +69,11 @@ public class MainOfflineActivity extends AppCompatActivity {
 
             }
         });
+
+        currentOfflineAffairsFragment = (CurrentOfflineAffairsFragment) mainOfflineActivityPagerAdapter
+                .getItem(MainOfflineActivityPagerAdapter.CURRENT_AFFAIR_FRAGMENT_POSITION);
+        doneOfflineAffairsFragment = (DoneOfflineAffairsFragment) mainOfflineActivityPagerAdapter
+                .getItem(MainOfflineActivityPagerAdapter.DONE_AFFAIR_FRAGMENT_POSITION);
 
         vpMainOfflineActivity.setPageTransformer(true, new DepthPageAnimation());
     }
