@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.bytebuilding.affairmanager.R;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 /**
  * Created by Alexey on 01.11.2016.
@@ -24,6 +25,18 @@ public class AddingAffairDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View container = inflater.inflate(R.layout.dialog_add_affair, null);
+
+        MaterialEditText metTitle = (MaterialEditText) container
+                .findViewById(R.id.met_affair_title);
+        MaterialEditText metDate = (MaterialEditText) container.findViewById(R.id.met_affair_date);
+        MaterialEditText metDescription = (MaterialEditText) container
+                .findViewById(R.id.met_affair_description);
+        MaterialEditText metTime = (MaterialEditText) container.findViewById(R.id.met_affair_time);
+        MaterialEditText metObject = (MaterialEditText) container
+                .findViewById(R.id.met_affair_object);
+        MaterialEditText metType = (MaterialEditText) container.findViewById(R.id.met_affair_type);
+        MaterialEditText metPlace = (MaterialEditText) container
+                .findViewById(R.id.met_affair_place);
 
         alertDialogBuilder.setView(container);
 
