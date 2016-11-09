@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.adapters.CurrentOfflineAffairsAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +21,8 @@ public class CurrentOfflineAffairsFragment extends Fragment {
     RecyclerView rvCurrentOfflineAffairs;
 
     private RecyclerView.LayoutManager layoutManager;
+
+    private CurrentOfflineAffairsAdapter currentOfflineAffairsAdapter;
 
     public CurrentOfflineAffairsFragment() {
     }
@@ -35,6 +38,10 @@ public class CurrentOfflineAffairsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
 
         rvCurrentOfflineAffairs.setLayoutManager(layoutManager);
+
+        currentOfflineAffairsAdapter = new CurrentOfflineAffairsAdapter();
+
+        rvCurrentOfflineAffairs.setAdapter(currentOfflineAffairsAdapter);
         return rootView;
     }
 

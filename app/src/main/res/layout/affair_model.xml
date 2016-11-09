@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/affair_model_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.CircleImageView
+        android:id="@+id/civ_affair_model"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_margin="@dimen/padding_sign_buttons"
+        android:background="@color/color_accent" />
+
+    <TextView
+        android:id="@+id/affair_model_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/civ_affair_model"
+        android:layout_margin="@dimen/padding_sign_buttons"
+        android:layout_toEndOf="@+id/civ_affair_model"
+        android:layout_toRightOf="@+id/civ_affair_model"
+        android:maxLines="1"
+        android:minLines="1"
+        android:padding="@dimen/padding_sign_buttons"
+        android:text="Title"
+        android:textColor="@color/color_primary_text"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/affair_model_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/civ_affair_model"
+        android:layout_alignLeft="@+id/affair_model_title"
+        android:layout_alignStart="@+id/affair_model_title"
+        android:maxLines="1"
+        android:minLines="1"
+        android:padding="@dimen/padding_sign_buttons"
+        android:text="Description" />
+
+    <TextView
+        android:id="@+id/affair_model_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/affair_model_title"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:padding="@dimen/padding_sign_buttons"
+        android:text="Date"
+        android:textColor="@color/color_primary_text" />
+
+</RelativeLayout>
