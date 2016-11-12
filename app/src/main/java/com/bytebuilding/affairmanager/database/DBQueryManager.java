@@ -40,9 +40,10 @@ public class DBQueryManager {
                 long repeateTimestamp = cursor.getLong(cursor.getColumnIndex(DBHelper
                         .COLOUMN_REPEATE_TIMESTAMP));
                 long timestamp = cursor.getLong(cursor.getColumnIndex(DBHelper.COLOUMN_TIMESTAMP));
+                int status = cursor.getInt(cursor.getColumnIndex(DBHelper.COLOUMN_STATUS));
 
                 Affair affair = new Affair(title, description, date, time, priority,
-                        object, type, place, repeateTimestamp, timestamp);
+                        object, type, place, repeateTimestamp, timestamp, status);
                 affairList.add(affair);
             } while (cursor.moveToNext());
         }
