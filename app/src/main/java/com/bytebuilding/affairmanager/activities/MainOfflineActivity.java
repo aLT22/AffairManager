@@ -1,21 +1,28 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.animations.DepthPageAnimation;
+import com.bytebuilding.affairmanager.fragments.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainOfflineActivity extends AppCompatActivity {
+public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment
+        .AddingTaskListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -23,6 +30,8 @@ public class MainOfflineActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.vp_main_offline_activity)
     ViewPager vpMainOfflineActivity;
+    @BindView(R.id.fab_add_affair_offline)
+    FloatingActionButton fabAddAffairOffline;
 
     private MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter;
 
@@ -76,5 +85,23 @@ public class MainOfflineActivity extends AppCompatActivity {
                 .getItem(MainOfflineActivityPagerAdapter.DONE_AFFAIR_FRAGMENT_POSITION);
 
         vpMainOfflineActivity.setPageTransformer(true, new DepthPageAnimation());
+    }
+
+    @Override
+    public void onTaskAdded() {
+        Toast.makeText(getApplicationContext(), "Задача была добавлена", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTaskAddingCancel() {
+        Toast.makeText(getApplicationContext(), "Задача не была добавлена", Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @OnClick(R.id.fab_add_affair_offline)
+    public void onFabAddAffairOfflineClick() {
+        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
+
+        addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
     }
 }
