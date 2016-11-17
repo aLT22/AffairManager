@@ -15,6 +15,10 @@ import java.util.Calendar;
  */
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+    public TimePickerFragment() {
+    }
+
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 

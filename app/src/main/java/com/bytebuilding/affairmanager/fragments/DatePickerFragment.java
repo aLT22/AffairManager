@@ -14,6 +14,10 @@ import java.util.Calendar;
  */
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    public DatePickerFragment() {
+    }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 

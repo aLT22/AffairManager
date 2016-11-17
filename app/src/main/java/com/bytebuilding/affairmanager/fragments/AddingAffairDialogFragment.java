@@ -96,6 +96,22 @@ public class AddingAffairDialogFragment extends DialogFragment {
             }
         });
 
+        alertDialogBuilder.setPositiveButton(R.string.button_accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton(R.string.button_decline, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+
+
         return super.onCreateDialog(savedInstanceState);
     }
 }
