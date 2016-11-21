@@ -3,7 +3,6 @@ package com.bytebuilding.affairmanager.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +31,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
     public interface AddingTaskListener {
         void onTaskAdded();
+
         void onTaskAddingCancel();
     }
 
