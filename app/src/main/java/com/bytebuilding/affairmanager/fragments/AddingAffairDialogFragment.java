@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -35,11 +36,12 @@ public class AddingAffairDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
 
         try {
-            addingTaskListener = (AddingTaskListener) getActivity();
+            addingTaskListener = (AddingTaskListener) activity;
         } catch (ClassCastException cca) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement AddingTaskListener");
@@ -91,7 +93,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        metDate.setText(null);
+                        metDate.setText("");
                     }
                 };
                 datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
@@ -116,7 +118,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        metTime.setText(null);
+                        metTime.setText("");
                     }
                 };
                 timePickerFragment.show(getFragmentManager(), "TimePickerFragment");
