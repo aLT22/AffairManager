@@ -6,6 +6,10 @@ package com.bytebuilding.affairmanager.model;
 
 public class Affair implements Item {
 
+    public static final int STATUS_OVERDUE = 0;
+    public static final int STATUS_CURRENT = 1;
+    public static final int STATUS_DONE = 2;
+
     private String title;
     private String description;
     private long date;

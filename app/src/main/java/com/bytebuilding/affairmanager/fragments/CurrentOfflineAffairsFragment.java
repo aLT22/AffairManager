@@ -2,9 +2,7 @@ package com.bytebuilding.affairmanager.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +11,9 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.CurrentOfflineAffairsAdapter;
 import com.bytebuilding.affairmanager.model.Affair;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CurrentOfflineAffairsFragment extends Fragment {
-
-    @BindView(R.id.rv_current_offline_affairs)
-    RecyclerView rvCurrentOfflineAffairs;
-
-    private RecyclerView.LayoutManager layoutManager;
-
-    private CurrentOfflineAffairsAdapter currentOfflineAffairsAdapter;
+public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
     public CurrentOfflineAffairsFragment() {
     }
@@ -38,11 +28,11 @@ public class CurrentOfflineAffairsFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
 
-        rvCurrentOfflineAffairs.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
 
-        currentOfflineAffairsAdapter = new CurrentOfflineAffairsAdapter();
+        currentOfflineAffairsAdapter = new CurrentOfflineAffairsAdapter(this);
 
-        rvCurrentOfflineAffairs.setAdapter(currentOfflineAffairsAdapter);
+        recyclerView.setAdapter(currentOfflineAffairsAdapter);
         return rootView;
     }
 

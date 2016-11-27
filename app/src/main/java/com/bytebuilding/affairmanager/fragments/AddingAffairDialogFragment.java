@@ -7,23 +7,22 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.DialogFragment;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.utils.DateUtils;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.Calendar;
-
-/**
- * Created by Alexey on 01.11.2016.
- */
 
 public class AddingAffairDialogFragment extends DialogFragment {
 
@@ -56,30 +55,71 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        final View container = inflater.inflate(R.layout.dialog_add_affair, null);
+        View container = inflater.inflate(R.layout.dialog_add_affair, null);
 
-        final MaterialEditText metTitle = (MaterialEditText) container
-                .findViewById(R.id.met_affair_title);
-        final MaterialEditText metDate = (MaterialEditText) container.findViewById(R.id
-                .met_affair_date);
-        MaterialEditText metDescription = (MaterialEditText) container
-                .findViewById(R.id.met_affair_description);
-        final MaterialEditText metTime = (MaterialEditText) container.findViewById(R.id
-                .met_affair_time);
-        MaterialEditText metObject = (MaterialEditText) container
-                .findViewById(R.id.met_affair_object);
-        MaterialEditText metType = (MaterialEditText) container.findViewById(R.id
-                .met_affair_type);
-        MaterialEditText metPlace = (MaterialEditText) container
-                .findViewById(R.id.met_affair_place);
+        TextInputLayout tilTitle = (TextInputLayout) container
+                .findViewById(R.id.til_affair_title);
+        final EditText etTitle = tilTitle.getEditText();
+
+        final TextInputLayout tilDate = (TextInputLayout) container.findViewById(R.id
+                .til_affair_date);
+        final EditText etDate = tilDate.getEditText();
+
+        TextInputLayout tilTime = (TextInputLayout) container
+                .findViewById(R.id.til_affair_time);
+        final EditText etTime = tilTime.getEditText();
+
+        TextInputLayout tilDescription = (TextInputLayout) container.findViewById(R.id
+                .til_affair_description);
+        EditText etDescription = tilDescription.getEditText();
+
+        TextInputLayout tilObject = (TextInputLayout) container
+                .findViewById(R.id.til_affair_object);
+        EditText etObject = tilObject.getEditText();
+
+        TextInputLayout tilType = (TextInputLayout) container.findViewById(R.id
+                .til_affair_type);
+        EditText etType = tilType.getEditText();
+
+        TextInputLayout tilPlace = (TextInputLayout) container
+                .findViewById(R.id.til_affair_place);
+        EditText etPlace = tilPlace.getEditText();
+
+        Spinner spinnerAffairPriority = (Spinner) container.findViewById(R.id
+                .spinner_affair_priority);
+
+        Spinner spinnerAffairRepeatsType = (Spinner) container.findViewById(R.id
+                .spinner_affair_repeats_type);
+
+        Spinner spinnerAffairRepeatsTime = (Spinner) container.findViewById(R.id
+                .spinner_affair_repeats_time);
+
+        tilTitle.setHint(getString(R.string.dialog_title_hint));
+        tilDate.setHint(getString(R.string.dialog_date_hint));
+        tilTime.setHint(getString(R.string.dialog_time_hint));
+        tilDescription.setHint(getString(R.string.dialog_description_hint));
+        tilObject.setHint(getString(R.string.dialog_object_hint));
+        tilPlace.setHint(getString(R.string.dialog_place_hint));
+        tilType.setHint(getString(R.string.dialog_type_hint));
+
 
         alertDialogBuilder.setView(container);
 
-        metDate.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, getResources()
+                .getStringArray(R.array.affair_priorities));
+        spinnerAffairPriority.setAdapter(priorityAdapter);
+
+        ArrayAdapter<String> repeatsTypeAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, getResources()
+                .getStringArray(R.array.affair_repeats_type));
+        spinnerAffairRepeatsType.setAdapter(repeatsTypeAdapter);
+
+        etDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (metDate.length() == 0) {
-                    metDate.setText("   ");
+                if (etDate.length() == 0) {
+                    etDate.setText("   ");
                 }
 
                 DialogFragment datePickerFragment = new DatePickerFragment() {
@@ -88,23 +128,23 @@ public class AddingAffairDialogFragment extends DialogFragment {
                         Calendar dateCalendar = Calendar.getInstance();
                         dateCalendar.set(year, month, dayOfMonth);
 
-                        metDate.setText(DateUtils.getDate(dateCalendar.getTimeInMillis()));
+                        etDate.setText(DateUtils.getDate(dateCalendar.getTimeInMillis()));
                     }
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        metDate.setText("");
+                        etDate.setText("");
                     }
                 };
                 datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
             }
         });
 
-        metTime.setOnClickListener(new View.OnClickListener() {
+        etTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (metTime.length() == 0) {
-                    metTime.setText("   ");
+                if (etTime.length() == 0) {
+                    etTime.setText("   ");
                 }
 
                 DialogFragment timePickerFragment = new TimePickerFragment() {
@@ -113,12 +153,12 @@ public class AddingAffairDialogFragment extends DialogFragment {
                         Calendar timeCalendar = Calendar.getInstance();
                         timeCalendar.set(0, 0, 0, hourOfDay, minute);
 
-                        metTime.setText(DateUtils.getTime(timeCalendar.getTimeInMillis()));
+                        etTime.setText(DateUtils.getTime(timeCalendar.getTimeInMillis()));
                     }
 
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        metTime.setText("");
+                        etTime.setText("");
                     }
                 };
                 timePickerFragment.show(getFragmentManager(), "TimePickerFragment");
@@ -150,12 +190,12 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 final Button acceptButton = ((AlertDialog) dialog).getButton(DialogInterface
                         .BUTTON_POSITIVE);
 
-                if (metTitle.length() == 0) {
+                if (etTitle.length() == 0) {
                     acceptButton.setEnabled(false);
-                    metTitle.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    etTitle.setError(getResources().getString(R.string.dialog_error_edit_text));
                 }
 
-                metTitle.addTextChangedListener(new TextWatcher() {
+                etTitle.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -165,11 +205,11 @@ public class AddingAffairDialogFragment extends DialogFragment {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.length() == 0) {
                             acceptButton.setEnabled(false);
-                            metTitle.setError(getResources().getString(R.string
+                            etTitle.setError(getResources().getString(R.string
                                     .dialog_error_edit_text));
                         } else {
                             acceptButton.setEnabled(true);
-                            metTitle.setError(null);
+                            etTitle.setError(null);
                         }
                     }
 

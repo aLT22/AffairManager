@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
 import com.bytebuilding.affairmanager.utils.DateUtils;
@@ -17,27 +18,17 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CurrentOfflineAffairsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
     private List<Item> items = new ArrayList<>();
 
     public static final int AFFAIR_TYPE = 0;
     public static final int SEPARATOR_TYPE = 1;
 
-    public Item getItem(int position) {
-        return items.get(position);
+    public CurrentOfflineAffairsAdapter(OfflineAffairFragment currentOfflineAffairFragment) {
+        super(currentOfflineAffairFragment);
     }
 
-    public void addItem(Item item) {
-        items.add(item);
-        /*сообщаем о добавлении нового элемента списка*/
-        notifyItemInserted(getItemCount() - 1);
-    }
-
-    public void addItem(int location, Item item) {
-        items.add(location, item);
-        notifyItemInserted(location);
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,9 +46,10 @@ public class CurrentOfflineAffairsAdapter extends RecyclerView.Adapter<RecyclerV
                         .affair_model_description);
                 TextView affairModelDate = (TextView) view.findViewById(R.id
                         .affair_model_date);
+                TextView affairModelTime = (TextView) view.findViewById(R.id.affair_model_time);
 
                 return new AffairViewHolder(view, affairModelContainer, affairModelCircleImageView,
-                        affairModelTitle, affairModelDescription, affairModelDate);
+                        affairModelTitle, affairModelDescription, affairModelDate, affairModelTime);
             case SEPARATOR_TYPE:
 
                 break;
@@ -89,7 +81,15 @@ public class CurrentOfflineAffairsAdapter extends RecyclerView.Adapter<RecyclerV
             }
 
             if (affair.getDate() != 0) {
-                affairViewHolder.affairModelDate.setText(DateUtils.getFullDate(affair.getTimestamp()));
+                affairViewHolder.affairModelDate.setText(DateUtils.getDate(affair.getTimestamp()));
+            } else {
+                affairViewHolder.affairModelDate.setText("Дата не указана");
+            }
+
+            if (affair.getTime() != 0) {
+                affairViewHolder.affairModelTime.setText(DateUtils.getTime(affair.getTimestamp()));
+            } else {
+                affairViewHolder.affairModelTime.setText("Время не указано");
             }
         } else {
             holder.itemView.setEnabled(false);
@@ -105,31 +105,4 @@ public class CurrentOfflineAffairsAdapter extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-    private class AffairViewHolder extends RecyclerView.ViewHolder {
-
-        View affairModelContainer;
-
-        CircleImageView affairModelCircleImageView;
-
-        TextView affairModelTitle;
-        TextView affairModelDescription;
-        TextView affairModelDate;
-
-        public AffairViewHolder(View itemView, View affairModelContainer,
-                                CircleImageView affairModelCircleImageView,
-                                TextView affairModelTitle, TextView affairModelDescription,
-                                TextView affairModelDate) {
-            super(itemView);
-            this.affairModelContainer = affairModelContainer;
-            this.affairModelCircleImageView = affairModelCircleImageView;
-            this.affairModelTitle = affairModelTitle;
-            this.affairModelDescription = affairModelDescription;
-            this.affairModelDate = affairModelDate;
-        }
-    }
 }

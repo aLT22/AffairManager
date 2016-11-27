@@ -2,25 +2,16 @@ package com.bytebuilding.affairmanager.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bytebuilding.affairmanager.R;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DoneOfflineAffairsFragment extends Fragment {
-
-
-    @BindView(R.id.rv_done_offline_affairs)
-    RecyclerView rvDoneOfflineAffairs;
-
-    private RecyclerView.LayoutManager layoutManager;
+public class DoneOfflineAffairsFragment extends OfflineAffairFragment {
 
     public DoneOfflineAffairsFragment() {
     }
@@ -35,7 +26,7 @@ public class DoneOfflineAffairsFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
 
-        rvDoneOfflineAffairs.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         return rootView;
     }
 

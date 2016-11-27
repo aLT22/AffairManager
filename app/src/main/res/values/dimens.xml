@@ -8,4 +8,7 @@
     <dimen name="fab_elevation">16dp</dimen>
 
     <dimen name="bottom_padding_for_advertising">88dp</dimen>
+
+    <dimen name="edit_text_width_dialog">130dp</dimen>
+    <dimen name="edit_text_textsize_dialog">12sp</dimen>
 </resources>
