@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.fragments;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_current_offline_affairs, container, false);
 
-        ButterKnife.bind(this, rootView);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_current_offline_affairs);
 
         layoutManager = new LinearLayoutManager(getActivity());
 

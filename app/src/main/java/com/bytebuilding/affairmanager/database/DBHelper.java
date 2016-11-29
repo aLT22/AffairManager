@@ -32,7 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLOUMN_PLACE = "PLACE";
     public static final String COLOUMN_REPEATE_TIMESTAMP = "REPEATE_TIMESTAMP";
     public static final String COLOUMN_TIMESTAMP = "AFFAIR_TIMESTAMP";
-    //public static final String COLOUMN_STATUS = "AFFAIR_STATUS";
+    public static final String COLOUMN_STATUS = "AFFAIR_STATUS";
 
     public static final String TABLE_CREATION_SCRIPT = "CREATE TABLE " + TABLE_NAME
             + " (" + BaseColumns._ID
@@ -41,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + COLOUMN_TIME + " LONG, " + COLOUMN_PRIORITY + " INTEGER NOT NULL, "
             + COLOUMN_OBJECT + " TEXT NOT NULL, " + COLOUMN_TYPE + " TEXT NOT NULL, "
             + COLOUMN_PLACE + " TEXT, " + COLOUMN_REPEATE_TIMESTAMP + " LONG, "
-            + /*COLOUMN_STATUS + " INTEGER, " +*/ COLOUMN_TIMESTAMP + " LONG);";
+            + COLOUMN_STATUS + " INTEGER, " + COLOUMN_TIMESTAMP + " LONG);";
 
     public static final String TABLE_DROP_SCRIPT = "DROP TABLE " + TABLE_NAME;
 

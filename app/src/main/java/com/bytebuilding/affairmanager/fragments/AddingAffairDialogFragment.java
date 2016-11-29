@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import java.util.Calendar;
@@ -91,7 +93,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
         Spinner spinnerAffairRepeatsType = (Spinner) container.findViewById(R.id
                 .spinner_affair_repeats_type);
 
-        Spinner spinnerAffairRepeatsTime = (Spinner) container.findViewById(R.id
+        final Spinner spinnerAffairRepeatsTime = (Spinner) container.findViewById(R.id
                 .spinner_affair_repeats_time);
 
         tilTitle.setHint(getString(R.string.dialog_title_hint));
@@ -105,6 +107,8 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         alertDialogBuilder.setView(container);
 
+        Affair affair = new Affair();
+
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, getResources()
                 .getStringArray(R.array.affair_priorities));
@@ -114,6 +118,55 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 android.R.layout.simple_spinner_dropdown_item, getResources()
                 .getStringArray(R.array.affair_repeats_type));
         spinnerAffairRepeatsType.setAdapter(repeatsTypeAdapter);
+
+        spinnerAffairRepeatsType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        ArrayAdapter<String> repeatsTimeAdapterHours = new ArrayAdapter<String>(getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item, getResources()
+                                .getStringArray(R.array.affair_repeats_by_hours));
+                        spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterHours);
+                        break;
+
+                    case 1:
+                        ArrayAdapter<String> repeatsTimeAdapterDays = new ArrayAdapter<String>(getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item, getResources()
+                                .getStringArray(R.array.affair_repeats_by_days));
+                        spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterDays);
+                        break;
+
+                    case 2:
+                        ArrayAdapter<String> repeatsTimeAdapterWeeks = new ArrayAdapter<String>(getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item, getResources()
+                                .getStringArray(R.array.affair_repeats_by_weeks));
+                        spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterWeeks);
+                        break;
+
+                    case 3:
+                        ArrayAdapter<String> repeatsTimeAdapterMonths = new ArrayAdapter<String>(getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item, getResources()
+                                .getStringArray(R.array.affair_repeats_by_months));
+                        spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterMonths);
+                        break;
+
+                    case 4:
+                        ArrayAdapter<String> repeatsTimeAdapterYears = new ArrayAdapter<String>(getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item, getResources()
+                                .getStringArray(R.array.affair_repeats_by_years));
+                        spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterYears);
+                        break;
+
+                    default:break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override

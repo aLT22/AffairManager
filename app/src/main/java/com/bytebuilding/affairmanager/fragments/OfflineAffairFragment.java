@@ -15,8 +15,7 @@ import butterknife.BindView;
 
 public abstract class OfflineAffairFragment extends Fragment{
 
-    @BindView(R.id.rv_current_offline_affairs)
-    RecyclerView recyclerView;
+    protected RecyclerView recyclerView;
 
     protected RecyclerView.LayoutManager layoutManager;
 
