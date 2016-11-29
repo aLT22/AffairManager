@@ -13,8 +13,6 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.CurrentOfflineAffairsAdapter;
 import com.bytebuilding.affairmanager.model.Affair;
 
-import butterknife.ButterKnife;
-
 public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
     OnAffairDoneListener onAffairDoneListener;
@@ -48,25 +46,10 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        currentOfflineAffairsAdapter = new CurrentOfflineAffairsAdapter(this);
+        adapter = new CurrentOfflineAffairsAdapter(this);
 
-        recyclerView.setAdapter(currentOfflineAffairsAdapter);
+        recyclerView.setAdapter(adapter);
         return rootView;
-    }
-
-    public void addTask(Affair newAffair) {
-        int position = -1;
-
-        for (int i = 0; i < currentOfflineAffairsAdapter.getItemCount(); i++) {
-            if (currentOfflineAffairsAdapter.getItem(i).isAffair()) {
-                Affair affair = (Affair) currentOfflineAffairsAdapter.getItem(i);
-
-                if (newAffair.getTimestamp() < affair.getTimestamp()) position = i;
-            }
-
-            if (position != -1) currentOfflineAffairsAdapter.addItem(position, newAffair);
-            else currentOfflineAffairsAdapter.addItem(newAffair);
-        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.bytebuilding.affairmanager.fragments;
+package com.bytebuilding.affairmanager.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,24 +28,23 @@ import java.util.Calendar;
 
 public class AddingAffairDialogFragment extends DialogFragment {
 
-    private AddingTaskListener addingTaskListener;
+    private AddingAffairListener addingAffairListener;
 
-    public interface AddingTaskListener {
-        void onTaskAdded();
+    public interface AddingAffairListener {
+        void onAffairAdded(Affair affair);
 
-        void onTaskAddingCancel();
+        void onAffairAddingCancel();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-
         try {
-            addingTaskListener = (AddingTaskListener) activity;
+            addingAffairListener = (AddingAffairListener) activity;
         } catch (ClassCastException cca) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement AddingTaskListener");
+                    + " must implement AddingAffairListener");
         }
     }
 
@@ -59,7 +58,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         View container = inflater.inflate(R.layout.dialog_add_affair, null);
 
-        TextInputLayout tilTitle = (TextInputLayout) container
+        final TextInputLayout tilTitle = (TextInputLayout) container
                 .findViewById(R.id.til_affair_title);
         final EditText etTitle = tilTitle.getEditText();
 
@@ -73,21 +72,21 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         TextInputLayout tilDescription = (TextInputLayout) container.findViewById(R.id
                 .til_affair_description);
-        EditText etDescription = tilDescription.getEditText();
+        final EditText etDescription = tilDescription.getEditText();
 
         TextInputLayout tilObject = (TextInputLayout) container
                 .findViewById(R.id.til_affair_object);
-        EditText etObject = tilObject.getEditText();
+        final EditText etObject = tilObject.getEditText();
 
         TextInputLayout tilType = (TextInputLayout) container.findViewById(R.id
                 .til_affair_type);
-        EditText etType = tilType.getEditText();
+        final EditText etType = tilType.getEditText();
 
         TextInputLayout tilPlace = (TextInputLayout) container
                 .findViewById(R.id.til_affair_place);
-        EditText etPlace = tilPlace.getEditText();
+        final EditText etPlace = tilPlace.getEditText();
 
-        Spinner spinnerAffairPriority = (Spinner) container.findViewById(R.id
+        final Spinner spinnerAffairPriority = (Spinner) container.findViewById(R.id
                 .spinner_affair_priority);
 
         Spinner spinnerAffairRepeatsType = (Spinner) container.findViewById(R.id
@@ -103,7 +102,6 @@ public class AddingAffairDialogFragment extends DialogFragment {
         tilObject.setHint(getString(R.string.dialog_object_hint));
         tilPlace.setHint(getString(R.string.dialog_place_hint));
         tilType.setHint(getString(R.string.dialog_type_hint));
-
 
         alertDialogBuilder.setView(container);
 
@@ -125,6 +123,9 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
             }
         });
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
 
         ArrayAdapter<String> repeatsTypeAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, getResources()
@@ -190,10 +191,11 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 DialogFragment datePickerFragment = new DatePickerFragment() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar dateCalendar = Calendar.getInstance();
-                        dateCalendar.set(year, month, dayOfMonth);
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                        etDate.setText(DateUtils.getDate(dateCalendar.getTimeInMillis()));
+                        etDate.setText(DateUtils.getDate(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -215,10 +217,11 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 DialogFragment timePickerFragment = new TimePickerFragment() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Calendar timeCalendar = Calendar.getInstance();
-                        timeCalendar.set(0, 0, 0, hourOfDay, minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        calendar.set(Calendar.SECOND, 0);
 
-                        etTime.setText(DateUtils.getTime(timeCalendar.getTimeInMillis()));
+                        etTime.setText(DateUtils.getTime(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -234,7 +237,20 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 .OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addingTaskListener.onTaskAdded();
+                affair.setTitle(etTitle.getText().toString());
+                affair.setDescription(etDescription.getText().toString());
+                affair.setTimestamp(calendar.getTimeInMillis());
+                affair.setType(etType.getText().toString());
+                affair.setObject(etObject.getText().toString());
+                affair.setPlace(etPlace.getText().toString());
+                affair.setStatus(Affair.STATUS_CURRENT);
+
+                if (etDate.length() != 0 || etTime.length() != 0) {
+                    affair.setDate(calendar.getTimeInMillis());
+                    affair.setTime(calendar.getTimeInMillis());
+                }
+
+                addingAffairListener.onAffairAdded(affair);
                 dialog.dismiss();
             }
         });
@@ -243,7 +259,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 .OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addingTaskListener.onTaskAddingCancel();
+                addingAffairListener.onAffairAddingCancel();
                 dialog.cancel();
             }
         });
@@ -257,7 +273,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
                 if (etTitle.length() == 0) {
                     acceptButton.setEnabled(false);
-                    etTitle.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    tilTitle.setError(getResources().getString(R.string.dialog_error_edit_text));
                 }
 
                 etTitle.addTextChangedListener(new TextWatcher() {
@@ -270,11 +286,11 @@ public class AddingAffairDialogFragment extends DialogFragment {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.length() == 0) {
                             acceptButton.setEnabled(false);
-                            etTitle.setError(getResources().getString(R.string
+                            tilTitle.setError(getResources().getString(R.string
                                     .dialog_error_edit_text));
                         } else {
                             acceptButton.setEnabled(true);
-                            etTitle.setError(null);
+                            tilTitle.setError(null);
                         }
                     }
 

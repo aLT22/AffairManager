@@ -24,8 +24,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
-    private List<Item> items = new ArrayList<>();
-
     public static final int AFFAIR_TYPE = 0;
     public static final int SEPARATOR_TYPE = 1;
 

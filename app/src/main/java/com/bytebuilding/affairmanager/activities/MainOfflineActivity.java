@@ -12,16 +12,18 @@ import android.widget.Toast;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.animations.DepthPageAnimation;
-import com.bytebuilding.affairmanager.fragments.AddingAffairDialogFragment;
+import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
+import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
+import com.bytebuilding.affairmanager.model.Affair;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment
-        .AddingTaskListener {
+public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener, CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment
+        .OnAffairRestoreListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -34,8 +36,8 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     private MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter;
 
-    private CurrentOfflineAffairsFragment currentOfflineAffairsFragment;
-    private DoneOfflineAffairsFragment doneOfflineAffairsFragment;
+    private OfflineAffairFragment currentOfflineAffairsFragment;
+    private OfflineAffairFragment doneOfflineAffairsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +89,13 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     }
 
     @Override
-    public void onTaskAdded() {
-        Toast.makeText(getApplicationContext(), "Задача была добавлена", Toast.LENGTH_SHORT).show();
+    public void onAffairAdded(Affair affair) {
+        currentOfflineAffairsFragment.addAffair(affair);
+        //Toast.makeText(getApplicationContext(), "Задача была добавлена", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onTaskAddingCancel() {
+    public void onAffairAddingCancel() {
         Toast.makeText(getApplicationContext(), "Задача не была добавлена", Toast.LENGTH_SHORT)
                 .show();
     }
@@ -102,5 +105,15 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
 
         addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
+    }
+
+    @Override
+    public void onAffairDone(Affair affair) {
+        doneOfflineAffairsFragment.addAffair(affair);
+    }
+
+    @Override
+    public void onAffairRestore(Affair affair) {
+        currentOfflineAffairsFragment.addAffair(affair);
     }
 }

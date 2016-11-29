@@ -1,4 +1,4 @@
-package com.bytebuilding.affairmanager.fragments;
+package com.bytebuilding.affairmanager.dialogs;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
-import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
 import com.bytebuilding.affairmanager.utils.DateUtils;
@@ -110,7 +109,7 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            if (affair.getStatus() == Affair.STATUS_DONE) {
+                            if (affair.getStatus() != Affair.STATUS_DONE) {
 
                                 ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView, "translationX", 0f,
                                         -itemView.getWidth());

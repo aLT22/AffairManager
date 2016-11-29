@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/affair_model_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="64dp"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:orientation="vertical">
 
-    <android.support.v4.widget.CircleImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_affair_model"
         android:layout_width="55dp"
         android:layout_height="55dp"
