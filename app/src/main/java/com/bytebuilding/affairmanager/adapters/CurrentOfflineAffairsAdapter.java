@@ -1,5 +1,9 @@
 package com.bytebuilding.affairmanager.adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -66,8 +70,11 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
         if (item.isAffair()) {
             holder.itemView.setEnabled(true);
-            Affair  affair = (Affair) item;
-            AffairViewHolder affairViewHolder = (AffairViewHolder) holder;
+            final Affair  affair = (Affair) item;
+            final AffairViewHolder affairViewHolder = (AffairViewHolder) holder;
+
+            final View itemView = affairViewHolder.itemView;
+            final Resources resources = itemView.getResources();
 
             affairViewHolder.affairModelTitle.setText(affair.getTitle());
             affairViewHolder.affairModelDescription.setText(affair.getDescription());
@@ -91,6 +98,89 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             } else {
                 affairViewHolder.affairModelTime.setText("Время не указано");
             }
+
+            affairViewHolder.affairModelCircleImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    affair.setStatus(Affair.STATUS_DONE);
+
+                    //affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.GRAY);
+                    affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+                    affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
+                            .color_secondary_text));
+                    affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_secondary_text));
+                    affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_secondary_text));
+
+                    ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(affairViewHolder.affairModelCircleImageView,
+                            "rotationY", -180f, 0f);
+
+                    flipAnimation.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (affair.getStatus() == Affair.STATUS_DONE) {
+                                affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.GRAY);
+
+                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(affairViewHolder
+                                        .affairModelCircleImageView, "translationX", 0f, itemView.getWidth());
+
+                                ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(affairViewHolder
+                                        .affairModelCircleImageView, "translationX", itemView.getWidth(), 0f);
+
+                                animationGone.addListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        itemView.setVisibility(View.GONE);
+                                        getOfflineAffairFragment().moveAffair(affair);
+                                        removeItem(affairViewHolder.getLayoutPosition());
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                });
+
+                                AnimatorSet translations = new AnimatorSet();
+                                translations.play(animationGone).before(animationComeIn);
+                            }
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
+                    flipAnimation.start();
+                }
+            });
+
+            itemView.setVisibility(View.VISIBLE);
+
+            itemView.setBackgroundColor(resources.getColor(R.color.md_blue_grey_50));
+
+            affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
+            //affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getPriority()));
         } else {
             holder.itemView.setEnabled(false);
         }

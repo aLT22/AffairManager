@@ -107,12 +107,24 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         alertDialogBuilder.setView(container);
 
-        Affair affair = new Affair();
+        final Affair affair = new Affair();
 
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, getResources()
                 .getStringArray(R.array.affair_priorities));
         spinnerAffairPriority.setAdapter(priorityAdapter);
+
+        spinnerAffairPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                affair.setPriority(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         ArrayAdapter<String> repeatsTypeAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, getResources()

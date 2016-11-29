@@ -36,4 +36,6 @@ public abstract class OfflineAffairFragment extends Fragment{
         }
     }
 
+    public abstract void moveAffair(Affair affair);
+
 }

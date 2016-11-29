@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.model.Affair;
 
 import butterknife.ButterKnife;
 
@@ -31,4 +32,8 @@ public class DoneOfflineAffairsFragment extends OfflineAffairFragment {
         return rootView;
     }
 
+    @Override
+    public void moveAffair(Affair affair) {
+
+    }
 }

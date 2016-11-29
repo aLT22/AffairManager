@@ -52,4 +52,9 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
         }
     }
 
+    @Override
+    public void moveAffair(Affair affair) {
+
+    }
+
 }
