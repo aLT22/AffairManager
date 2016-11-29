@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +17,25 @@ import butterknife.ButterKnife;
 
 public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
+    OnAffairDoneListener onAffairDoneListener;
+
     public CurrentOfflineAffairsFragment() {
     }
 
+    public interface OnAffairDoneListener {
+        void onAffairDone(Affair affair);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            onAffairDoneListener = (OnAffairDoneListener) activity;
+        } catch (ClassCastException cce) {
+            throw new ClassCastException(activity.toString() + " must implement OnAffairDoneListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +71,7 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
     @Override
     public void moveAffair(Affair affair) {
-
+        onAffairDoneListener.onAffairDone(affair);
     }
 
 }

@@ -125,11 +125,11 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                             if (affair.getStatus() == Affair.STATUS_DONE) {
                                 affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.GRAY);
 
-                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(affairViewHolder
-                                        .affairModelCircleImageView, "translationX", 0f, itemView.getWidth());
+                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView,
+                                        "translationX", 0f, itemView.getWidth());
 
-                                ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(affairViewHolder
-                                        .affairModelCircleImageView, "translationX", itemView.getWidth(), 0f);
+                                ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(itemView,
+                                        "translationX", itemView.getWidth(), 0f);
 
                                 animationGone.addListener(new Animator.AnimatorListener() {
                                     @Override

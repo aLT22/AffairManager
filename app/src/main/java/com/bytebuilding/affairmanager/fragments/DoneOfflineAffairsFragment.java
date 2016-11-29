@@ -19,6 +19,7 @@ public class DoneOfflineAffairsFragment extends OfflineAffairFragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

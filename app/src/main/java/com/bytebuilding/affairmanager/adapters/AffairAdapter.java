@@ -14,8 +14,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class AffairAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<Item> items;
-    private OfflineAffairFragment offlineAffairFragment;
+    protected List<Item> items;
+    protected OfflineAffairFragment offlineAffairFragment;
 
     public AffairAdapter(OfflineAffairFragment offlineAffairFragment) {
         this.offlineAffairFragment = offlineAffairFragment;
