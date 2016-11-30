@@ -52,7 +52,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle(R.string.title_adding_affair_dialog_fragment);
+        //alertDialogBuilder.setTitle(R.string.title_adding_affair_dialog_fragment);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -102,6 +102,8 @@ public class AddingAffairDialogFragment extends DialogFragment {
         tilObject.setHint(getString(R.string.dialog_object_hint));
         tilPlace.setHint(getString(R.string.dialog_place_hint));
         tilType.setHint(getString(R.string.dialog_type_hint));
+
+        spinnerAffairPriority.setPrompt("Выберите приоритет");
 
         alertDialogBuilder.setView(container);
 
@@ -273,6 +275,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
                 if (etTitle.length() == 0) {
                     acceptButton.setEnabled(false);
+                    tilTitle.setErrorEnabled(true);
                     tilTitle.setError(getResources().getString(R.string.dialog_error_edit_text));
                 }
 

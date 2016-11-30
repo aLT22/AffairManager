@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
         adapter = new CurrentOfflineAffairsAdapter(this);
 
         recyclerView.setAdapter(adapter);
+
         return rootView;
     }
 

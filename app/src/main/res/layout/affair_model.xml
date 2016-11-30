@@ -11,58 +11,66 @@
         android:id="@+id/civ_affair_model"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_margin="@dimen/padding_sign_buttons"
-        android:background="@color/color_accent" />
-
-    <TextView
-        android:id="@+id/affair_model_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/civ_affair_model"
-        android:layout_margin="@dimen/padding_sign_buttons"
-        android:layout_toEndOf="@+id/civ_affair_model"
-        android:layout_toRightOf="@+id/civ_affair_model"
-        android:maxLines="1"
-        android:minLines="1"
-        android:padding="@dimen/padding_sign_buttons"
-        android:text="Title"
-        android:textColor="@color/color_primary_text"
-        android:textSize="20dp" />
+        android:background="@color/color_accent"
+        android:layout_marginLeft="@dimen/padding_sign_buttons"
+        android:layout_marginRight="@dimen/padding_sign_buttons"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/affair_model_date"/>
 
     <TextView
         android:id="@+id/affair_model_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/civ_affair_model"
-        android:layout_alignLeft="@+id/affair_model_title"
-        android:layout_alignStart="@+id/affair_model_title"
+        android:maxLines="1"
+        android:minLines="1"
+        android:maxLength="15"
+        android:ellipsize="start"
+        android:padding="@dimen/padding_sign_buttons"
+        android:text="Description"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/civ_affair_model"
+        android:layout_toEndOf="@+id/civ_affair_model"/>
+
+    <TextView
+        android:id="@+id/affair_model_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:maxLines="1"
         android:minLines="1"
         android:padding="@dimen/padding_sign_buttons"
-        android:text="Description" />
-
-    <TextView
-        android:id="@+id/affair_model_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/affair_model_title"
-        android:layout_marginEnd="68dp"
-        android:layout_marginRight="68dp"
-        android:padding="@dimen/padding_sign_buttons"
-        android:text="Date"
-        android:textColor="@color/color_secondary_text" />
+        android:text="Title"
+        android:textColor="@color/color_primary_text"
+        android:textSize="20sp"
+        android:maxLength="15"
+        android:ellipsize="start"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/affair_model_date"
+        android:layout_toRightOf="@+id/civ_affair_model"
+        android:layout_toEndOf="@+id/civ_affair_model"/>
 
     <TextView
         android:id="@+id/affair_model_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/affair_model_date"
-        android:layout_alignStart="@+id/affair_model_date"
-        android:layout_alignTop="@+id/affair_model_description"
         android:padding="@dimen/padding_sign_buttons"
         android:text="Time"
-        android:textColor="@color/color_secondary_text" />
+        android:textColor="@color/color_secondary_text"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/affair_model_date"
+        android:layout_alignStart="@+id/affair_model_date"/>
+
+    <TextView
+        android:id="@+id/affair_model_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="@dimen/padding_sign_buttons"
+        android:text="Date"
+        android:textColor="@color/color_secondary_text"
+        android:layout_alignBaseline="@+id/affair_model_title"
+        android:layout_alignBottom="@+id/affair_model_title"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

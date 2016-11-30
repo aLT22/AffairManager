@@ -17,9 +17,6 @@ import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CurrentOfflineAffairsAdapter extends AffairAdapter {
@@ -88,13 +85,13 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             if (affair.getDate() != 0) {
                 affairViewHolder.affairModelDate.setText(DateUtils.getDate(affair.getTimestamp()));
             } else {
-                affairViewHolder.affairModelDate.setText("Дата не указана");
+                affairViewHolder.affairModelDate.setText("-");
             }
 
             if (affair.getTime() != 0) {
                 affairViewHolder.affairModelTime.setText(DateUtils.getTime(affair.getTimestamp()));
             } else {
-                affairViewHolder.affairModelTime.setText("Время не указано");
+                affairViewHolder.affairModelTime.setText("-");
             }
 
             affairViewHolder.affairModelCircleImageView.setOnClickListener(new View.OnClickListener() {
