@@ -32,8 +32,6 @@ public class MainOnlineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_online);
         ButterKnife.bind(this);
-        fabAddAffair.setColorFilter(getResources().getColor(R.color.color_white));
-        fabAddGroup.setColorFilter(getResources().getColor(R.color.color_white));
     }
 
     @OnClick(R.id.fab_add_affair)
