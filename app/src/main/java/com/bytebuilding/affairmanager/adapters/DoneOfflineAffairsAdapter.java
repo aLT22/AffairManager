@@ -65,32 +65,35 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
             affairViewHolder.affairModelTitle.setText(affair.getTitle());
             affairViewHolder.affairModelDescription.setText(affair.getDescription());
 
-            if (affair.getPriority() == 0) {
-                affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.GREEN);
-            } else if (affair.getPriority() == 1) {
-                affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.YELLOW);
-            } else {
-                affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.RED);
-            }
-
             if (affair.getDate() != 0) {
                 affairViewHolder.affairModelDate.setText(DateUtils.getDate(affair.getTimestamp()));
             } else {
-                affairViewHolder.affairModelDate.setText("Дата не указана");
+                affairViewHolder.affairModelDate.setText("-");
             }
 
             if (affair.getTime() != 0) {
                 affairViewHolder.affairModelTime.setText(DateUtils.getTime(affair.getTimestamp()));
             } else {
-                affairViewHolder.affairModelTime.setText("Время не указано");
+                affairViewHolder.affairModelTime.setText("-");
             }
+
+            itemView.setVisibility(View.VISIBLE);
+
+            affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.icon_done_affair);
+            affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+            affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
+                    .color_secondary_text));
+            affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_secondary_text));
+            affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_secondary_text));
+            affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(android.R.color
+                    .darker_gray));
 
             affairViewHolder.affairModelCircleImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     affair.setStatus(Affair.STATUS_CURRENT);
 
-                    //affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.GRAY);
+                    affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColors()));
                     affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
                     affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
                             .color_secondary_text));
@@ -99,7 +102,8 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
                     ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(affairViewHolder.affairModelCircleImageView,
                             "rotationY", 180f, 0f);
-                    affairViewHolder.affairModelCircleImageView.setBackgroundColor(Color.GRAY);
+                    affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable
+                            .ic_checkbox_blank_circle_white_48dp);
 
                     flipAnimation.addListener(new Animator.AnimatorListener() {
                         @Override
@@ -143,6 +147,7 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
                                 AnimatorSet translations = new AnimatorSet();
                                 translations.play(animationGone).before(animationComeIn);
+                                translations.start();
                             }
                         }
 
@@ -160,13 +165,6 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                     flipAnimation.start();
                 }
             });
-
-            itemView.setVisibility(View.VISIBLE);
-
-            itemView.setBackgroundColor(resources.getColor(R.color.md_blue_grey_50));
-
-            affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
-            //affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getPriority()));
         } else {
             holder.itemView.setEnabled(false);
         }

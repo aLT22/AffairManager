@@ -1,5 +1,9 @@
 package com.bytebuilding.affairmanager.model;
 
+import android.graphics.Color;
+
+import com.bytebuilding.affairmanager.R;
+
 /**
  * Created by Alexey on 07.11.2016.
  */
@@ -127,6 +131,30 @@ public class Affair implements Item {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getColors() {
+        switch (getPriority()) {
+            case 2:
+                if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
+                    return R.color.md_red_400;
+                } else {
+                    return R.color.md_red_800;
+                }
+            case 1:
+                if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
+                    return R.color.md_orange_400;
+                } else {
+                    return R.color.md_orange_800;
+                }
+            case 0:
+                if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
+                    return R.color.md_green_400;
+                } else {
+                    return R.color.md_green_800;
+                }
+            default: return 0;
+        }
     }
 
     @Override

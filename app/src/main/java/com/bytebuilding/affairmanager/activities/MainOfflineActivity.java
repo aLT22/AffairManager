@@ -44,6 +44,7 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_offline);
         ButterKnife.bind(this);
+        fabAddAffairOffline.setColorFilter(getResources().getColor(R.color.color_white));
         initTabs();
     }
 
@@ -91,7 +92,6 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     @Override
     public void onAffairAdded(Affair affair) {
         currentOfflineAffairsFragment.addAffair(affair);
-        //Toast.makeText(getApplicationContext(), "Задача была добавлена", Toast.LENGTH_SHORT).show();
     }
 
     @Override

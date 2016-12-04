@@ -9,9 +9,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_affair_model"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@color/color_accent"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginLeft="@dimen/padding_sign_buttons"
         android:layout_marginRight="@dimen/padding_sign_buttons"
         android:layout_alignParentBottom="true"
@@ -39,7 +38,6 @@
         android:minLines="1"
         android:padding="@dimen/padding_sign_buttons"
         android:text="Title"
-        android:textColor="@color/color_primary_text"
         android:textSize="20sp"
         android:maxLength="15"
         android:ellipsize="start"
@@ -54,7 +52,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_sign_buttons"
         android:text="Time"
-        android:textColor="@color/color_secondary_text"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/affair_model_date"
         android:layout_alignStart="@+id/affair_model_date"/>
@@ -67,7 +64,6 @@
         android:layout_marginRight="8dp"
         android:padding="@dimen/padding_sign_buttons"
         android:text="Date"
-        android:textColor="@color/color_secondary_text"
         android:layout_alignBaseline="@+id/affair_model_title"
         android:layout_alignBottom="@+id/affair_model_title"
         android:layout_alignParentRight="true"
