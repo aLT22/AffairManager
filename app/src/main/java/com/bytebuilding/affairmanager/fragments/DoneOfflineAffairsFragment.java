@@ -58,4 +58,9 @@ public class DoneOfflineAffairsFragment extends OfflineAffairFragment {
     public void moveAffair(Affair affair) {
         onAffairRestoreListener.onAffairRestore(affair);
     }
+
+    @Override
+    public void addAffairFromDB() {
+
+    }
 }

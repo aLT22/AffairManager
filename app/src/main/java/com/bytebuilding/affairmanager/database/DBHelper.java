@@ -55,6 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SELECTION_BY_PLACE = DBHelper.COLOUMN_PLACE + " = ?";
     public static final String SELECTION_BY_REPEATE_TIMESTAMP = DBHelper.COLOUMN_TIMESTAMP + " = ?";
     public static final String SELECTION_BY_TIMESTAMP = DBHelper.COLOUMN_TIMESTAMP + " = ?";
+    public static final String SELECTION_BY_STATUS = DBHelper.COLOUMN_STATUS + " = ?";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

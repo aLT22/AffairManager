@@ -235,8 +235,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
             }
         });
 
-        alertDialogBuilder.setPositiveButton(R.string.button_accept, new DialogInterface
-                .OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.button_accept, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 affair.setTitle(etTitle.getText().toString());

@@ -100,6 +100,8 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                 @Override
                 public void onClick(View v) {
                     affair.setStatus(Affair.STATUS_DONE);
+                    getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
+                            .getTimestamp(), Affair.STATUS_DONE);
 
                     affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
                     affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color

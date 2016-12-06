@@ -92,6 +92,8 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                 @Override
                 public void onClick(View v) {
                     affair.setStatus(Affair.STATUS_CURRENT);
+                    getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
+                            .getTimestamp(), Affair.STATUS_CURRENT);
 
                     affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColors()));
                     affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));

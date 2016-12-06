@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.animations.DepthPageAnimation;
+import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
@@ -22,8 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener, CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment
-        .OnAffairRestoreListener {
+public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener,
+        CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment.OnAffairRestoreListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -39,11 +41,15 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     private OfflineAffairFragment currentOfflineAffairsFragment;
     private OfflineAffairFragment doneOfflineAffairsFragment;
 
+    public DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_offline);
         ButterKnife.bind(this);
+
+        dbHelper = new DBHelper(getApplicationContext());
         fabAddAffairOffline.setColorFilter(getResources().getColor(R.color.color_white));
         initTabs();
     }
@@ -91,29 +97,33 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     @Override
     public void onAffairAdded(Affair affair) {
-        currentOfflineAffairsFragment.addAffair(affair);
+        currentOfflineAffairsFragment.addAffair(affair, true);
     }
 
     @Override
     public void onAffairAddingCancel() {
-        Toast.makeText(getApplicationContext(), "Задача не была добавлена", Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(getApplicationContext(), "Задача не была добавлена", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.fab_add_affair_offline)
     public void onFabAddAffairOfflineClick() {
-        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
+        if (getResources().getDisplayMetrics().density > 1.5) {
+            DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
 
-        addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
+            addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
+        } else {
+            Intent intent = new Intent(getApplicationContext(), AddAffairActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onAffairDone(Affair affair) {
-        doneOfflineAffairsFragment.addAffair(affair);
+        doneOfflineAffairsFragment.addAffair(affair, false);
     }
 
     @Override
     public void onAffairRestore(Affair affair) {
-        currentOfflineAffairsFragment.addAffair(affair);
+        currentOfflineAffairsFragment.addAffair(affair, false);
     }
 }

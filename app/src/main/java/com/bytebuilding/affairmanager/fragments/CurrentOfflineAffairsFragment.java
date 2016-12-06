@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.CurrentOfflineAffairsAdapter;
+import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.model.Affair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
@@ -57,6 +61,17 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
     @Override
     public void moveAffair(Affair affair) {
         onAffairDoneListener.onAffairDone(affair);
+    }
+
+    @Override
+    public void addAffairFromDB() {
+        List<Affair> affairs = new ArrayList<>();
+        affairs.addAll(mainOfflineActivity.dbHelper.getDbQueryManager().getAffairs(DBHelper.SELECTION_BY_STATUS
+                + " OR " + DBHelper.SELECTION_BY_STATUS, new String[]{Integer.toString(Affair.STATUS_CURRENT)},
+                DBHelper.COLOUMN_DATE));
+        for (int i = 0; i < affairs.size(); i++) {
+            addAffair(affairs.get(i), false);
+        }
     }
 
 }

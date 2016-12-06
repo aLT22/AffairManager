@@ -82,6 +82,10 @@ public class DBUpdateManager {
         update(DBHelper.COLOUMN_TIMESTAMP, timestamp, newTimestamp);
     }
 
+    public void status(long timestamp, int status) {
+        update(DBHelper.COLOUMN_STATUS, timestamp, status);
+    }
+
     public void affair(Affair affair) {
         title(affair.getTimestamp(), affair.getTitle());
         description(affair.getTimestamp(), affair.getDescription());
@@ -93,5 +97,6 @@ public class DBUpdateManager {
         place(affair.getTimestamp(), affair.getPlace());
         repeateTimestamp(affair.getTimestamp(), affair.getRepeatTimestamp());
         timestamp(affair.getTimestamp(), affair.getTimestamp());
+        status(affair.getTimestamp(), affair.getStatus());
     }
 }
