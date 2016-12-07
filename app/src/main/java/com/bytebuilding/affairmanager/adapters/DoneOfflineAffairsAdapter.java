@@ -73,6 +73,8 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
             itemView.setVisibility(View.VISIBLE);
 
+            affairViewHolder.affairModelCircleImageView.setEnabled(true);
+
             affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.icon_done_affair);
             affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
             affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
@@ -100,6 +102,8 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                 @Override
                 public void onClick(View v) {
                     affair.setStatus(Affair.STATUS_CURRENT);
+
+                    affairViewHolder.affairModelCircleImageView.setEnabled(false);
 
                     getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
                             .getTimestamp(), Affair.STATUS_CURRENT);
