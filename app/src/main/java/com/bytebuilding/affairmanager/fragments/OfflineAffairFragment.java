@@ -10,10 +10,6 @@ import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.adapters.AffairAdapter;
 import com.bytebuilding.affairmanager.model.Affair;
 
-/**
- * Created by turki on 27.11.2016.
- */
-
 public abstract class OfflineAffairFragment extends Fragment{
 
     protected RecyclerView recyclerView;

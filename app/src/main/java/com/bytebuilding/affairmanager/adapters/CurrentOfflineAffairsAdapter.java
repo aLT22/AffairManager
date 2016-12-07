@@ -33,22 +33,17 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case AFFAIR_TYPE:
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.affair_model,
-                        parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.affair_model, parent, false);
+
                 View affairModelContainer = view.findViewById(R.id.affair_model_container);
-
-                CircleImageView affairModelCircleImageView = (CircleImageView) view
-                        .findViewById(R.id.civ_affair_model);
-
+                CircleImageView affairModelCircleImageView = (CircleImageView) view.findViewById(R.id.civ_affair_model);
                 TextView affairModelTitle = (TextView) view.findViewById(R.id.affair_model_title);
-                TextView affairModelDescription = (TextView) view.findViewById(R.id
-                        .affair_model_description);
-                TextView affairModelDate = (TextView) view.findViewById(R.id
-                        .affair_model_date);
+                TextView affairModelDescription = (TextView) view.findViewById(R.id.affair_model_description);
+                TextView affairModelDate = (TextView) view.findViewById(R.id.affair_model_date);
                 TextView affairModelTime = (TextView) view.findViewById(R.id.affair_model_time);
 
-                return new AffairViewHolder(view, affairModelContainer, affairModelCircleImageView,
-                        affairModelTitle, affairModelDescription, affairModelDate, affairModelTime);
+                return new AffairViewHolder(view, affairModelContainer, affairModelCircleImageView, affairModelTitle,
+                        affairModelDescription, affairModelDate, affairModelTime);
             case SEPARATOR_TYPE:
 
                 break;
@@ -100,6 +95,7 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                 @Override
                 public void onClick(View v) {
                     affair.setStatus(Affair.STATUS_DONE);
+
                     getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
                             .getTimestamp(), Affair.STATUS_DONE);
 

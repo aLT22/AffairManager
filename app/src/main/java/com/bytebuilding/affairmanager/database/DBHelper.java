@@ -8,10 +8,6 @@ import android.provider.BaseColumns;
 
 import com.bytebuilding.affairmanager.model.Affair;
 
-/**
- * Created by Alexey on 07.11.2016.
- */
-
 public class DBHelper extends SQLiteOpenHelper {
 
     private DBQueryManager dbQueryManager;
@@ -93,6 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(COLOUMN_PLACE, affair.getPlace());
         contentValues.put(COLOUMN_REPEATE_TIMESTAMP, affair.getRepeatTimestamp());
         contentValues.put(COLOUMN_TIMESTAMP, affair.getTimestamp());
+        contentValues.put(COLOUMN_STATUS, affair.getStatus());
 
         getWritableDatabase().insert(TABLE_NAME, null, contentValues);
     }

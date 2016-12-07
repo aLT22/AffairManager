@@ -19,10 +19,6 @@ import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by Alexey on 08.11.2016.
- */
-
 public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
 
@@ -34,16 +30,13 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.affair_model,
                 parent, false);
-        View affairModelContainer = view.findViewById(R.id.affair_model_container);
 
-        CircleImageView affairModelCircleImageView = (CircleImageView) view
-                .findViewById(R.id.civ_affair_model);
+        View affairModelContainer = view.findViewById(R.id.affair_model_container);
+        CircleImageView affairModelCircleImageView = (CircleImageView) view.findViewById(R.id.civ_affair_model);
 
         TextView affairModelTitle = (TextView) view.findViewById(R.id.affair_model_title);
-        TextView affairModelDescription = (TextView) view.findViewById(R.id
-                .affair_model_description);
-        TextView affairModelDate = (TextView) view.findViewById(R.id
-                .affair_model_date);
+        TextView affairModelDescription = (TextView) view.findViewById(R.id.affair_model_description);
+        TextView affairModelDate = (TextView) view.findViewById(R.id.affair_model_date);
         TextView affairModelTime = (TextView) view.findViewById(R.id.affair_model_time);
 
         return new AffairViewHolder(view, affairModelContainer, affairModelCircleImageView,
@@ -92,6 +85,7 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                 @Override
                 public void onClick(View v) {
                     affair.setStatus(Affair.STATUS_CURRENT);
+
                     getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
                             .getTimestamp(), Affair.STATUS_CURRENT);
 

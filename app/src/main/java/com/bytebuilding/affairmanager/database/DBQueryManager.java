@@ -23,8 +23,7 @@ public class DBQueryManager {
     public List<Affair> getAffairs(String selection, String[] selectionArgs, String orderBy) {
         List<Affair> affairList = new ArrayList<>();
 
-        Cursor cursor = database.query(DBHelper.TABLE_NAME, null, selection, selectionArgs, null,
-                null, orderBy);
+        Cursor cursor = database.query(DBHelper.TABLE_NAME, null, selection, selectionArgs, null, null, orderBy);
 
         if (cursor.moveToFirst()) {
             do {

@@ -6,10 +6,6 @@ import android.provider.BaseColumns;
 
 import com.bytebuilding.affairmanager.model.Affair;
 
-/**
- * Created by Alexey on 07.11.2016.
- */
-
 public class DBUpdateManager {
 
     private SQLiteDatabase database;
