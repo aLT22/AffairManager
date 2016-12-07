@@ -8,10 +8,6 @@ import com.bytebuilding.affairmanager.model.Affair;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alexey on 07.11.2016.
- */
-
 public class DBQueryManager {
 
     private SQLiteDatabase database;

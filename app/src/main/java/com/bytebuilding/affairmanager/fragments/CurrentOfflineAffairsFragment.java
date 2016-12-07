@@ -65,10 +65,24 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
     @Override
     public void addAffairFromDB() {
+        adapter.removeAllItems();
         List<Affair> affairs = new ArrayList<>();
         affairs.addAll(mainOfflineActivity.dbHelper.getDbQueryManager().getAffairs(DBHelper.SELECTION_BY_STATUS
                 + " OR " + DBHelper.SELECTION_BY_STATUS, new String[]{Integer.toString(Affair.STATUS_CURRENT),
                 Integer.toString(Affair.STATUS_OVERDUE)}, DBHelper.COLOUMN_DATE));
+        for (int i = 0; i < affairs.size(); i++) {
+            addAffair(affairs.get(i), false);
+        }
+    }
+
+    @Override
+    public void findAffairsByTitle(String title) {
+        adapter.removeAllItems();
+        List<Affair> affairs = new ArrayList<>();
+        affairs.addAll(mainOfflineActivity.dbHelper.getDbQueryManager().getAffairs(DBHelper.LIKE_SELECTION_BY_TITLE +
+                " AND " + DBHelper.SELECTION_BY_STATUS + " OR " + DBHelper.SELECTION_BY_STATUS, new String[]{"%" +
+                title + "%", Integer.toString(Affair.STATUS_CURRENT), Integer.toString(Affair.STATUS_OVERDUE)}, DBHelper
+                .COLOUMN_DATE));
         for (int i = 0; i < affairs.size(); i++) {
             addAffair(affairs.get(i), false);
         }

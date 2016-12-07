@@ -105,4 +105,6 @@ public abstract class OfflineAffairFragment extends Fragment{
 
     public abstract void addAffairFromDB();
 
+    public abstract void findAffairsByTitle(String title);
+
 }

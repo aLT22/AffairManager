@@ -1,13 +1,17 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
@@ -35,6 +39,8 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     ViewPager vpMainOfflineActivity;
     @BindView(R.id.fab_add_affair_offline)
     FloatingActionButton fabAddAffairOffline;
+    @BindView(R.id.search_view)
+    SearchView searchView;
 
     private MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter;
 
@@ -52,6 +58,38 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         dbHelper = new DBHelper(getApplicationContext());
         fabAddAffairOffline.setColorFilter(getResources().getColor(R.color.color_white));
         initTabs();
+        setSearchViewListener();
+    }
+
+    private void setSearchViewListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                currentOfflineAffairsFragment.findAffairsByTitle(newText);
+                doneOfflineAffairsFragment.findAffairsByTitle(newText);
+                return false;
+            }
+        });
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabAddAffairOffline.hide();
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                fabAddAffairOffline.show();
+                return false;
+            }
+        });
     }
 
     private void initTabs() {

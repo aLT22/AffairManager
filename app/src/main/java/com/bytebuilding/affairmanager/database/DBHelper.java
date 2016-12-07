@@ -53,6 +53,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SELECTION_BY_TIMESTAMP = DBHelper.COLOUMN_TIMESTAMP + " = ?";
     public static final String SELECTION_BY_STATUS = DBHelper.COLOUMN_STATUS + " = ?";
 
+    public static final String LIKE_SELECTION_BY_TITLE = COLOUMN_TITLE + " LIKE ?";
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         dbQueryManager = new DBQueryManager(getReadableDatabase());
