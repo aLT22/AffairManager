@@ -38,7 +38,7 @@
             android:ems="10"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
-            android:padding="@dimen/padding_sign_buttons" />
+            android:padding="@dimen/padding_sign_buttons"/>
 
         <EditText
             android:id="@+id/etPassword"
