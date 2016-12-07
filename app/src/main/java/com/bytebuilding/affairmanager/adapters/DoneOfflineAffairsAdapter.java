@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,8 +79,22 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                     .color_secondary_text));
             affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_secondary_text));
             affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_secondary_text));
-            affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(android.R.color
-                    .darker_gray));
+            affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(android.R.color.darker_gray));
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getOfflineAffairFragment().deleteDialog(affairViewHolder.getLayoutPosition());
+                        }
+                    }, 1000);
+
+                    return true;
+                }
+            });
 
             affairViewHolder.affairModelCircleImageView.setOnClickListener(new View.OnClickListener() {
                 @Override

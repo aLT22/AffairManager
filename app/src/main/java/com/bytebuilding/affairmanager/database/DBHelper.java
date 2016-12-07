@@ -94,6 +94,10 @@ public class DBHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABLE_NAME, null, contentValues);
     }
 
+    public void deleteAffair(long timestamp) {
+        getWritableDatabase().delete(TABLE_NAME, SELECTION_BY_TIMESTAMP, new String[]{Long.toString(timestamp)});
+    }
+
     public DBQueryManager getDbQueryManager() {
         return dbQueryManager;
     }
