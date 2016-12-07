@@ -23,6 +23,7 @@ import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -163,5 +164,17 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     @Override
     public void onAffairRestore(Affair affair) {
         currentOfflineAffairsFragment.addAffair(affair, false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AffairManagerApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AffairManagerApplication.activityPaused();
     }
 }

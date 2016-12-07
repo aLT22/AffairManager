@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.model;
 import android.graphics.Color;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.utils.DateUtils;
 
 /**
  * Created by Alexey on 07.11.2016.
@@ -133,7 +134,7 @@ public class Affair implements Item {
         this.status = status;
     }
 
-    public int getColors() {
+    public int getColor() {
         switch (getPriority()) {
             case 2:
                 if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
@@ -155,6 +156,10 @@ public class Affair implements Item {
                 }
             default: return 0;
         }
+    }
+
+    public String getFullDate() {
+        return DateUtils.getFullDate(this.timestamp);
     }
 
     @Override

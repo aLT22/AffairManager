@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -108,7 +107,7 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                     getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
                             .getTimestamp(), Affair.STATUS_CURRENT);
 
-                    affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColors()));
+                    affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColor()));
                     affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
                     affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
                             .color_secondary_text));
