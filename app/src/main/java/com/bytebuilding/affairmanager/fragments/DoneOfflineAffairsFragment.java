@@ -60,6 +60,9 @@ public class DoneOfflineAffairsFragment extends OfflineAffairFragment {
 
     @Override
     public void moveAffair(Affair affair) {
+        if (affair.getDate() != 0) {
+            offlineNotificationHelper.setReceiver(affair);
+        }
         onAffairRestoreListener.onAffairRestore(affair);
     }
 

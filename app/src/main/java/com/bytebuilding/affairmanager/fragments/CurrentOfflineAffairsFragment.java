@@ -60,6 +60,7 @@ public class CurrentOfflineAffairsFragment extends OfflineAffairFragment {
 
     @Override
     public void moveAffair(Affair affair) {
+        offlineNotificationHelper.doneAlarm(affair.getTimestamp());
         onAffairDoneListener.onAffairDone(affair);
     }
 

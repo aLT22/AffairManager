@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import java.util.Calendar;
@@ -249,6 +250,9 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 if (etDate.length() != 0 || etTime.length() != 0) {
                     affair.setDate(calendar.getTimeInMillis());
                     affair.setTime(calendar.getTimeInMillis());
+
+                    OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper.getInstance();
+                    offlineNotificationHelper.setReceiver(affair);
                 }
 
                 addingAffairListener.onAffairAdded(affair);

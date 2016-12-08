@@ -1,4 +1,4 @@
-package com.bytebuilding.affairmanager.notification;
+package com.bytebuilding.affairmanager.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;

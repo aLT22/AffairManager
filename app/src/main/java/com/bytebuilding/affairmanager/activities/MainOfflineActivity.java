@@ -23,6 +23,7 @@ import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 
 import butterknife.BindView;
@@ -57,7 +58,11 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         ButterKnife.bind(this);
 
         dbHelper = new DBHelper(getApplicationContext());
+
         fabAddAffairOffline.setColorFilter(getResources().getColor(R.color.color_white));
+
+        OfflineNotificationHelper.getInstance().initializeAlarmManager(getApplicationContext());
+
         initTabs();
         setSearchViewListener();
     }

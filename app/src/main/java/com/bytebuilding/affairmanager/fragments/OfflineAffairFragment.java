@@ -14,6 +14,7 @@ import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.adapters.AffairAdapter;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 
 public abstract class OfflineAffairFragment extends Fragment{
 
@@ -24,6 +25,7 @@ public abstract class OfflineAffairFragment extends Fragment{
     protected AffairAdapter adapter;
 
     public MainOfflineActivity mainOfflineActivity;
+    public OfflineNotificationHelper offlineNotificationHelper;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public abstract class OfflineAffairFragment extends Fragment{
         if (getActivity() != null) {
             mainOfflineActivity = (MainOfflineActivity) getActivity();
         }
+
+        offlineNotificationHelper = OfflineNotificationHelper.getInstance();
 
         addAffairFromDB();
     }
@@ -80,6 +84,8 @@ public abstract class OfflineAffairFragment extends Fragment{
                     adapter.removeItem(position);
 
                     mainOfflineActivity.dbHelper.deleteAffair(timestamp);
+
+                    offlineNotificationHelper.doneAlarm(timestamp);
 
                     Toast.makeText(getActivity().getApplicationContext(), R.string.toast_delete_dialog_accept,
                             Toast.LENGTH_SHORT).show();
