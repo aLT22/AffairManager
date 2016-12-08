@@ -128,7 +128,7 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                             .darker_gray));
 
                     ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(affairViewHolder.affairModelCircleImageView,
-                            "rotationY", -180f, 0f);
+                            "rotationY", -360f, 0f);
 
                     flipAnimation.addListener(new Animator.AnimatorListener() {
                         @Override
@@ -141,11 +141,16 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                             if (affair.getStatus() == Affair.STATUS_DONE) {
                                 affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.icon_done_affair);
 
-                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView,
-                                        "translationX", 0f, itemView.getWidth());
+                                ObjectAnimator animationGoneLeft = ObjectAnimator.ofFloat(itemView, "translationX", 0f,
+                                        -350f);
+                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView, "translationX", 0f,
+                                        itemView.getWidth());
+                                animationGone.setStartDelay(150);
+                                animationGone.setDuration(200);
 
                                 ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(itemView,
                                         "translationX", itemView.getWidth(), 0f);
+                                animationComeIn.setStartDelay(150);
 
                                 animationGone.addListener(new Animator.AnimatorListener() {
                                     @Override
@@ -172,6 +177,7 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                                 });
 
                                 AnimatorSet translations = new AnimatorSet();
+                                translations.play(animationGoneLeft).before(animationGone);
                                 translations.play(animationGone).before(animationComeIn);
                                 translations.start();
                             }
