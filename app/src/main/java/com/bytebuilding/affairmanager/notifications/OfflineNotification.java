@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.bytebuilding.affairmanager.R;
@@ -17,6 +19,7 @@ public class OfflineNotification extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         String title = intent.getStringExtra("title");
+        String description = intent.getStringExtra("description");
         long timestamp = intent.getLongExtra("timestamp", 0);
         int color = intent.getIntExtra("color", 0);
 
@@ -38,8 +41,13 @@ public class OfflineNotification extends BroadcastReceiver{
         builder.setColor(context.getResources().getColor(color));
         builder.setSmallIcon(R.drawable.ic_offline_notification);
 
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+        builder.setSound(soundUri);
+        builder.setSubText(description);
+
         /*Указание, какие свойства уведомления от системы будут у уведомления моего приложения*/
-        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setDefaults(Notification.FLAG_INSISTENT);
         builder.setContentIntent(pendingIntent);
 
         Notification notification = builder.build();
@@ -48,6 +56,5 @@ public class OfflineNotification extends BroadcastReceiver{
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context
                 .NOTIFICATION_SERVICE);
         notificationManager.notify((int) timestamp, notification);
-
     }
 }

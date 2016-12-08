@@ -10,10 +10,6 @@ import com.bytebuilding.affairmanager.model.Affair;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by turki on 08.12.2016.
- */
-
 public class NotifySetter extends BroadcastReceiver {
 
     @Override

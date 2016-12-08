@@ -7,10 +7,6 @@ import android.content.Intent;
 
 import com.bytebuilding.affairmanager.model.Affair;
 
-/**
- * Created by turki on 08.12.2016.
- */
-
 public class OfflineNotificationHelper {
 
     private static OfflineNotificationHelper instance;
@@ -34,6 +30,7 @@ public class OfflineNotificationHelper {
         intent.putExtra("title", affair.getTitle());
         intent.putExtra("timestamp", affair.getTimestamp());
         intent.putExtra("color", affair.getColor());
+        intent.putExtra("description", affair.getDescription());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) affair
                 .getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -49,7 +46,4 @@ public class OfflineNotificationHelper {
 
         alarmManager.cancel(pendingIntent);
     }
-
-    // TODO: 08.12.2016 create class AlarmSetter wich helps us to add good notifies when smartphone will be reboot
-
 }
