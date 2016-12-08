@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -36,22 +37,23 @@ public class OfflineNotification extends BroadcastReceiver{
                 .FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setContentTitle(context.getResources().getString(R.string.app_name));
-        builder.setContentText(title);
+        builder.setContentTitle(title);
+        builder.setContentText(description);
         builder.setColor(context.getResources().getColor(color));
         builder.setSmallIcon(R.drawable.ic_offline_notification);
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
         builder.setSound(soundUri);
-        builder.setSubText(description);
+        builder.setVibrate(new long[]{1500, 1500, 500, 1500, 1500, 500, 1500, 1500, 500});
+        builder.setLights(color, 3000, 3000);
 
         /*Указание, какие свойства уведомления от системы будут у уведомления моего приложения*/
         builder.setDefaults(Notification.FLAG_INSISTENT);
         builder.setContentIntent(pendingIntent);
 
         Notification notification = builder.build();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.flags |= Notification.FLAG_INSISTENT;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context
                 .NOTIFICATION_SERVICE);
