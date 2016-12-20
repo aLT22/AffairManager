@@ -88,4 +88,29 @@ public class DoneOfflineAffairsFragment extends OfflineAffairFragment {
             addAffair(affairs.get(i), false);
         }
     }
+
+    @Override
+    public void addAffair(Affair affair, boolean isSaveToDB) {
+        int position = -1;
+
+        for (int i = 0; i < adapter.getItemCount(); i ++) {
+            if (adapter.getItem(i).isAffair()) {
+                Affair task = (Affair) adapter.getItem(i);
+                if (affair.getDate() < task.getDate()) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+
+        if (position != -1) {
+            adapter.addItem(position, affair);
+        } else {
+            adapter.addItem(affair);
+        }
+
+        if (isSaveToDB) {
+            mainOfflineActivity.dbHelper.saveAffair(affair);
+        }
+    }
 }

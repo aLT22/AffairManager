@@ -11,4 +11,7 @@
 
     <dimen name="edit_text_width_dialog">130dp</dimen>
     <dimen name="edit_text_textsize_dialog">12sp</dimen>
+
+    <dimen name="separator_height">24dp</dimen>
+    <dimen name="separator_text_size">20sp</dimen>
 </resources>

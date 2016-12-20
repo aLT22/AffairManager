@@ -19,6 +19,7 @@ import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.animations.DepthPageAnimation;
 import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
+import com.bytebuilding.affairmanager.dialogs.EditAffairDialogFragment;
 import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
@@ -31,7 +32,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener,
-        CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment.OnAffairRestoreListener {
+        CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment.OnAffairRestoreListener,
+        EditAffairDialogFragment.EditingAffairListener{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -181,5 +183,11 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     protected void onPause() {
         super.onPause();
         AffairManagerApplication.activityPaused();
+    }
+
+    @Override
+    public void onAffairEdited(Affair updatedAffair) {
+        currentOfflineAffairsFragment.updateAffair(updatedAffair);
+        dbHelper.getDbUpdateManager().affair(updatedAffair);
     }
 }

@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
+
+import java.util.Calendar;
+
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
+import com.bytebuilding.affairmanager.model.Separator;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,26 +49,28 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                 return new AffairViewHolder(view, affairModelContainer, affairModelCircleImageView, affairModelTitle,
                         affairModelDescription, affairModelDate, affairModelTime);
             case SEPARATOR_TYPE:
+                View separator = LayoutInflater.from(parent.getContext()).inflate(R.layout.separator_model, parent,
+                        false);
+                TextView separatorTitle = (TextView) separator.findViewById(R.id.tv_separator);
 
-                break;
+                return new SeparatorViewholder(separator, separatorTitle);
             default:
                 return null;
         }
-
-        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Item item = items.get(position);
 
+        final Resources resources = holder.itemView.getResources();
+
         if (item.isAffair()) {
             holder.itemView.setEnabled(true);
-            final Affair  affair = (Affair) item;
+            final Affair affair = (Affair) item;
             final AffairViewHolder affairViewHolder = (AffairViewHolder) holder;
 
             final View itemView = affairViewHolder.itemView;
-            final Resources resources = itemView.getResources();
 
             affairViewHolder.affairModelTitle.setText(affair.getTitle());
             affairViewHolder.affairModelDescription.setText(affair.getDescription());
@@ -85,6 +91,10 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
             affairViewHolder.affairModelCircleImageView.setEnabled(true);
 
+            if (affair.getDate() != 0 && affair.getDate() < Calendar.getInstance().getTimeInMillis()) {
+                itemView.setBackgroundColor(resources.getColor(R.color.color_primary_light));
+            }
+
             affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
             affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColor()));
             affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
@@ -92,6 +102,13 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                     .color_secondary_text));
             affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_primary_text));
             affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_primary_text));
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getOfflineAffairFragment().showAffairEditDialog(affair);
+                }
+            });
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -199,6 +216,11 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             });
         } else {
             holder.itemView.setEnabled(false);
+
+            Separator separator = (Separator) item;
+            SeparatorViewholder separatorViewholder = (SeparatorViewholder) holder;
+
+            separatorViewholder.separatorTextView.setText(resources.getString(separator.getSeparatorType()));
         }
     }
 

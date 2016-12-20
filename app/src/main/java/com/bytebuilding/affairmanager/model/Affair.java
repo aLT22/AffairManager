@@ -1,13 +1,7 @@
 package com.bytebuilding.affairmanager.model;
 
-import android.graphics.Color;
-
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.utils.DateUtils;
-
-/**
- * Created by Alexey on 07.11.2016.
- */
 
 public class Affair implements Item {
 
@@ -26,6 +20,7 @@ public class Affair implements Item {
     private long repeatTimestamp;
     private long timestamp;
     private int status;
+    private int affairDateStatus;
 
     public Affair() {
     }
@@ -154,12 +149,21 @@ public class Affair implements Item {
                 } else {
                     return R.color.md_green_800;
                 }
-            default: return 0;
+            default:
+                return 0;
         }
     }
 
     public String getFullDate() {
         return DateUtils.getFullDate(this.timestamp);
+    }
+
+    public int getAffairDateStatus() {
+        return affairDateStatus;
+    }
+
+    public void setAffairDateStatus(int affairDateStatus) {
+        this.affairDateStatus = affairDateStatus;
     }
 
     @Override

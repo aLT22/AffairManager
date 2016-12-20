@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.adapters.AffairAdapter;
+import com.bytebuilding.affairmanager.dialogs.EditAffairDialogFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
@@ -40,29 +42,13 @@ public abstract class OfflineAffairFragment extends Fragment{
         addAffairFromDB();
     }
 
-    public void addAffair(Affair affair, boolean isSaveToDB) {
-        int position = -1;
+    public abstract void addAffair(Affair affair, boolean isSaveToDB);
 
-        for (int i = 0; i < adapter.getItemCount(); i ++) {
-            if (adapter.getItem(i).isAffair()) {
-                Affair task = (Affair) adapter.getItem(i);
-                if (affair.getDate() < task.getDate()) {
-                    position = i;
-                    break;
-                }
-            }
-        }
+    public abstract void moveAffair(Affair affair);
 
-        if (position != -1) {
-            adapter.addItem(position, affair);
-        } else {
-            adapter.addItem(affair);
-        }
+    public abstract void addAffairFromDB();
 
-        if (isSaveToDB) {
-            mainOfflineActivity.dbHelper.saveAffair(affair);
-        }
-    }
+    public abstract void findAffairsByTitle(String title);
 
     public void deleteDialog(final int position) {
         final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style
@@ -107,10 +93,14 @@ public abstract class OfflineAffairFragment extends Fragment{
         deleteDialog.show();
     }
 
-    public abstract void moveAffair(Affair affair);
+    public void updateAffair(Affair affair) {
+        adapter.updateAffair(affair);
+    }
 
-    public abstract void addAffairFromDB();
+    public void showAffairEditDialog(Affair affair) {
+        DialogFragment dialogFragment = EditAffairDialogFragment.newInstance(affair);
 
-    public abstract void findAffairsByTitle(String title);
+        dialogFragment.show(getActivity().getFragmentManager(), "EditAffairDialogFragment");
+    }
 
 }
