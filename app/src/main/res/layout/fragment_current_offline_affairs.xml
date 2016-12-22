@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_current_offline_affairs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/bottom_padding_for_advertising"
+        android:scrollbars="vertical" />
+
+</FrameLayout>

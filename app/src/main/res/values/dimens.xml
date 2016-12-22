@@ -3,4 +3,15 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_elevation">16dp</dimen>
+
+    <dimen name="bottom_padding_for_advertising">88dp</dimen>
+
+    <dimen name="edit_text_width_dialog">130dp</dimen>
+    <dimen name="edit_text_textsize_dialog">12sp</dimen>
+
+    <dimen name="separator_height">24dp</dimen>
+    <dimen name="separator_text_size">20sp</dimen>
 </resources>
