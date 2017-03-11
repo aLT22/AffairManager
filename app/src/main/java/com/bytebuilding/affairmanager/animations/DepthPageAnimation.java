@@ -29,8 +29,7 @@ public class DepthPageAnimation implements ViewPager.PageTransformer {
 
             page.setTranslationX(pageWidth * -position);
 
-            float scaleFactor = MIN_SCALE
-                    + (1 - MIN_SCALE) * (1 - Math.abs(position));
+            float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
             page.setScaleX(scaleFactor);
             page.setScaleY(scaleFactor);
 

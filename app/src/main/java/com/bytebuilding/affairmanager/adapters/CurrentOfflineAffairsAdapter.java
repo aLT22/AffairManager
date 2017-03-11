@@ -18,7 +18,6 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
-import com.bytebuilding.affairmanager.model.Separator;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -48,12 +47,6 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
                 return new AffairViewHolder(view, affairModelContainer, affairModelCircleImageView, affairModelTitle,
                         affairModelDescription, affairModelDate, affairModelTime);
-            case SEPARATOR_TYPE:
-                View separator = LayoutInflater.from(parent.getContext()).inflate(R.layout.separator_model, parent,
-                        false);
-                TextView separatorTitle = (TextView) separator.findViewById(R.id.tv_separator);
-
-                return new SeparatorViewholder(separator, separatorTitle);
             default:
                 return null;
         }
@@ -216,11 +209,6 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             });
         } else {
             holder.itemView.setEnabled(false);
-
-            Separator separator = (Separator) item;
-            SeparatorViewholder separatorViewholder = (SeparatorViewholder) holder;
-
-            separatorViewholder.separatorTextView.setText(resources.getString(separator.getSeparatorType()));
         }
     }
 

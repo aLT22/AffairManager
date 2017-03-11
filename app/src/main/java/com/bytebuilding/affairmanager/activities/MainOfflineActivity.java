@@ -48,10 +48,18 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     private MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter;
 
-    private OfflineAffairFragment currentOfflineAffairsFragment;
-    private OfflineAffairFragment doneOfflineAffairsFragment;
+    OfflineAffairFragment currentOfflineAffairsFragment;
 
+    OfflineAffairFragment doneOfflineAffairsFragment;
     public DBHelper dbHelper;
+
+    public OfflineAffairFragment getCurrentOfflineAffairsFragment() {
+        return currentOfflineAffairsFragment;
+    }
+
+    public OfflineAffairFragment getDoneOfflineAffairsFragment() {
+        return doneOfflineAffairsFragment;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

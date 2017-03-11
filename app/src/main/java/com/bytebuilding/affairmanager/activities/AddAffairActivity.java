@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.database.DBHelper;
+import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.DatePickerFragment;
 import com.bytebuilding.affairmanager.dialogs.TimePickerFragment;
+import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
@@ -31,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddAffairActivity extends AppCompatActivity {
+public class AddAffairActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener {
 
     public static final String TTILE = "title";
     public static final String DESCRIPTION = "desc";
@@ -77,6 +79,8 @@ public class AddAffairActivity extends AppCompatActivity {
 
     private Affair affair;
 
+    private MainOfflineActivity mainOfflineActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +93,8 @@ public class AddAffairActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
 
         affair = new Affair();
+
+        mainOfflineActivity = new MainOfflineActivity();
 
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
 
@@ -254,13 +260,13 @@ public class AddAffairActivity extends AppCompatActivity {
             affair.setTime(calendar.getTimeInMillis());
         }
 
-        dbHelper.saveAffair(affair);
+        onAffairAdded(affair);
         this.finish();
     }
 
     @OnClick(R.id.button_decline)
     public void onButtonDeclineClick() {
-        Toast.makeText(getApplicationContext(), "Задача не добавлена", Toast.LENGTH_SHORT).show();
+        onAffairAddingCancel();
         this.finish();
     }
 
@@ -296,5 +302,15 @@ public class AddAffairActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onAffairAdded(Affair affair) {
+        mainOfflineActivity.getCurrentOfflineAffairsFragment().addAffair(affair, true);
+    }
+
+    @Override
+    public void onAffairAddingCancel() {
+        Toast.makeText(this, "Задача не была добавлена", Toast.LENGTH_SHORT).show();
     }
 }

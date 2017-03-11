@@ -20,7 +20,6 @@ public class Affair implements Item {
     private long repeatTimestamp;
     private long timestamp;
     private int status;
-    private int affairDateStatus;
 
     public Affair() {
     }
@@ -156,14 +155,6 @@ public class Affair implements Item {
 
     public String getFullDate() {
         return DateUtils.getFullDate(this.timestamp);
-    }
-
-    public int getAffairDateStatus() {
-        return affairDateStatus;
-    }
-
-    public void setAffairDateStatus(int affairDateStatus) {
-        this.affairDateStatus = affairDateStatus;
     }
 
     @Override
