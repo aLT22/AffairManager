@@ -3,10 +3,12 @@ package com.bytebuilding.affairmanager.adapters;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.res.Resources;
 
 import java.util.Calendar;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
@@ -99,7 +102,20 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getOfflineAffairFragment().showAffairEditDialog(affair);
+                    Bundle innerBundle = new Bundle();
+                    innerBundle.putString("title", affair.getTitle());
+                    innerBundle.putString("description", affair.getDescription());
+                    innerBundle.putLong("date", affair.getDate());
+                    innerBundle.putLong("time", affair.getTime());
+                    innerBundle.putString("object", affair.getObject());
+                    innerBundle.putString("type", affair.getType());
+                    innerBundle.putString("place", affair.getPlace());
+                    innerBundle.putInt("status", affair.getStatus());
+                    Intent startDetailActivity = new Intent(getOfflineAffairFragment()
+                            .getContext().getApplicationContext(), DetailAffairActivity.class);
+                    startDetailActivity.putExtras(innerBundle);
+                    getOfflineAffairFragment().startActivity(startDetailActivity, innerBundle);
+                    //getOfflineAffairFragment().showAffairEditDialog(affair);
                 }
             });
 

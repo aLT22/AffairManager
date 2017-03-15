@@ -97,7 +97,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void deleteAffair(long timestamp) {
-        getWritableDatabase().delete(TABLE_NAME, SELECTION_BY_TIMESTAMP, new String[]{Long.toString(timestamp)});
+        getWritableDatabase().delete(TABLE_NAME, SELECTION_BY_TIMESTAMP, new String[]{Long
+                .toString(timestamp)});
     }
 
     public DBQueryManager getDbQueryManager() {
