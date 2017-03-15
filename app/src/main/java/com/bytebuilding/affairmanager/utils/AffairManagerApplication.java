@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.utils;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 /**
  * Created by turki on 08.12.2016.
@@ -9,6 +10,11 @@ import android.app.Application;
 public class AffairManagerApplication extends Application {
 
     private static boolean isVisible;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     public static boolean isVisible() {
         return isVisible;

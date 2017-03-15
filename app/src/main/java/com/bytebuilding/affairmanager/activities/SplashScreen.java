@@ -1,6 +1,10 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -14,7 +18,8 @@ import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawa
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SplashScreen extends AppCompatActivity implements LoadingTask.LoadingTaskFinishedListener {
+public class SplashScreen extends AppCompatActivity implements LoadingTask
+        .LoadingTaskFinishedListener {
 
     @BindView(R.id.splashScreen_imageView)
     ImageView splashImage;
@@ -23,12 +28,16 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask.Loadi
     @BindView(R.id.splashScreen_textView)
     TextView splashTextView;
 
+    public static SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
         ButterKnife.bind(this);
+
+        preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
 
         splashProgressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(this)
                 .build());
@@ -37,17 +46,35 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask.Loadi
     }
 
     @Override
-    public void onTaskFinished() {
-        completeSplash();
+    public void onPreferencesDetected() {
+        if (isNetworkAvailable()) {
+            Intent intent = new Intent(this, MainOnlineActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, MainOfflineActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
-    private void completeSplash(){
-        startApp();
-        finish(); // Don't forget to finish this Splash Activity so the user can't return to it!
+    @Override
+    public void onPreferencesUndetected() {
+        if (isNetworkAvailable()) {
+            Intent intent = new Intent(this, EnterActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, MainOfflineActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
-    private void startApp() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

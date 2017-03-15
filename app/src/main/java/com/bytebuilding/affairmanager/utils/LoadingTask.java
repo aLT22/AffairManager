@@ -1,7 +1,10 @@
 package com.bytebuilding.affairmanager.utils;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.ProgressBar;
+
+import com.bytebuilding.affairmanager.activities.SplashScreen;
 
 /**
  * Created by atlas on 15.03.17.
@@ -10,7 +13,8 @@ import android.widget.ProgressBar;
 public class LoadingTask extends AsyncTask<String, Integer, Integer> {
 
     public interface LoadingTaskFinishedListener {
-        void onTaskFinished();
+        void onPreferencesDetected();
+        void onPreferencesUndetected();
     }
 
     private final ProgressBar splashProgressBar;
@@ -24,24 +28,22 @@ public class LoadingTask extends AsyncTask<String, Integer, Integer> {
 
     @Override
     protected Integer doInBackground(String... params) {
-        if(resourcesDontAlreadyExist()){
-            downloadResources();
+        if (checkPreferences()) {
+            doSomeStuff();
+            return 1;
+        } else {
+            doSomeStuff();
+            return 0;
         }
-        //Возвращаем здесь какой-либо ответ после завершения операций в бекграунде
-        return -1;
     }
 
-    private boolean resourcesDontAlreadyExist() {
-        /*
-        * В данном методе "чекаем", есть ли before-downloaded данные
-        * */
-        // Here you would query your app's internal state to see if this download had been performed before
-        // Perhaps once checked save this in a shared preference for speed of access next time
-        return true; // returning true so we show the splash every time
+    private boolean checkPreferences() {
+        if (SplashScreen.preferences.contains("login")) {
+            return true;
+        } else return false;
     }
 
-    private void downloadResources() {
-        // We are just imitating some process thats takes a bit of time (loading of resources / downloading)
+    private void doSomeStuff() {
         int count = 5;
         for (int i = 0; i < count; i++) {
 
@@ -63,6 +65,9 @@ public class LoadingTask extends AsyncTask<String, Integer, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
-        loadingTaskFinishedListener.onTaskFinished(); // Tell whoever was listening we have finished
+        if (result == 0) {
+            loadingTaskFinishedListener.onPreferencesUndetected();
+        } else loadingTaskFinishedListener.onPreferencesDetected();
+        //loadingTaskFinishedListener.onTaskFinished(); // Tell whoever was listening we have finished
     }
 }
