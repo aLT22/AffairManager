@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="integer_array_colors">
+        <item>#00BCD4</item>
+        <item>#0097A7</item>
+        <item>#B2EBF2</item>
+        <item>#009688</item>
+    </array>
+</resources>
