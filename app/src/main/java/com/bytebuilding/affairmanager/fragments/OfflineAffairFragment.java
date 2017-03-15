@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.DialogFragment;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.adapters.AffairAdapter;
 import com.bytebuilding.affairmanager.dialogs.EditAffairDialogFragment;
@@ -51,8 +53,8 @@ public abstract class OfflineAffairFragment extends Fragment{
     public abstract void findAffairsByTitle(String title);
 
     public void deleteDialog(final int position) {
-        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style
-                .MyDialogTheme));
+        final AlertDialog.Builder deleteDialog = new AlertDialog
+                .Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
 
         deleteDialog.setMessage(R.string.delete_dialog_message);
         deleteDialog.setIcon(R.drawable.titlecalendar_icon);
@@ -101,6 +103,22 @@ public abstract class OfflineAffairFragment extends Fragment{
         DialogFragment dialogFragment = EditAffairDialogFragment.newInstance(affair);
 
         dialogFragment.show(getActivity().getFragmentManager(), "EditAffairDialogFragment");
+    }
+
+    public void seeDetails(Affair affair) {
+        Bundle innerBundle = new Bundle();
+        innerBundle.putString("title", affair.getTitle());
+        innerBundle.putString("description", affair.getDescription());
+        innerBundle.putLong("date", affair.getDate());
+        innerBundle.putLong("time", affair.getTime());
+        innerBundle.putString("object", affair.getObject());
+        innerBundle.putString("type", affair.getType());
+        innerBundle.putString("place", affair.getPlace());
+        innerBundle.putInt("status", affair.getStatus());
+        Intent startDetailActivity = new Intent(this
+                .getContext().getApplicationContext(), DetailAffairActivity.class);
+        startDetailActivity.putExtras(innerBundle);
+        this.startActivity(startDetailActivity, innerBundle);
     }
 
 }

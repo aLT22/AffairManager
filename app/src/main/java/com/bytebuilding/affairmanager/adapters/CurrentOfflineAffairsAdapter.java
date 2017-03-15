@@ -28,7 +28,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
     public static final int AFFAIR_TYPE = 0;
-    public static final int SEPARATOR_TYPE = 1;
 
     public CurrentOfflineAffairsAdapter(OfflineAffairFragment currentOfflineAffairFragment) {
         super(currentOfflineAffairFragment);
@@ -102,20 +101,7 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle innerBundle = new Bundle();
-                    innerBundle.putString("title", affair.getTitle());
-                    innerBundle.putString("description", affair.getDescription());
-                    innerBundle.putLong("date", affair.getDate());
-                    innerBundle.putLong("time", affair.getTime());
-                    innerBundle.putString("object", affair.getObject());
-                    innerBundle.putString("type", affair.getType());
-                    innerBundle.putString("place", affair.getPlace());
-                    innerBundle.putInt("status", affair.getStatus());
-                    Intent startDetailActivity = new Intent(getOfflineAffairFragment()
-                            .getContext().getApplicationContext(), DetailAffairActivity.class);
-                    startDetailActivity.putExtras(innerBundle);
-                    getOfflineAffairFragment().startActivity(startDetailActivity, innerBundle);
-                    //getOfflineAffairFragment().showAffairEditDialog(affair);
+                    getOfflineAffairFragment().seeDetails(affair);
                 }
             });
 
@@ -232,9 +218,8 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
     public int getItemViewType(int position) {
         if (getItem(position).isAffair()) {
             return AFFAIR_TYPE;
-        } else {
-            return SEPARATOR_TYPE;
         }
+        return -1;
     }
 
 }

@@ -3,7 +3,9 @@ package com.bytebuilding.affairmanager.adapters;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
@@ -32,10 +35,12 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                 parent, false);
 
         View affairModelContainer = view.findViewById(R.id.affair_model_container);
-        CircleImageView affairModelCircleImageView = (CircleImageView) view.findViewById(R.id.civ_affair_model);
+        CircleImageView affairModelCircleImageView = (CircleImageView) view.findViewById(R.id
+                .civ_affair_model);
 
         TextView affairModelTitle = (TextView) view.findViewById(R.id.affair_model_title);
-        TextView affairModelDescription = (TextView) view.findViewById(R.id.affair_model_description);
+        TextView affairModelDescription = (TextView) view.findViewById(R.id
+                .affair_model_description);
         TextView affairModelDate = (TextView) view.findViewById(R.id.affair_model_date);
         TextView affairModelTime = (TextView) view.findViewById(R.id.affair_model_time);
 
@@ -74,13 +79,25 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
             affairViewHolder.affairModelCircleImageView.setEnabled(true);
 
-            affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.icon_done_affair);
-            affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+            affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable
+                    .icon_done_affair);
+            affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color
+                    .color_secondary_text));
             affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
                     .color_secondary_text));
-            affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_secondary_text));
-            affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_secondary_text));
-            affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(android.R.color.darker_gray));
+            affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color
+                    .color_secondary_text));
+            affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color
+                    .color_secondary_text));
+            affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(android
+                    .R.color.darker_gray));
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getOfflineAffairFragment().seeDetails(affair);
+                }
+            });
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -89,7 +106,8 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getOfflineAffairFragment().deleteDialog(affairViewHolder.getLayoutPosition());
+                            getOfflineAffairFragment().deleteDialog(affairViewHolder
+                                    .getLayoutPosition());
                         }
                     }, 1000);
 
@@ -104,17 +122,23 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
 
                     affairViewHolder.affairModelCircleImageView.setEnabled(false);
 
-                    getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager().status(affair
+                    getOfflineAffairFragment().mainOfflineActivity.dbHelper.getDbUpdateManager()
+                            .status(affair
                             .getTimestamp(), Affair.STATUS_CURRENT);
 
-                    affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColor()));
-                    affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
+                    affairViewHolder.affairModelCircleImageView.setColorFilter(resources
+                            .getColor(affair.getColor()));
+                    affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color
+                            .color_primary_text));
                     affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
                             .color_secondary_text));
-                    affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_primary_text));
-                    affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_primary_text));
+                    affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color
+                            .color_primary_text));
+                    affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color
+                            .color_primary_text));
 
-                    ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(affairViewHolder.affairModelCircleImageView,
+                    ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(affairViewHolder
+                                    .affairModelCircleImageView,
                             "rotationY", 360f, 0f);
                     affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable
                             .ic_checkbox_blank_circle_white_48dp);
@@ -129,14 +153,17 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                         public void onAnimationEnd(Animator animation) {
                             if (affair.getStatus() != Affair.STATUS_DONE) {
 
-                                ObjectAnimator animationGoneRight = ObjectAnimator.ofFloat(itemView, "translationX",
+                                ObjectAnimator animationGoneRight = ObjectAnimator
+                                        .ofFloat(itemView, "translationX",
                                         0f, 350f);
-                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView, "translationX", 0f,
+                                ObjectAnimator animationGone = ObjectAnimator
+                                        .ofFloat(itemView, "translationX", 0f,
                                         -itemView.getWidth());
                                 animationGone.setStartDelay(150);
                                 animationGone.setDuration(200);
 
-                                ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(itemView, "translationX",
+                                ObjectAnimator animationComeIn = ObjectAnimator
+                                        .ofFloat(itemView, "translationX",
                                         -itemView.getWidth(), 0f);
                                 animationComeIn.setStartDelay(150);
 
