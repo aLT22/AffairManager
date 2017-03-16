@@ -240,6 +240,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
         alertDialogBuilder.setPositiveButton(R.string.button_accept, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //// TODO: 16.03.17 add feature which allows to save repeating timestamp
                 affair.setTitle(etTitle.getText().toString());
                 affair.setDescription(etDescription.getText().toString());
                 affair.setTimestamp(calendar.getTimeInMillis());
