@@ -1,19 +1,23 @@
 package com.bytebuilding.affairmanager.utils;
 
-import android.app.Application;
 import android.content.SharedPreferences;
+import android.support.multidex.MultiDexApplication;
 
 /**
  * Created by turki on 08.12.2016.
  */
 
-public class AffairManagerApplication extends Application {
+public class AffairManagerApplication extends MultiDexApplication {
+
+    SharedPreferences preferences = null;
 
     private static boolean isVisible;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
     }
 
     public static boolean isVisible() {

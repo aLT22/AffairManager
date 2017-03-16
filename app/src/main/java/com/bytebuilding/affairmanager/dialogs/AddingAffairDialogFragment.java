@@ -205,6 +205,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
                         etDate.setText("");
                     }
                 };
+                datePickerFragment.setStyle(R.style.AppTheme, R.style.AppTheme);
                 datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
             }
         });
@@ -231,6 +232,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
                         etTime.setText("");
                     }
                 };
+                timePickerFragment.setStyle(R.style.AppTheme, R.style.AppTheme);
                 timePickerFragment.show(getFragmentManager(), "TimePickerFragment");
             }
         });
@@ -250,8 +252,12 @@ public class AddingAffairDialogFragment extends DialogFragment {
                     affair.setDate(calendar.getTimeInMillis());
                     affair.setTime(calendar.getTimeInMillis());
 
-                    OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper.getInstance();
+                    OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper
+                            .getInstance();
                     offlineNotificationHelper.setReceiver(affair);
+                } else {
+                    affair.setDate(0);
+                    affair.setTime(0);
                 }
 
                 addingAffairListener.onAffairAdded(affair);

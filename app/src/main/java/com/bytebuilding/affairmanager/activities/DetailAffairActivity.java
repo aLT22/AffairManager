@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
@@ -63,8 +64,13 @@ public class DetailAffairActivity extends AppCompatActivity {
 
         titleDynamic.setText(outerBundle.getString("title"));
         descriptionDynamic.setText(outerBundle.getString("description"));
-        dateDynamic.setText(DateUtils.getDate(outerBundle.getLong("date")));
-        timeDynamic.setText(DateUtils.getTime(outerBundle.getLong("time")));
+        if (outerBundle.getLong("date") == 0 && outerBundle.getLong("time") == 0) {
+            dateDynamic.setText(getResources().getText(R.string.detailActivity_date_not_specified));
+            timeDynamic.setText(getResources().getText(R.string.detailActivity_time_not_specified));
+        } else {
+            dateDynamic.setText(DateUtils.getDate(outerBundle.getLong("date")));
+            timeDynamic.setText(DateUtils.getTime(outerBundle.getLong("time")));
+        }
         objectDynamic.setText(outerBundle.getString("object"));
         typeDynamic.setText(outerBundle.getString("type"));
         placeDynamic.setText(outerBundle.getString("place"));

@@ -21,6 +21,9 @@ import butterknife.ButterKnife;
 public class SplashScreen extends AppCompatActivity implements LoadingTask
         .LoadingTaskFinishedListener {
 
+    public static final String PREFERENCES_NAME = "AffairManagerPreferences";
+    public static final String PREFERENCES_VERSION_CODE_KEY = "AffairManager";
+
     @BindView(R.id.splashScreen_imageView)
     ImageView splashImage;
     @BindView(R.id.splashScreen_progressBar)
@@ -28,7 +31,7 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
     @BindView(R.id.splashScreen_textView)
     TextView splashTextView;
 
-    public static SharedPreferences preferences;
+    public static SharedPreferences preferences = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
 
         ButterKnife.bind(this);
 
-        preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
+        preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
 
         splashProgressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(this)
                 .build());

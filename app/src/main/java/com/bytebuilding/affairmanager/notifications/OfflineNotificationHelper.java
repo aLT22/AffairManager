@@ -21,7 +21,8 @@ public class OfflineNotificationHelper {
 
     public void initializeAlarmManager(Context context) {
         this.context = context;
-        this.alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        this.alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context
+                .ALARM_SERVICE);
     }
 
     public void setReceiver(Affair affair) {
@@ -32,17 +33,19 @@ public class OfflineNotificationHelper {
         intent.putExtra("color", affair.getColor());
         intent.putExtra("description", affair.getDescription());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) affair
-                .getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
+                (int) affair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, affair.getDate(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair
+                .getRepeatTimestamp(), pendingIntent);
     }
 
     public void doneAlarm(long timestamp) {
         Intent intent = new Intent(context, OfflineNotification.class);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) timestamp, intent, PendingIntent
-                .FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) timestamp, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmManager.cancel(pendingIntent);
     }

@@ -17,12 +17,13 @@ public class NotifySetter extends BroadcastReceiver {
         DBHelper dbHelper = new DBHelper(context);
 
         OfflineNotificationHelper.getInstance().initializeAlarmManager(context);
-        OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper.getInstance();
+        OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper
+                .getInstance();
 
         List<Affair> affairs = new ArrayList<>();
         affairs.addAll(dbHelper.getDbQueryManager().getAffairs(DBHelper.SELECTION_BY_STATUS
-                + " OR " + DBHelper.SELECTION_BY_STATUS, new String[]{Integer.toString(Affair.STATUS_CURRENT),
-                Integer.toString(Affair.STATUS_OVERDUE)}, DBHelper.COLOUMN_DATE));
+                + " OR " + DBHelper.SELECTION_BY_STATUS, new String[]{Integer.toString(Affair
+                .STATUS_CURRENT), Integer.toString(Affair.STATUS_OVERDUE)}, DBHelper.COLOUMN_DATE));
 
         for (Affair affair : affairs) {
             if (affair.getDate() != 0) {

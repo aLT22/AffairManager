@@ -1,16 +1,26 @@
 package com.bytebuilding.affairmanager.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.bytebuilding.affairmanager.activities.LoginActivity;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by atlas on 15.03.17.
  */
 
 public class LoadingTask extends AsyncTask<String, Integer, Integer> {
+
+    public static final int APP_HAS_PREFS = 1;
+    public static final int APP_DO_NOT_HAVE_PREFS = 0;
 
     public interface LoadingTaskFinishedListener {
         void onPreferencesDetected();
@@ -30,10 +40,10 @@ public class LoadingTask extends AsyncTask<String, Integer, Integer> {
     protected Integer doInBackground(String... params) {
         if (checkPreferences()) {
             doSomeStuff();
-            return 1;
+            return APP_HAS_PREFS;
         } else {
             doSomeStuff();
-            return 0;
+            return APP_DO_NOT_HAVE_PREFS;
         }
     }
 
@@ -46,13 +56,11 @@ public class LoadingTask extends AsyncTask<String, Integer, Integer> {
     private void doSomeStuff() {
         int count = 5;
         for (int i = 0; i < count; i++) {
-
-            // Update the progress bar after every step
             int progress = (int) ((i / (float) count) * 100);
             publishProgress(progress);
-
-            // Do some long loading things
-            try { Thread.sleep(1000); } catch (InterruptedException ignore) {}
+            try { Thread.sleep(1000); } catch (InterruptedException ignore) {
+                Log.e("InterruptedException", "class-LoadingTask; method-doSomeStuff()");
+            }
         }
     }
 
@@ -65,9 +73,9 @@ public class LoadingTask extends AsyncTask<String, Integer, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
-        if (result == 0) {
-            loadingTaskFinishedListener.onPreferencesUndetected();
-        } else loadingTaskFinishedListener.onPreferencesDetected();
-        //loadingTaskFinishedListener.onTaskFinished(); // Tell whoever was listening we have finished
+
+        if (result == APP_HAS_PREFS) {
+            loadingTaskFinishedListener.onPreferencesDetected();
+        } else loadingTaskFinishedListener.onPreferencesUndetected();
     }
 }

@@ -33,8 +33,8 @@ public class OfflineNotification extends BroadcastReceiver{
         внутри него интенты от имени того приложения, а также с теми полномочиями, что важно, в котором этот
         PendingIntent создавался*/
         /*В случае нмже PendingIntent передает данные приложения сервису для реализации оповещения*/
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) timestamp, result, PendingIntent
-                .FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) timestamp, result,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle(title);
@@ -55,8 +55,8 @@ public class OfflineNotification extends BroadcastReceiver{
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_INSISTENT;
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context
-                .NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify((int) timestamp, notification);
     }
 }

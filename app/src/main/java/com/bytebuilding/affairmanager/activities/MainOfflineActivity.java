@@ -1,7 +1,6 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -9,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,7 +30,7 @@ import butterknife.OnClick;
 
 public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener,
         CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment.OnAffairRestoreListener,
-        EditAffairDialogFragment.EditingAffairListener{
+        EditAffairDialogFragment.EditingAffairListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -75,6 +72,7 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
         initTabs();
         setSearchViewListener();
+        //setListenerToRootView();
     }
 
     private void setSearchViewListener() {
@@ -104,6 +102,14 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
             public boolean onClose() {
                 fabAddAffairOffline.show();
                 return false;
+            }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) fabAddAffairOffline.hide();
+                else fabAddAffairOffline.show();
             }
         });
     }
@@ -162,9 +168,9 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     @OnClick(R.id.fab_add_affair_offline)
     public void onFabAddAffairOfflineClick() {
-            DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
+        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
 
-            addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
+        addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
     }
 
     @Override
