@@ -26,10 +26,12 @@ import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class AddingAffairDialogFragment extends DialogFragment {
 
     private AddingAffairListener addingAffairListener;
+    private long repeating = 0;
 
     public interface AddingAffairListener {
         void onAffairAdded(Affair affair);
@@ -143,6 +145,70 @@ public class AddingAffairDialogFragment extends DialogFragment {
                                 android.R.layout.simple_spinner_dropdown_item, getResources()
                                 .getStringArray(R.array.affair_repeats_by_hours));
                         spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterHours);
+
+                        spinnerAffairRepeatsTime.setOnItemSelectedListener(new AdapterView
+                                .OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int position, long id) {
+                                switch (position) {
+                                    case 0:
+                                        repeating = TimeUnit.MINUTES.toMillis(5);
+                                        break;
+
+                                    case 1:
+                                        repeating = TimeUnit.MINUTES.toMillis(10);
+                                        break;
+
+                                    case 2:
+                                        repeating = TimeUnit.MINUTES.toMillis(15);
+                                        break;
+
+                                    case 3:
+                                        repeating = TimeUnit.MINUTES.toMillis(30);
+                                        break;
+
+                                    case 4:
+                                        repeating = TimeUnit.HOURS.toMillis(1);
+                                        break;
+
+                                    case 5:
+                                        repeating = TimeUnit.HOURS.toMillis(2);
+                                        break;
+
+                                    case 6:
+                                        repeating = TimeUnit.HOURS.toMillis(3);
+                                        break;
+
+                                    case 7:
+                                        repeating = TimeUnit.HOURS.toMillis(5);
+                                        break;
+
+                                    case 8:
+                                        repeating = TimeUnit.HOURS.toMillis(6);
+                                        break;
+
+                                    case 9:
+                                        repeating = TimeUnit.HOURS.toMillis(8);
+                                        break;
+
+                                    case 10:
+                                        repeating = TimeUnit.HOURS.toMillis(10);
+                                        break;
+
+                                    case 11:
+                                        repeating = TimeUnit.HOURS.toMillis(12);
+                                        break;
+
+                                    default:break;
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                         break;
 
                     case 1:
@@ -150,6 +216,36 @@ public class AddingAffairDialogFragment extends DialogFragment {
                                 android.R.layout.simple_spinner_dropdown_item, getResources()
                                 .getStringArray(R.array.affair_repeats_by_days));
                         spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterDays);
+
+                        spinnerAffairRepeatsTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                switch (position) {
+                                    case 0:
+                                        repeating = TimeUnit.DAYS.toMillis(1);
+                                        break;
+
+                                    case 1:
+                                        repeating = TimeUnit.DAYS.toMillis(2);
+                                        break;
+
+                                    case 2:
+                                        repeating = TimeUnit.DAYS.toMillis(3);
+                                        break;
+
+                                    case 3:
+                                        repeating = TimeUnit.DAYS.toMillis(5);
+                                        break;
+
+                                    default:break;
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                         break;
 
                     case 2:
@@ -157,6 +253,32 @@ public class AddingAffairDialogFragment extends DialogFragment {
                                 android.R.layout.simple_spinner_dropdown_item, getResources()
                                 .getStringArray(R.array.affair_repeats_by_weeks));
                         spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterWeeks);
+
+                        spinnerAffairRepeatsTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                switch (position) {
+                                    case 0:
+                                        repeating = TimeUnit.DAYS.toMillis(7);
+                                        break;
+
+                                    case 1:
+                                        repeating = TimeUnit.DAYS.toMillis(14);
+                                        break;
+
+                                    case 2:
+                                        repeating = TimeUnit.DAYS.toMillis(21);
+                                        break;
+
+                                    default:break;
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                         break;
 
                     case 3:
@@ -164,13 +286,115 @@ public class AddingAffairDialogFragment extends DialogFragment {
                                 android.R.layout.simple_spinner_dropdown_item, getResources()
                                 .getStringArray(R.array.affair_repeats_by_months));
                         spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterMonths);
+
+                        spinnerAffairRepeatsTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                switch (position) {
+                                    case 0:
+                                        Calendar calendarCaseZero = Calendar.getInstance();
+                                        calendarCaseZero.add(Calendar.MONTH, 1);
+
+                                        repeating = calendarCaseZero.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 1:
+                                        Calendar calendarCaseOne = Calendar.getInstance();
+                                        calendarCaseOne.add(Calendar.MONTH, 2);
+
+                                        repeating = calendarCaseOne.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 2:
+                                        Calendar calendarCaseTwo = Calendar.getInstance();
+                                        calendarCaseTwo.add(Calendar.MONTH, 3);
+
+                                        repeating = calendarCaseTwo.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 3:
+                                        Calendar calendarCaseThree = Calendar.getInstance();
+                                        calendarCaseThree.add(Calendar.MONTH, 6);
+
+                                        repeating = calendarCaseThree.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    default:break;
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                         break;
 
                     case 4:
-                        ArrayAdapter<String> repeatsTimeAdapterYears = new ArrayAdapter<String>(getActivity(),
+                        ArrayAdapter<String> repeatsTimeAdapterYears = new ArrayAdapter<>(getActivity(),
                                 android.R.layout.simple_spinner_dropdown_item, getResources()
                                 .getStringArray(R.array.affair_repeats_by_years));
                         spinnerAffairRepeatsTime.setAdapter(repeatsTimeAdapterYears);
+
+                        spinnerAffairRepeatsTime.setOnItemSelectedListener(new AdapterView
+                                .OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view,
+                                                       int position, long id) {
+                                switch (position) {
+                                    case 0:
+                                        Calendar calendarCaseZero = Calendar.getInstance();
+                                        calendarCaseZero.add(Calendar.YEAR, 1);
+
+                                        repeating = calendarCaseZero.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 1:
+                                        Calendar calendarCaseOne = Calendar.getInstance();
+                                        calendarCaseOne.add(Calendar.YEAR, 2);
+
+                                        repeating = calendarCaseOne.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 2:
+                                        Calendar calendarCaseTwo = Calendar.getInstance();
+                                        calendarCaseTwo.add(Calendar.YEAR, 3);
+
+                                        repeating = calendarCaseTwo.getTimeInMillis() - Calendar
+                                            .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 3:
+                                        Calendar calendarCaseThree = Calendar.getInstance();
+                                        calendarCaseThree.add(Calendar.YEAR, 5);
+
+                                        repeating = calendarCaseThree.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    case 4:
+                                        Calendar calendarCaseFour = Calendar.getInstance();
+                                        calendarCaseFour.add(Calendar.YEAR, 10);
+
+                                        repeating = calendarCaseFour.getTimeInMillis() - Calendar
+                                                .getInstance().getTimeInMillis();
+                                        break;
+
+                                    default:break;
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                         break;
 
                     default:break;
@@ -205,7 +429,6 @@ public class AddingAffairDialogFragment extends DialogFragment {
                         etDate.setText("");
                     }
                 };
-                datePickerFragment.setStyle(R.style.AppTheme, R.style.AppTheme);
                 datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
             }
         });
@@ -232,7 +455,6 @@ public class AddingAffairDialogFragment extends DialogFragment {
                         etTime.setText("");
                     }
                 };
-                timePickerFragment.setStyle(R.style.AppTheme, R.style.AppTheme);
                 timePickerFragment.show(getFragmentManager(), "TimePickerFragment");
             }
         });
@@ -240,7 +462,6 @@ public class AddingAffairDialogFragment extends DialogFragment {
         alertDialogBuilder.setPositiveButton(R.string.button_accept, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //// TODO: 16.03.17 add feature which allows to save repeating timestamp
                 affair.setTitle(etTitle.getText().toString());
                 affair.setDescription(etDescription.getText().toString());
                 affair.setTimestamp(calendar.getTimeInMillis());
@@ -248,6 +469,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 affair.setObject(etObject.getText().toString());
                 affair.setPlace(etPlace.getText().toString());
                 affair.setStatus(Affair.STATUS_CURRENT);
+                affair.setRepeatTimestamp(repeating);
 
                 if (etDate.length() != 0 || etTime.length() != 0) {
                     affair.setDate(calendar.getTimeInMillis());

@@ -6,12 +6,18 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
+import android.media.SoundPool;
 import android.net.Uri;
+import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 
@@ -41,19 +47,18 @@ public class OfflineNotification extends BroadcastReceiver{
         builder.setContentText(description);
         builder.setColor(context.getResources().getColor(color));
         builder.setSmallIcon(R.drawable.ic_offline_notification);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap
+                .ic_launcher));
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
-        builder.setSound(soundUri);
-        builder.setVibrate(new long[]{1500, 1500, 500, 1500, 1500, 500, 1500, 1500, 500});
-        builder.setLights(color, 3000, 3000);
-
-        /*Указание, какие свойства уведомления от системы будут у уведомления моего приложения*/
-        builder.setDefaults(Notification.FLAG_INSISTENT);
         builder.setContentIntent(pendingIntent);
 
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_INSISTENT;
+        notification.sound = soundUri;
+        notification.vibrate = new long[]{1500, 1500, 500, 1500, 1500, 500, 1500, 1500, 500};
+        notification.ledARGB = color;
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);

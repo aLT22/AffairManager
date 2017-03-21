@@ -72,7 +72,6 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
         initTabs();
         setSearchViewListener();
-        //setListenerToRootView();
     }
 
     private void setSearchViewListener() {

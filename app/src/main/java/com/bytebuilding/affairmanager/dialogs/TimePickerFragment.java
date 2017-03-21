@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.dialogs;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat
-                .is24HourFormat(getActivity().getApplicationContext()));
+        return new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this,
+                hour, minute, DateFormat.is24HourFormat(getActivity().getApplicationContext()));
     }
 }
