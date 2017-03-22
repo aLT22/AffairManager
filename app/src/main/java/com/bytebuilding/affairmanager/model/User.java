@@ -6,33 +6,47 @@ package com.bytebuilding.affairmanager.model;
 
 public class User {
 
-    private String login;
-    private String password;
+    private long userId;
+    private String userLogin;
+    private String userPassword;
     private UserGroup userGroup;
 
     public User() {
+        this.userId = -1;
+        this.userLogin = "userLogin";
+        this.userPassword = "userPass";
+        this.userGroup = new UserGroup();
     }
 
-    public User(String login, String password, UserGroup userGroup) {
-        this.login = login;
-        this.password = password;
+    public User(long userId, String login, String password, UserGroup userGroup) {
+        this.userId = userId;
+        this.userLogin = login;
+        this.userPassword = password;
         this.userGroup = userGroup;
     }
 
-    public String getLogin() {
-        return login;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public UserGroup getUserGroup() {
