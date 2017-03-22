@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.dialogs;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.Affair;
@@ -153,50 +155,54 @@ public class AddingAffairDialogFragment extends DialogFragment {
                                                        int position, long id) {
                                 switch (position) {
                                     case 0:
-                                        repeating = TimeUnit.MINUTES.toMillis(5);
+                                        repeating = 0;
                                         break;
 
                                     case 1:
-                                        repeating = TimeUnit.MINUTES.toMillis(10);
+                                        repeating = TimeUnit.MINUTES.toMillis(5);
                                         break;
 
                                     case 2:
-                                        repeating = TimeUnit.MINUTES.toMillis(15);
+                                        repeating = TimeUnit.MINUTES.toMillis(10);
                                         break;
 
                                     case 3:
-                                        repeating = TimeUnit.MINUTES.toMillis(30);
+                                        repeating = TimeUnit.MINUTES.toMillis(15);
                                         break;
 
                                     case 4:
-                                        repeating = TimeUnit.HOURS.toMillis(1);
+                                        repeating = TimeUnit.MINUTES.toMillis(30);
                                         break;
 
                                     case 5:
-                                        repeating = TimeUnit.HOURS.toMillis(2);
+                                        repeating = TimeUnit.HOURS.toMillis(1);
                                         break;
 
                                     case 6:
-                                        repeating = TimeUnit.HOURS.toMillis(3);
+                                        repeating = TimeUnit.HOURS.toMillis(2);
                                         break;
 
                                     case 7:
-                                        repeating = TimeUnit.HOURS.toMillis(5);
+                                        repeating = TimeUnit.HOURS.toMillis(3);
                                         break;
 
                                     case 8:
-                                        repeating = TimeUnit.HOURS.toMillis(6);
+                                        repeating = TimeUnit.HOURS.toMillis(5);
                                         break;
 
                                     case 9:
-                                        repeating = TimeUnit.HOURS.toMillis(8);
+                                        repeating = TimeUnit.HOURS.toMillis(6);
                                         break;
 
                                     case 10:
-                                        repeating = TimeUnit.HOURS.toMillis(10);
+                                        repeating = TimeUnit.HOURS.toMillis(8);
                                         break;
 
                                     case 11:
+                                        repeating = TimeUnit.HOURS.toMillis(10);
+                                        break;
+
+                                    case 12:
                                         repeating = TimeUnit.HOURS.toMillis(12);
                                         break;
 
@@ -484,6 +490,8 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 }
 
                 addingAffairListener.onAffairAdded(affair);
+                /*Toast.makeText(getActivity().getApplicationContext(), String.valueOf(affair
+                            .getRepeatTimestamp()), Toast.LENGTH_LONG).show();*/
                 dialog.dismiss();
             }
         });

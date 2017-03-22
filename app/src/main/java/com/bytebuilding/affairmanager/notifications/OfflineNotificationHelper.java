@@ -36,9 +36,10 @@ public class OfflineNotificationHelper {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
                 (int) affair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, affair.getDate(), pendingIntent);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair
-                .getRepeatTimestamp(), pendingIntent);
+        if (affair.getStatus() != Affair.STATUS_DONE) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair
+                    .getRepeatTimestamp(), pendingIntent);
+        }
     }
 
     public void doneAlarm(long timestamp) {
