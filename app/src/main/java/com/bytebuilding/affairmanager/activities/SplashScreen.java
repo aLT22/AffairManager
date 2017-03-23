@@ -17,6 +17,7 @@ import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawa
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class SplashScreen extends AppCompatActivity implements LoadingTask
         .LoadingTaskFinishedListener {
@@ -24,21 +25,20 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
     public static final String PREFERENCES_NAME = "AffairManagerPreferences";
     public static final String PREFERENCES_VERSION_CODE_KEY = "AffairManager";
 
-    @BindView(R.id.splashScreen_imageView)
-    ImageView splashImage;
-    @BindView(R.id.splashScreen_progressBar)
-    ProgressBar splashProgressBar;
-    @BindView(R.id.splashScreen_textView)
-    TextView splashTextView;
+    @BindView(R.id.splashScreen_imageView) ImageView splashImage;
+    @BindView(R.id.splashScreen_progressBar) ProgressBar splashProgressBar;
+    @BindView(R.id.splashScreen_textView) TextView splashTextView;
 
     public static SharedPreferences preferences = null;
+
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         preferences = getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
 
@@ -64,7 +64,7 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
     @Override
     public void onPreferencesUndetected() {
         if (isNetworkAvailable()) {
-            Intent intent = new Intent(this, EnterActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         } else {
@@ -79,5 +79,12 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+
+        super.onDestroy();
     }
 }

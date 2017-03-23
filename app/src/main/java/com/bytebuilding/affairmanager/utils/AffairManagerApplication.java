@@ -1,16 +1,15 @@
 package com.bytebuilding.affairmanager.utils;
 
-import android.content.SharedPreferences;
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
+
+import com.bytebuilding.affairmanager.activities.SplashScreen;
 
 import java.security.SecureRandom;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class AffairManagerApplication extends MultiDexApplication {
-
-    SharedPreferences preferences = null;
+public class AffairManagerApplication extends Application {
 
     private static boolean isVisible;
 
@@ -25,11 +24,11 @@ public class AffairManagerApplication extends MultiDexApplication {
         RealmConfiguration configuration = new RealmConfiguration.Builder()
                 .name("AffairManager.realm")
                 .encryptionKey(key)
-                .schemaVersion(0)
                 .build();
         Realm.setDefaultConfiguration(configuration);
 
-        preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
+
+        SplashScreen.preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
     }
 
     public static boolean isVisible() {

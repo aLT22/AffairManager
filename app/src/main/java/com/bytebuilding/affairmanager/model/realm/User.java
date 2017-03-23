@@ -17,6 +17,7 @@ public class User extends RealmObject {
     private String userLogin;
     @Required
     private String userPassword;
+    private String userOrganization;
     private RealmList<UserGroup> userGroups;
     private RealmList<UserAffair> userAffairs;
 
@@ -26,13 +27,14 @@ public class User extends RealmObject {
         this.userPassword = "userPass";
     }
 
-    public User(long userId, String login, String password, RealmList<UserGroup> userGroups,
-                RealmList<UserAffair> userAffairs) {
+    public User(long userId, String login, String password, String organization,
+                RealmList<UserGroup> userGroups, RealmList<UserAffair> userAffairs) {
         this.userId = userId;
         this.userLogin = login;
         this.userPassword = password;
         this.userGroups = userGroups;
         this.userAffairs = userAffairs;
+        this.userOrganization = organization;
     }
 
     public long getUserId() {
@@ -73,5 +75,13 @@ public class User extends RealmObject {
 
     public void setUserAffairs(RealmList<UserAffair> userAffairs) {
         this.userAffairs = userAffairs;
+    }
+
+    public String getUserOrganization() {
+        return userOrganization;
+    }
+
+    public void setUserOrganization(String userOrganization) {
+        this.userOrganization = userOrganization;
     }
 }
