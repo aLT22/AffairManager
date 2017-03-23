@@ -3,9 +3,8 @@ package com.bytebuilding.affairmanager.utils;
 import android.content.SharedPreferences;
 import android.support.multidex.MultiDexApplication;
 
-/**
- * Created by turki on 08.12.2016.
- */
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class AffairManagerApplication extends MultiDexApplication {
 
@@ -16,6 +15,14 @@ public class AffairManagerApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Realm.init(this);
+        RealmConfiguration configuration = new RealmConfiguration.Builder()
+                .name("AffairManager.realm")
+                .encryptionKey(CryptoUtils.KEY.getBytes())
+                .schemaVersion(0)
+                .build();
+        Realm.setDefaultConfiguration(configuration);
 
         preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
     }
