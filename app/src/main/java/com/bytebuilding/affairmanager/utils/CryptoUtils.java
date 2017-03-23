@@ -12,6 +12,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class CryptoUtils {
 
+    public static String KEY64 = "SgVkYp3s6v9y$B&E)H@McQeThWmZq4t7w!z%C*F-JaNdRgUjXn2r5u8x/A?D(G+K";
+
     public static String KEY = "EncryptionKeyMsg";
     public static String VECTOR = "EncryptionVector";
 

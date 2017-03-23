@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.model.realm;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import io.realm.RealmObject;
@@ -12,13 +13,6 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class UserAffair extends RealmObject {
-
-    @Ignore
-    public static final int STATUS_OVERDUE = 0;
-    @Ignore
-    public static final int STATUS_CURRENT = 1;
-    @Ignore
-    public static final int STATUS_DONE = 2;
 
     @PrimaryKey
     private long timestamp;
@@ -140,22 +134,22 @@ public class UserAffair extends RealmObject {
         this.status = status;
     }
 
-    public int getColor() {
+    /*public int getColor() {
         switch (getPriority()) {
             case 2:
-                if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
+                if (getStatus() == Affair.STATUS_CURRENT || getStatus() == Affair.STATUS_OVERDUE) {
                     return R.color.md_red_400;
                 } else {
                     return R.color.md_red_800;
                 }
             case 1:
-                if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
+                if (getStatus() == Affair.STATUS_CURRENT || getStatus() == Affair.STATUS_OVERDUE) {
                     return R.color.md_orange_400;
                 } else {
                     return R.color.md_orange_800;
                 }
             case 0:
-                if (getStatus() == STATUS_CURRENT || getStatus() == STATUS_OVERDUE) {
+                if (getStatus() == Affair.STATUS_CURRENT || getStatus() == Affair.STATUS_OVERDUE) {
                     return R.color.md_green_400;
                 } else {
                     return R.color.md_green_800;
@@ -163,7 +157,7 @@ public class UserAffair extends RealmObject {
             default:
                 return 0;
         }
-    }
+    }*/
 
     public String getFullDate() {
         return DateUtils.getFullDate(this.timestamp);

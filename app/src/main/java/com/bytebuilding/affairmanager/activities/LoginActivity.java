@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.realm.Realm;
+import io.realm.RealmObject;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,9 +44,17 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    @OnClick(R.id.btn_sign_up)
+    public void onSignUpClick() {
+        Intent signUpActivityIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signUpActivityIntent);
+        this.finish();
+    }
+
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+        realm.close();
 
         super.onDestroy();
     }

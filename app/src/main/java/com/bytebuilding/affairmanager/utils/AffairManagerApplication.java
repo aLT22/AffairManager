@@ -17,16 +17,11 @@ public class AffairManagerApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        byte[] key = new byte[64];
-        new SecureRandom().nextBytes(key);
-
-        Realm.init(this);
+        Realm.init(this.getApplicationContext());
         RealmConfiguration configuration = new RealmConfiguration.Builder()
-                .name("AffairManager.realm")
-                .encryptionKey(key)
+                .encryptionKey(CryptoUtils.KEY64.getBytes())
                 .build();
         Realm.setDefaultConfiguration(configuration);
-
 
         SplashScreen.preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
     }
