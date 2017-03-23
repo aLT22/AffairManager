@@ -5,6 +5,7 @@ import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by atlas on 23.03.17.
@@ -19,6 +20,8 @@ public class UserAffair extends RealmObject {
     @Ignore
     public static final int STATUS_DONE = 2;
 
+    @PrimaryKey
+    private long timestamp;
     private String title;
     private String description;
     private long date;
@@ -28,7 +31,6 @@ public class UserAffair extends RealmObject {
     private String type;
     private String place;
     private long repeatTimestamp;
-    private long timestamp;
     private int status;
 
     public UserAffair() {

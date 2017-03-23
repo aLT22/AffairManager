@@ -2,6 +2,8 @@ package com.bytebuilding.affairmanager.model.realm;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by atlas on 22.03.17.
@@ -9,7 +11,9 @@ import io.realm.RealmObject;
 
 public class UserGroup extends RealmObject {
 
+    @PrimaryKey
     private long userGroupId;
+    @Required
     private String userGroupName;
     private String userGroupDescription;
     private RealmList<User> users;
