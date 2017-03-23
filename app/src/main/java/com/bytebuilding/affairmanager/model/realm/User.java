@@ -1,28 +1,33 @@
-package com.bytebuilding.affairmanager.model;
+package com.bytebuilding.affairmanager.model.realm;
+
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 /**
  * Created by atlas on 15.03.17.
  */
 
-public class User {
+public class User extends RealmObject {
 
     private long userId;
     private String userLogin;
     private String userPassword;
-    private UserGroup userGroup;
+    private RealmList<UserGroup> userGroups;
+    private RealmList<UserAffair> userAffairs;
 
     public User() {
         this.userId = -1;
         this.userLogin = "userLogin";
         this.userPassword = "userPass";
-        this.userGroup = new UserGroup();
     }
 
-    public User(long userId, String login, String password, UserGroup userGroup) {
+    public User(long userId, String login, String password, RealmList<UserGroup> userGroups,
+                RealmList<UserAffair> userAffairs) {
         this.userId = userId;
         this.userLogin = login;
         this.userPassword = password;
-        this.userGroup = userGroup;
+        this.userGroups = userGroups;
+        this.userAffairs = userAffairs;
     }
 
     public long getUserId() {
@@ -49,11 +54,19 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public UserGroup getUserGroup() {
-        return userGroup;
+    public RealmList<UserGroup> getUserGroups() {
+        return userGroups;
     }
 
-    public void setUserGroup(UserGroup userGroup) {
-        this.userGroup = userGroup;
+    public void setUserGroups(RealmList<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    public RealmList<UserAffair> getUserAffairs() {
+        return userAffairs;
+    }
+
+    public void setUserAffairs(RealmList<UserAffair> userAffairs) {
+        this.userAffairs = userAffairs;
     }
 }

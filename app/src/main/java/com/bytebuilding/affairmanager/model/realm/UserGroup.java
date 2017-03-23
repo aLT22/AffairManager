@@ -1,14 +1,19 @@
-package com.bytebuilding.affairmanager.model;
+package com.bytebuilding.affairmanager.model.realm;
+
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 /**
  * Created by atlas on 22.03.17.
  */
 
-public class UserGroup {
+public class UserGroup extends RealmObject {
 
     private long userGroupId;
     private String userGroupName;
     private String userGroupDescription;
+    private RealmList<User> users;
+    private RealmList<UserAffair> userAffairs;
 
     public UserGroup() {
         this.userGroupId = -1;
@@ -16,10 +21,13 @@ public class UserGroup {
         this.userGroupDescription = "userGroupDescription";
     }
 
-    public UserGroup(long userGroupId, String userGroupName, String userGroupDescription) {
+    public UserGroup(long userGroupId, String userGroupName, String userGroupDescription,
+                     RealmList<User> users, RealmList<UserAffair> userAffairs) {
         this.userGroupId = userGroupId;
         this.userGroupName = userGroupName;
         this.userGroupDescription = userGroupDescription;
+        this.users = users;
+        this.userAffairs = userAffairs;
     }
 
     public long getUserGroupId() {
@@ -44,5 +52,21 @@ public class UserGroup {
 
     public void setUserGroupDescription(String userGroupDescription) {
         this.userGroupDescription = userGroupDescription;
+    }
+
+    public RealmList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(RealmList<User> users) {
+        this.users = users;
+    }
+
+    public RealmList<UserAffair> getUserAffairs() {
+        return userAffairs;
+    }
+
+    public void setUserAffairs(RealmList<UserAffair> userAffairs) {
+        this.userAffairs = userAffairs;
     }
 }
