@@ -38,78 +38,65 @@ public class SignUpActivity extends AppCompatActivity {
 
         unbinder = ButterKnife.bind(this);
 
+        btnUserRegistrate.setEnabled(false);
+
         setEditTexts();
 
-        // TODO: 24.03.17 optimize text input layout hints and errors
         etUserLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (etUserLogin.length() == 0 || etUserPassword.length() == 0) {
-                    btnUserRegistrate.setEnabled(false);
-                    tilUserLogin.setErrorEnabled(true);
-                    tilUserLogin.setError(getResources().getString(R.string.dialog_error_edit_text));
-                }
+                btnUserRegistrate.setEnabled(false);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     tilUserLogin.setError(null);
-                }
-                if (etUserLogin.length() == 0 || etUserPassword.length() == 0) {
-                    btnUserRegistrate.setEnabled(false);
-                    tilUserLogin.setErrorEnabled(true);
-                    tilUserLogin.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    if (etUserPassword.length() != 0) {
+                        tilUserPassword.setError(null);
+                        btnUserRegistrate.setEnabled(true);
+                    } else {
+                        tilUserPassword.setError(getResources().getString(R.string
+                                .dialog_error_edit_text));
+                        btnUserRegistrate.setEnabled(false);
+                    }
                 } else {
-                    btnUserRegistrate.setEnabled(true);
-                    tilUserLogin.setError(null);
-                    tilUserPassword.setError(null);
+                    tilUserLogin.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    btnUserRegistrate.setEnabled(false);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (etUserLogin.length() == 0 || etUserPassword.length() == 0) {
-                    btnUserRegistrate.setEnabled(false);
-                    tilUserLogin.setErrorEnabled(true);
-                    tilUserLogin.setError(getResources().getString(R.string.dialog_error_edit_text));
-                }
             }
         });
 
         etUserPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (etUserPassword.length() == 0 || etUserLogin.length() == 0) {
-                    btnUserRegistrate.setEnabled(false);
-                    tilUserPassword.setErrorEnabled(true);
-                    tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
-                }
+                btnUserRegistrate.setEnabled(false);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     tilUserPassword.setError(null);
-                }
-                if (etUserPassword.length() == 0 || etUserLogin.length() == 0) {
-                    btnUserRegistrate.setEnabled(false);
-                    tilUserPassword.setErrorEnabled(true);
-                    tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    if (etUserLogin.length() != 0) {
+                        tilUserLogin.setError(null);
+                        btnUserRegistrate.setEnabled(true);
+                    } else {
+                        tilUserLogin.setError(getResources().getString(R.string
+                                .dialog_error_edit_text));
+                        btnUserRegistrate.setEnabled(false);
+                    }
                 } else {
-                    btnUserRegistrate.setEnabled(true);
-                    tilUserPassword.setError(null);
-                    tilUserLogin.setError(null);
+                    tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    btnUserRegistrate.setEnabled(false);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (etUserPassword.length() == 0 || etUserLogin.length() == 0) {
-                    btnUserRegistrate.setEnabled(false);
-                    tilUserPassword.setErrorEnabled(true);
-                    tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
-                }
             }
         });
     }
