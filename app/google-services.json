@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "859069602582",
+    "firebase_url": "https://affair-manager-8a6f9.firebaseio.com",
+    "project_id": "affair-manager-8a6f9",
+    "storage_bucket": "affair-manager-8a6f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859069602582:android:190925b476ac173e",
+        "android_client_info": {
+          "package_name": "com.bytebuilding.affairmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859069602582-61jh3i2khcfof75ormhug1uac7es6ihp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOjlTIUE1f2vM0leYCwLeSEs3WzbZQyb4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
