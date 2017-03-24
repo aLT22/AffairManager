@@ -55,7 +55,10 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
             startActivity(intent);
             finish();
         } else {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("app", true);
             Intent intent = new Intent(this, MainOfflineActivity.class);
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }

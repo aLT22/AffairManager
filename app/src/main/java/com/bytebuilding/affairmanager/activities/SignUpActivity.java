@@ -29,7 +29,9 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.realm.Realm;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements FirebaseHelper {
+
+    public static final String FIREBASE_DATABASE_URL = "https://affair-manager-8a6f9.firebaseio.com/";
 
     @BindView(R.id.til_user_login) TextInputLayout tilUserLogin;
     @BindView(R.id.et_user_login) EditText etUserLogin;
@@ -50,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Realm realm;
 
     private DatabaseReference rootReference = FirebaseDatabase.getInstance()
-            .getReferenceFromUrl("https://affair-manager-8a6f9.firebaseio.com/");
+            .getReferenceFromUrl(FIREBASE_DATABASE_URL);
     private DatabaseReference userReference = rootReference.child("users");
 
     @Override
@@ -80,10 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
         tilUserPassword.setHint(getResources().getString(R.string.signup_hint_password));
-    }
-
-    private void saveUserToFirebase(User user) {
-        userReference.child(String.valueOf(user.getUserId())).setValue(user);
     }
 
     @OnClick(R.id.btn_user_accept)
@@ -192,6 +190,12 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+        realm.close();
         super.onDestroy();
+    }
+
+    @Override
+    public void saveUserToFirebase(User user) {
+        userReference.child(String.valueOf(user.hashCode())).setValue(user);
     }
 }
