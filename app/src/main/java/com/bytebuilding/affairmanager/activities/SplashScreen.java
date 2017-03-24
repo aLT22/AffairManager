@@ -64,11 +64,17 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
     @Override
     public void onPreferencesUndetected() {
         if (isNetworkAvailable()) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("app", true);
             Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         } else {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("app", true);
             Intent intent = new Intent(this, MainOfflineActivity.class);
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }

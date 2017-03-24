@@ -38,8 +38,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_sign_in)
     public void onSignInClick() {
-        Intent enterActivityIntent = new Intent(getApplicationContext(),
-                EnterActivity.class);
+        Bundle bundle = getIntent().getExtras();
+        Intent enterActivityIntent = new Intent(getApplicationContext(), EnterActivity.class);
+        enterActivityIntent.putExtras(bundle);
         startActivity(enterActivityIntent);
         finish();
     }

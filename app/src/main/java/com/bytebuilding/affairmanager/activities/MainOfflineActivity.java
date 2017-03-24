@@ -1,10 +1,12 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -62,6 +64,7 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_offline);
+
         ButterKnife.bind(this);
 
         dbHelper = new DBHelper(getApplicationContext());
@@ -72,6 +75,28 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
         initTabs();
         setSearchViewListener();
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getBoolean("app")) {
+            showNewbieDialog();
+        }
+    }
+
+    private void showNewbieDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog);
+        builder.setIcon(getResources().getDrawable(R.mipmap.ic_launcher));
+        builder.setTitle(getResources().getString(R.string.alert_dialog_newbie_title));
+        builder.setMessage(getResources().getString(R.string.alert_dialog_newbie_message));
+        String buttonText = getResources().getString(R.string.alert_dialog_newbie_button_text);
+        builder.setNeutralButton(buttonText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void setSearchViewListener() {
