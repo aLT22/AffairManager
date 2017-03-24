@@ -1,13 +1,17 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -23,8 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.til_user_login) TextInputLayout tilUserLogin;
     @BindView(R.id.et_user_login) EditText etUserLogin;
     @BindView(R.id.til_user_password) TextInputLayout tilUserPassword;
-    @BindView(R.id.et_user_password) EditText etUserPassword;
-    @BindView(R.id.rb_user_password) AppCompatRadioButton rbUserPassword;
+    @BindView(R.id.et_user_password) TextInputEditText etUserPassword;
     @BindView(R.id.til_user_job) TextInputLayout tilUserJob;
     @BindView(R.id.et_user_job) EditText etUserJob;
     @BindView(R.id.btn_user_accept) Button btnUserRegistrate;
@@ -112,7 +115,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
         tilUserPassword.setHint(getResources().getString(R.string.signup_hint_password));
-        etUserPassword.setHint(getResources().getString(R.string.signup_hint_password));
     }
 
     @OnClick(R.id.btn_user_accept)
