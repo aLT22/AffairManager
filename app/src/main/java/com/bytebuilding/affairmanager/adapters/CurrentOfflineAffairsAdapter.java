@@ -21,6 +21,9 @@ import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
+import com.bytebuilding.affairmanager.notifications.NotifySetter;
+import com.bytebuilding.affairmanager.notifications.OfflineNotification;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -117,6 +120,8 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                         }
                     }, 1000);
 
+                    OfflineNotificationHelper.getInstance().doneAlarm(affair.getTimestamp());
+
                     return true;
                 }
             });
@@ -141,6 +146,8 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
 
                     ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(affairViewHolder.affairModelCircleImageView,
                             "rotationY", -360f, 0f);
+
+                    OfflineNotificationHelper.getInstance().doneAlarm(affair.getTimestamp());
 
                     flipAnimation.addListener(new Animator.AnimatorListener() {
                         @Override

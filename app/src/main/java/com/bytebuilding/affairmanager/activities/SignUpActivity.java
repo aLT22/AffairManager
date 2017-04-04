@@ -2,6 +2,8 @@ package com.bytebuilding.affairmanager.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -196,6 +198,6 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
     @Override
     public void saveUserToFirebase(User user) {
-        userReference.child(String.valueOf(user.hashCode())).setValue(user);
+        userReference.child(String.valueOf(System.currentTimeMillis())).setValue(user);
     }
 }

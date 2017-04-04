@@ -18,6 +18,7 @@ import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.Item;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -110,6 +111,8 @@ public class DoneOfflineAffairsAdapter extends AffairAdapter {
                                     .getLayoutPosition());
                         }
                     }, 1000);
+
+                    OfflineNotificationHelper.getInstance().doneAlarm(affair.getTimestamp());
 
                     return true;
                 }
