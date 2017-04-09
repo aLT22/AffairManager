@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,10 +18,12 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.methods.VKApiUsers;
 import com.vk.sdk.api.model.VKApiUser;
+import com.vk.sdk.api.model.VKApiUserFull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,9 +78,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
 
     @OnClick(R.id.btn_sign_in)
     public void onSignInClick() {
-        Bundle bundle = getIntent().getExtras();
         Intent enterActivityIntent = new Intent(getApplicationContext(), EnterActivity.class);
-        enterActivityIntent.putExtras(bundle);
         startActivity(enterActivityIntent);
         finish();
     }
@@ -152,6 +153,6 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
 
     @Override
     public void saveUserToFirebase(User user) {
-        userReference.child(String.valueOf(user.hashCode())).setValue(user);
+        userReference.child(String.valueOf(System.currentTimeMillis())).setValue(user);
     }
 }

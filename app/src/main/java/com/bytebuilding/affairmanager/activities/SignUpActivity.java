@@ -101,6 +101,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
         preferences.edit().putString("login", login).apply();
         preferences.edit().putString("password", password).apply();
+        preferences.edit().putString("type", getResources().getStringArray(R.array
+                .registration_type_in_preferences)[3]).apply();
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override

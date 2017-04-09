@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -51,14 +52,18 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
     @Override
     public void onPreferencesDetected() {
         if (isNetworkAvailable()) {
-            Intent intent = new Intent(this, MainOnlineActivity.class);
-            startActivity(intent);
-            finish();
+            if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
+                    .registration_type_in_preferences)[3])) {
+                Intent intent = new Intent(this, EnterActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Intent intent = new Intent(this, MainOnlineActivity.class);
+                startActivity(intent);
+                finish();
+            }
         } else {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("app", true);
             Intent intent = new Intent(this, MainOfflineActivity.class);
-            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }
@@ -67,17 +72,11 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
     @Override
     public void onPreferencesUndetected() {
         if (isNetworkAvailable()) {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("app", true);
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         } else {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("app", true);
             Intent intent = new Intent(this, MainOfflineActivity.class);
-            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }
