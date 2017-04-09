@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class EnterActivity extends AppCompatActivity {
 
@@ -35,6 +37,8 @@ public class EnterActivity extends AppCompatActivity {
     @BindView(R.id.btn_sign_in_offline)
     Button btnSignInOffline;
 
+    private Unbinder unbinder;
+
     private DatabaseReference rootReference = FirebaseDatabase.getInstance()
             .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
     private DatabaseReference userReference = rootReference.child("users");
@@ -44,7 +48,8 @@ public class EnterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter);
-        ButterKnife.bind(this);
+
+        unbinder = ButterKnife.bind(this);
     }
 
     @OnClick(R.id.btn_sign_in_enterActivity)
@@ -118,5 +123,12 @@ public class EnterActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+
+        super.onDestroy();
     }
 }

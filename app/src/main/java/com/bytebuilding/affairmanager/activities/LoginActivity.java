@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -12,6 +13,15 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vk.sdk.VKAccessToken;
@@ -24,6 +34,9 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.methods.VKApiUsers;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiUserFull;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +59,9 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
     @BindView(R.id.btn_sign_in) Button btnSignIn;
     @BindView(R.id.btn_sign_in_vk) Button btnSignInVk;
     @BindView(R.id.btn_sign_in_google) Button btnSignInGoogle;
-    @BindView(R.id.btn_sign_in_facebook) Button btnSignInFacebook;
+    //@BindView(R.id.btn_sign_in_facebook) Button btnSignInFacebook;
+
+    private LoginButton loginButton;
 
     private Unbinder unbinder;
 
@@ -57,8 +72,11 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
     private String[] scopes = new String[]{
             VKScope.EMAIL, VKScope.WALL
     };
+
     private boolean isCancelled = false;
     private boolean isAccepted = false;
+
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +87,17 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
         realm = Realm.getDefaultInstance();
 
         preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
+
+        callbackManager = CallbackManager.Factory.create();
+        loginButton = (LoginButton) findViewById(R.id.btn_sign_in_facebook);
     }
 
     @OnClick(R.id.btn_sign_in_vk)
     public void onSignInVkClick() {
         VKSdk.login(this, scopes);
+
+        preferences.edit().putString("type", getResources().getStringArray(R.array
+                .registration_type_in_preferences)[2]).apply();
     }
 
     @OnClick(R.id.btn_sign_in)
@@ -87,7 +111,84 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
     public void onSignUpClick() {
         Intent signUpActivityIntent = new Intent(this, SignUpActivity.class);
         startActivity(signUpActivityIntent);
-        this.finish();
+        finish();
+    }
+
+    @OnClick(R.id.btn_sign_in_facebook)
+    public void onSignInFacebookClick() {
+
+        preferences.edit().putString("type", getResources().getStringArray(R.array
+                .registration_type_in_preferences)[0]).apply();
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils
+                                            .VECTOR, response.getJSONObject().getString("email"));
+                                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY,
+                                            CryptoUtils.VECTOR, Profile.getCurrentProfile().getId());
+
+                                    realm.executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            Number num = realm.where(User.class).max("userId");
+                                            long nextID;
+                                            if(num == null) {
+                                                nextID = 0;
+                                            } else {
+                                                nextID = num.intValue() + 1;
+                                            }
+                                            User user = realm.createObject(User.class, nextID);
+                                            user.setUserLogin(login);
+                                            user.setUserPassword(password);
+                                        }
+                                    });
+
+                                    preferences.edit().putString("login", login).apply();
+                                    preferences.edit().putString("password", password).apply();
+
+                                    saveUserToFirebase(realm.where(User.class).findAll().last());
+
+                                    isAccepted = true;
+
+                                    Intent intent = new Intent(getApplicationContext(),
+                                            MainOnlineActivity.class);
+                                    startActivity(intent);
+                                } catch (JSONException e) {
+                                    Toast.makeText(getApplicationContext(), getResources()
+                                            .getString(R.string.error_getting_data_from_firebase),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                graphRequest.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                isCancelled = true;
+                preferences.edit().putString("type", "").apply();
+
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                        .toast_vk_autorization_decline), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                isCancelled = true;
+
+                preferences.edit().putString("type", "").apply();
+
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                        .toast_vk_autorization_decline), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -100,55 +201,63 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
-            @Override
-            public void onResult(VKAccessToken res) {
-                // Пользователь успешно авторизовался
-                final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
-                        .email);
-                final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
-                        DEFAULT_VK_PASS);
-
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        Number num = realm.where(User.class).max("userId");
-                        long nextID;
-                        if(num == null) {
-                            nextID = 0;
-                        } else {
-                            nextID = num.intValue() + 1;
-                        }
-                        User user = realm.createObject(User.class, nextID);
-                        user.setUserLogin(login);
-                        user.setUserPassword(password);
-                    }
-                });
-
-                preferences.edit().putString("login", login).apply();
-                preferences.edit().putString("password", password).apply();
-
-                saveUserToFirebase(realm.where(User.class).findAll().last());
-
-                isAccepted = true;
-
-                Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
-                startActivity(intent);
-            }
-            @Override
-            public void onError(VKError error) {
-                // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
-                isCancelled = true;
-                Toast.makeText(getApplicationContext(), getResources().getText(R.string
-                        .toast_vk_autorization_decline), Toast.LENGTH_SHORT).show();
-            }
-        })) {}
-
-        if (!isCancelled) {
-            this.finish();
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
+                .registration_type_in_preferences)[0])) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
+                .registration_type_in_preferences)[2])) {
+            if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+                @Override
+                public void onResult(VKAccessToken res) {
+                    // Пользователь успешно авторизовался
+                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
+                            .email);
+                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
+                            DEFAULT_VK_PASS);
+
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            Number num = realm.where(User.class).max("userId");
+                            long nextID;
+                            if(num == null) {
+                                nextID = 0;
+                            } else {
+                                nextID = num.intValue() + 1;
+                            }
+                            User user = realm.createObject(User.class, nextID);
+                            user.setUserLogin(login);
+                            user.setUserPassword(password);
+                        }
+                    });
+
+                    preferences.edit().putString("login", login).apply();
+                    preferences.edit().putString("password", password).apply();
+
+                    saveUserToFirebase(realm.where(User.class).findAll().last());
+
+                    isAccepted = true;
+
+                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
+                    startActivity(intent);
+                }
+                @Override
+                public void onError(VKError error) {
+                    // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
+                    isCancelled = true;
+                    Toast.makeText(getApplicationContext(), getResources().getText(R.string
+                            .toast_vk_autorization_decline), Toast.LENGTH_SHORT).show();
+
+                    preferences.edit().putString("type", "").apply();
+                }
+            })) {}
+
+            if (!isCancelled) {
+                this.finish();
+            }
+        }
     }
 
     @Override

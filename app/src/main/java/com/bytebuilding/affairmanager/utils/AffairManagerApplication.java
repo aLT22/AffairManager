@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.bytebuilding.affairmanager.activities.LoginActivity;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
+import com.facebook.FacebookSdk;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
@@ -24,6 +25,8 @@ public class AffairManagerApplication extends Application {
 
         VKSdk.initialize(this);
         vkAccessTokenTracker.startTracking();
+
+        FacebookSdk.sdkInitialize(this);
 
         Realm.init(this.getApplicationContext());
         RealmConfiguration configuration = new RealmConfiguration.Builder()
