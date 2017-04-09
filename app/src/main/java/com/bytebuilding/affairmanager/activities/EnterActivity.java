@@ -91,9 +91,7 @@ public class EnterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_sign_in_offline)
     public void onSignInOffline() {
-        Bundle bundle = getIntent().getExtras();
         Intent startAppInOffline = new Intent(getApplicationContext(), MainOfflineActivity.class);
-        startAppInOffline.putExtras(bundle);
         startActivity(startAppInOffline);
         finish();
     }
