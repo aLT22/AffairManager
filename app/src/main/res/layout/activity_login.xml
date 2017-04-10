@@ -83,7 +83,7 @@
         android:scaleType="fitXY"
         app:srcCompat="@drawable/facebook_icon" />
 
-    <com.facebook.login.widget.LoginButton
+    <Button
         android:id="@+id/btn_sign_in_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

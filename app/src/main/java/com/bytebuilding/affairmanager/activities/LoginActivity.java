@@ -20,6 +20,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +38,8 @@ import com.vk.sdk.api.model.VKApiUserFull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
     @BindView(R.id.btn_sign_in) Button btnSignIn;
     @BindView(R.id.btn_sign_in_vk) Button btnSignInVk;
     @BindView(R.id.btn_sign_in_google) Button btnSignInGoogle;
-    //@BindView(R.id.btn_sign_in_facebook) Button btnSignInFacebook;
+    @BindView(R.id.btn_sign_in_facebook) Button btnSignInFacebook;
 
     private LoginButton loginButton;
 
@@ -89,7 +92,8 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
         preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
 
         callbackManager = CallbackManager.Factory.create();
-        loginButton = (LoginButton) findViewById(R.id.btn_sign_in_facebook);
+
+        registrationCallback();
     }
 
     @OnClick(R.id.btn_sign_in_vk)
@@ -120,7 +124,12 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
         preferences.edit().putString("type", getResources().getStringArray(R.array
                 .registration_type_in_preferences)[0]).apply();
 
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile",
+                "email"));
+    }
+
+    private void registrationCallback() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(),
@@ -129,9 +138,9 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 try {
                                     final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils
-                                            .VECTOR, response.getJSONObject().getString("email"));
+                                            .VECTOR, object.getString("email"));
                                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY,
-                                            CryptoUtils.VECTOR, Profile.getCurrentProfile().getId());
+                                            CryptoUtils.VECTOR, object.getString("id"));
 
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override
@@ -159,14 +168,17 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
                                     Intent intent = new Intent(getApplicationContext(),
                                             MainOnlineActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 } catch (JSONException e) {
                                     Toast.makeText(getApplicationContext(), getResources()
-                                            .getString(R.string.error_getting_data_from_firebase),
+                                                    .getString(R.string.error_getting_data_from_firebase),
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,email");
+                graphRequest.setParameters(parameters);
                 graphRequest.executeAsync();
             }
 
