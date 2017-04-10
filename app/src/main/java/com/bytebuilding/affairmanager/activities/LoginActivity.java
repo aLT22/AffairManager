@@ -5,10 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
@@ -23,6 +27,13 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vk.sdk.VKAccessToken;
@@ -50,13 +61,14 @@ import io.realm.RealmObject;
 
 import static com.bytebuilding.affairmanager.activities.SignUpActivity.FIREBASE_DATABASE_URL;
 
-public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
+public class LoginActivity extends AppCompatActivity implements FirebaseHelper, GoogleApiClient.OnConnectionFailedListener {
 
     DatabaseReference rootReference = FirebaseDatabase.getInstance()
             .getReferenceFromUrl(FIREBASE_DATABASE_URL);
     DatabaseReference userReference = rootReference.child("users");
 
     public static final String DEFAULT_VK_PASS = "vkpass";
+    public static final int RC_SIGN_IN = 007;
 
     @BindView(R.id.btn_sign_up) Button btnSignUp;
     @BindView(R.id.btn_sign_in) Button btnSignIn;
@@ -81,6 +93,9 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
 
     private CallbackManager callbackManager;
 
+    private GoogleSignInOptions gso;
+    private GoogleApiClient googleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +109,16 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
         callbackManager = CallbackManager.Factory.create();
 
         registrationCallback();
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     @OnClick(R.id.btn_sign_in_vk)
@@ -120,12 +145,20 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
 
     @OnClick(R.id.btn_sign_in_facebook)
     public void onSignInFacebookClick() {
-
         preferences.edit().putString("type", getResources().getStringArray(R.array
                 .registration_type_in_preferences)[0]).apply();
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile",
                 "email"));
+    }
+
+    @OnClick(R.id.btn_sign_in_google)
+    public void onSignInGoogleClick() {
+        preferences.edit().putString("type", getResources().getStringArray(R.array
+                .registration_type_in_preferences)[1]).apply();
+
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void registrationCallback() {
@@ -219,15 +252,17 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
                 .registration_type_in_preferences)[0])) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
-                .registration_type_in_preferences)[2])) {
-            if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
-                @Override
-                public void onResult(VKAccessToken res) {
-                    // Пользователь успешно авторизовался
-                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
-                            .email);
-                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
-                            DEFAULT_VK_PASS);
+                .registration_type_in_preferences)[1])) {
+            if (requestCode == RC_SIGN_IN) {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                if (result.isSuccess()) {
+                    // Signed in successfully, show authenticated UI.
+                    GoogleSignInAccount acct = result.getSignInAccount();
+
+                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
+                            .getEmail());
+                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
+                            .getId());
 
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
@@ -254,6 +289,46 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
 
                     Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
                     startActivity(intent);
+                    finish();
+                }
+            }
+        } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
+                .registration_type_in_preferences)[2])) {
+            if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+                @Override
+                public void onResult(VKAccessToken res) {
+                    // Пользователь успешно авторизовался
+                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
+                            .email);
+                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
+                            res.userId);
+
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            Number num = realm.where(User.class).max("userId");
+                            long nextID;
+                            if(num == null) {
+                                nextID = 0;
+                            } else {
+                                nextID = num.intValue() + 1;
+                            }
+                            User user = realm.createObject(User.class, nextID);
+                            user.setUserLogin(login);
+                            user.setUserPassword(password);
+                        }
+                    });
+
+                    preferences.edit().putString("login", login).apply();
+                    preferences.edit().putString("password", password).apply();
+
+                    saveUserToFirebase(realm.where(User.class).findAll().last());
+
+                    isAccepted = true;
+
+                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 @Override
                 public void onError(VKError error) {
@@ -275,5 +350,10 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper{
     @Override
     public void saveUserToFirebase(User user) {
         userReference.child(String.valueOf(System.currentTimeMillis())).setValue(user);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
