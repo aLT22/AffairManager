@@ -22,8 +22,15 @@ import android.widget.Toast;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,33 +106,68 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
                     .toString());
         }
 
-        preferences.edit().putString("login", login).apply();
-        preferences.edit().putString("password", password).apply();
-        preferences.edit().putString("type", getResources().getStringArray(R.array
-                .registration_type_in_preferences)[3]).apply();
-
-        realm.executeTransaction(new Realm.Transaction() {
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void execute(Realm realm) {
-                Number num = realm.where(User.class).max("userId");
-                long nextID;
-                if(num == null) {
-                    nextID = 0;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(),
+                        CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, login))) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                    .user_exists), Toast.LENGTH_SHORT).show();
                 } else {
-                    nextID = num.intValue() + 1;
+                    preferences.edit().putString("login", login).apply();
+                    preferences.edit().putString("password", password).apply();
+                    preferences.edit().putString("type", getResources().getStringArray(R.array
+                            .registration_type_in_preferences)[3]).apply();
+
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            Number num = realm.where(User.class).max("userId");
+                            long nextID;
+                            if(num == null) {
+                                nextID = 0;
+                            } else {
+                                nextID = num.intValue() + 1;
+                            }
+                            User user = realm.createObject(User.class, nextID);
+                            user.setUserLogin(login);
+                            user.setUserPassword(password);
+                            user.setUserOrganization(job);
+                        }
+                    });
+
+                    saveUserToFirebase(realm.where(User.class).findAll().last());
+
+                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-                User user = realm.createObject(User.class, nextID);
-                user.setUserLogin(login);
-                user.setUserPassword(password);
-                user.setUserOrganization(job);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
+    }
 
-        saveUserToFirebase(realm.where(User.class).findAll().last());
+    private boolean checkRegisteredUser(Map<String, Object> users, String login) {
+        List<String> logins = new ArrayList<>();
 
-        Intent intent = new Intent(this, MainOnlineActivity.class);
-        startActivity(intent);
-        this.finish();
+        for (Map.Entry<String, Object> entry : users.entrySet()){
+            //Get user map
+            Map singleUser = (Map) entry.getValue();
+            //Get phone field and append to list
+            String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
+                    (String) singleUser.get("userLogin"));
+            logins.add(log);
+        }
+
+        if (logins.contains(login)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

@@ -54,9 +54,6 @@ public class EnterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_sign_in_enterActivity)
     public void onSignInEnterActivityButtonClick() {
-        /*Intent startAppInOnline = new Intent(getApplicationContext(), MainOnlineActivity.class);
-        startActivity(startAppInOnline);
-        finish();*/
         if (etEmail.getText().length() == 0 || etPassword.getText().length() == 0) {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string
                     .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
@@ -101,12 +98,11 @@ public class EnterActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean checkUser(Map<String, Object> users, String login, String password) {
+    public boolean checkUser(Map<String, Object> users, String login, String password) {
         List<String> logins = new ArrayList<>();
         List<String> passwords = new ArrayList<>();
 
         for (Map.Entry<String, Object> entry : users.entrySet()){
-
             //Get user map
             Map singleUser = (Map) entry.getValue();
             //Get phone field and append to list
