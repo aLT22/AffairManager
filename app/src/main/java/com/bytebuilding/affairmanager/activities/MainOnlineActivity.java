@@ -13,10 +13,15 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class MainOnlineActivity extends AppCompatActivity {
 
@@ -29,19 +34,16 @@ public class MainOnlineActivity extends AppCompatActivity {
     @BindView(R.id.fab_menu)
     FloatingActionsMenu fabMenu;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_online);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
 
-        Drawer drawerBuilder = new DrawerBuilder()
-                .withActivity(this)
-                .withShowDrawerOnFirstLaunch(false)
-                .withToolbar(toolbar)
-                .withActionBarDrawerToggleAnimated(true)
-                .build();
+        unbinder = ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
     }
 
     @OnClick(R.id.fab_add_affair)
@@ -56,5 +58,28 @@ public class MainOnlineActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
                 .show();
         fabMenu.collapse();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+
+        super.onDestroy();
+    }
+
+    private void createNavigationDrawer() {
+        Drawer drawerBuilder = new DrawerBuilder()
+                .withActivity(this)
+                .withShowDrawerOnFirstLaunch(false)
+                .withToolbar(toolbar)
+                .withActionBarDrawerToggleAnimated(true)
+                .addDrawerItems(
+                        new PrimaryDrawerItem(),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem(),
+                        new SectionDrawerItem(),
+                        new SectionDrawerItem()
+                )
+                .build();
     }
 }
