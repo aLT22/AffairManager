@@ -83,10 +83,13 @@
                 android:id="@+id/btn_user_accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/padding_sign_buttons"
                 android:padding="@dimen/padding_sign_buttons"
                 android:text="@string/registrate"
+                android:textAlignment="center"
+                android:textStyle="normal|bold|italic"
                 android:theme="@style/SignButtons"/>
 
         </LinearLayout>

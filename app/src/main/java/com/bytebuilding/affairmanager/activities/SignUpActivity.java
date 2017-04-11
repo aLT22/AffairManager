@@ -192,12 +192,12 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     tilUserLogin.setError(null);
-                    if (etUserPassword.length() != 0) {
+                    if (etUserPassword.length() != 0 && etUserPassword.length() < 5) {
                         tilUserPassword.setError(null);
                         btnUserRegistrate.setEnabled(true);
                     } else {
                         tilUserPassword.setError(getResources().getString(R.string
-                                .dialog_error_edit_text));
+                                .error_password_edit_text));
                         btnUserRegistrate.setEnabled(false);
                     }
                 } else {
@@ -219,7 +219,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
+                if (s.length() != 0 && s.length() > 5) {
                     tilUserPassword.setError(null);
                     if (etUserLogin.length() != 0) {
                         tilUserLogin.setError(null);
@@ -230,7 +230,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
                         btnUserRegistrate.setEnabled(false);
                     }
                 } else {
-                    tilUserPassword.setError(getResources().getString(R.string.dialog_error_edit_text));
+                    tilUserPassword.setError(getResources().getString(R.string
+                            .error_password_edit_text));
                     btnUserRegistrate.setEnabled(false);
                 }
             }
