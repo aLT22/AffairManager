@@ -1,6 +1,9 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -54,40 +57,45 @@ public class EnterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_sign_in_enterActivity)
     public void onSignInEnterActivityButtonClick() {
-        if (etEmail.getText().length() == 0 || etPassword.getText().length() == 0) {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                    .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
-        } else {
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (checkUser((Map<String,Object>) dataSnapshot.getValue(), etEmail.getText()
-                            .toString(), etPassword.getText().toString())) {
+        if (isNetworkAvailable()) {
+            if (etEmail.getText().length() == 0 || etPassword.getText().length() == 0) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                        .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
+            } else {
+                userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (checkUser((Map<String,Object>) dataSnapshot.getValue(), etEmail.getText()
+                                .toString(), etPassword.getText().toString())) {
 
-                        getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                .putString("login", etEmail.getText().toString()).apply();
-                        getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                .putString("password", etPassword.getText().toString()).apply();
-                        getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                .putString("type", getResources().getStringArray(R.array
-                                        .registration_type_in_preferences)[3]).apply();
+                            getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
+                                    .putString("login", etEmail.getText().toString()).apply();
+                            getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
+                                    .putString("password", etPassword.getText().toString()).apply();
+                            getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
+                                    .putString("type", getResources().getStringArray(R.array
+                                            .registration_type_in_preferences)[3]).apply();
 
-                        Intent intent = new Intent(getApplicationContext(), MainOnlineActivity
-                                .class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainOnlineActivity
+                                    .class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                    .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string
                     .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 
@@ -126,5 +134,12 @@ public class EnterActivity extends AppCompatActivity {
         unbinder.unbind();
 
         super.onDestroy();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

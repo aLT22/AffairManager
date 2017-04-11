@@ -2,11 +2,10 @@ package com.bytebuilding.affairmanager.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
@@ -20,7 +19,6 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
@@ -39,6 +37,8 @@ public class MainOnlineActivity extends AppCompatActivity {
     FloatingActionButton fabAddAffair;
     @BindView(R.id.fab_menu)
     FloatingActionsMenu fabMenu;
+
+    private Drawer drawerBuilder;
 
     private Unbinder unbinder;
 
@@ -79,69 +79,84 @@ public class MainOnlineActivity extends AppCompatActivity {
     }
 
     private void createNavigationDrawer() {
-        IProfile profile = new ProfileDrawerItem()
-                .withEmail(preferences.getString("login", "User"))
-                .withIcon(R.drawable.ic_account_circle_white_48dp);
+        AccountHeader accountHeaderBuilder = setAccountHeader();
 
-        AccountHeader accountHeaderBuilder = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.material_background)
-                .addProfiles(profile)
-                .build();
-
-        Drawer drawerBuilder = new DrawerBuilder()
+        drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
                 .withShowDrawerOnFirstLaunch(false)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggleAnimated(true)
                 .withAccountHeader(accountHeaderBuilder)
-                .addDrawerItems(
-                        new PrimaryDrawerItem()
-                                .withName(R.string.navigation_item_all_affairs)
-                                .withIdentifier(0)
-                                .withIcon(R.drawable.ic_all_affairs_drawer_18dp)
-                                .withTextColorRes(R.color.color_icons)
-                                .withSelectedColorRes(R.color.primary),
-                        new PrimaryDrawerItem()
-                                .withName(R.string.navigation_item_all_groups)
-                                .withIdentifier(1)
-                                .withIcon(R.drawable.ic_all_groups_drawer_18dp)
-                                .withTextColorRes(R.color.color_icons)
-                                .withSelectedColorRes(R.color.primary),
-                        new PrimaryDrawerItem()
-                                .withName(R.string.navigation_item_all_coworkers)
-                                .withIdentifier(2)
-                                .withIcon(R.drawable.ic_all_coworkers_drawer_18dp)
-                                .withTextColorRes(R.color.color_icons)
-                                .withSelectedColorRes(R.color.primary),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem()
-                                .withName(R.string.navigation_item_account_info)
-                                .withIdentifier(3)
-                                .withIcon(R.drawable.ic_profile_drawer_18dp)
-                                .withTextColorRes(R.color.color_icons)
-                                .withSelectedColorRes(R.color.primary),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem()
-                                .withName(R.string.navigation_item_about)
-                                .withIdentifier(4)
-                                .withIcon(R.drawable.ic_preferences_drawer_18dp)
-                                .withTextColorRes(R.color.color_icons)
-                                .withSelectedColorRes(R.color.primary),
-                        new SecondaryDrawerItem()
-                                .withName(R.string.navigation_item_exit)
-                                .withIdentifier(5)
-                                .withIcon(R.drawable.ic_exit_drawer_18dp)
-                                .withTextColorRes(R.color.color_icons)
-                                .withSelectedColorRes(R.color.primary)
-                )
+                .addDrawerItems(setDrawerItems())
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (position == 0) {
+                            Toast.makeText(getApplicationContext(), position, Toast.LENGTH_SHORT).show();
+                        }
+                        return false;
+                    }
+                })
                 .build();
+    }
 
-        drawerBuilder.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                return false;
-            }
-        });
+    private AccountHeader setAccountHeader() {
+        IProfile profile = new ProfileDrawerItem()
+                .withEmail(preferences.getString("login", "User"))
+                .withIcon(R.drawable.ic_account_circle_white_48dp);
+
+        return new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.material_background)
+                .addProfiles(profile)
+                .build();
+    }
+
+    @NonNull
+    private IDrawerItem[] setDrawerItems() {
+        return new IDrawerItem[]{new PrimaryDrawerItem()
+                .withName(R.string.navigation_item_all_affairs)
+                .withIdentifier(0)
+                .withIcon(R.drawable.ic_all_affairs_drawer_18dp)
+                .withTextColorRes(R.color.color_icons)
+                .withSelectedColorRes(R.color.primary),
+                new PrimaryDrawerItem()
+                        .withName(R.string.navigation_item_all_groups)
+                        .withIdentifier(1)
+                        .withIcon(R.drawable.ic_all_groups_drawer_18dp)
+                        .withTextColorRes(R.color.color_icons)
+                        .withSelectedColorRes(R.color.primary),
+                new PrimaryDrawerItem()
+                        .withName(R.string.navigation_item_all_coworkers)
+                        .withIdentifier(2)
+                        .withIcon(R.drawable.ic_all_coworkers_drawer_18dp)
+                        .withTextColorRes(R.color.color_icons)
+                        .withSelectedColorRes(R.color.primary),
+                new DividerDrawerItem(),
+                new SecondaryDrawerItem()
+                        .withName(R.string.navigation_item_account_info)
+                        .withIdentifier(3)
+                        .withIcon(R.drawable.ic_profile_drawer_18dp)
+                        .withTextColorRes(R.color.color_icons)
+                        .withSelectedColorRes(R.color.primary),
+                new DividerDrawerItem(),
+                new SecondaryDrawerItem()
+                        .withName(R.string.navigation_item_about)
+                        .withIdentifier(4)
+                        .withIcon(R.drawable.ic_preferences_drawer_18dp)
+                        .withTextColorRes(R.color.color_icons)
+                        .withSelectedColorRes(R.color.primary),
+                new SecondaryDrawerItem()
+                        .withName(R.string.navigation_item_exit)
+                        .withIdentifier(5)
+                        .withIcon(R.drawable.ic_exit_drawer_18dp)
+                        .withTextColorRes(R.color.color_icons)
+                        .withSelectedColorRes(R.color.primary)};
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerBuilder != null && drawerBuilder.isDrawerOpen()) drawerBuilder.closeDrawer();
+        else super.onBackPressed();
     }
 }
