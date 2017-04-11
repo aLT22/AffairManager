@@ -31,14 +31,11 @@ import butterknife.Unbinder;
 
 public class EnterActivity extends AppCompatActivity {
 
-    @BindView(R.id.etEmail)
-    EditText etEmail;
-    @BindView(R.id.etPassword)
-    EditText etPassword;
-    @BindView(R.id.btn_sign_in_enterActivity)
-    Button btnSignInEnterActivity;
-    @BindView(R.id.btn_sign_in_offline)
-    Button btnSignInOffline;
+    @BindView(R.id.etEmail) EditText etEmail;
+    @BindView(R.id.etPassword) EditText etPassword;
+    @BindView(R.id.btn_sign_in_enterActivity) Button btnSignInEnterActivity;
+    @BindView(R.id.btn_sign_in_offline) Button btnSignInOffline;
+    @BindView(R.id.btn_sign_up_enterActivity) Button btnSignUpEnterActivity;
 
     private Unbinder unbinder;
 
@@ -62,41 +59,62 @@ public class EnterActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string
                         .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
             } else {
-                userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (checkUser((Map<String,Object>) dataSnapshot.getValue(), etEmail.getText()
-                                .toString(), etPassword.getText().toString())) {
+                if (rootReference.child("users").toString() != "users") {
+                    userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() == null) {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R
+                                        .string.error_entering_into_application), Toast.LENGTH_SHORT)
+                                        .show();
+                            } else {
+                                if (checkUser((Map<String, Object>) dataSnapshot.getValue(), etEmail.getText()
+                                        .toString(), etPassword.getText().toString())) {
 
-                            getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                    .putString("login", etEmail.getText().toString()).apply();
-                            getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                    .putString("password", etPassword.getText().toString()).apply();
-                            getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                    .putString("type", getResources().getStringArray(R.array
-                                            .registration_type_in_preferences)[3]).apply();
+                                    getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
+                                            .putString("login", etEmail.getText().toString()).apply();
+                                    getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
+                                            .putString("password", etPassword.getText().toString()).apply();
+                                    getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
+                                            .putString("type", getResources().getStringArray(R.array
+                                                    .registration_type_in_preferences)[3]).apply();
 
-                            Intent intent = new Intent(getApplicationContext(), MainOnlineActivity
-                                    .class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                    .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity
+                                            .class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                            .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                    .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                            .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string
                     .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @OnClick(R.id.btn_sign_up_enterActivity)
+    public void onSignUpEnterActivityButtonClick() {
+        goToSignUpActivity();
+    }
+
+    private void goToSignUpActivity() {
+        Intent signUpActivityIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signUpActivityIntent);
     }
 
     @OnClick(R.id.btn_sign_in_offline)
@@ -110,7 +128,7 @@ public class EnterActivity extends AppCompatActivity {
         List<String> logins = new ArrayList<>();
         List<String> passwords = new ArrayList<>();
 
-        for (Map.Entry<String, Object> entry : users.entrySet()){
+        for (Map.Entry<String, Object> entry : users.entrySet()) {
             //Get user map
             Map singleUser = (Map) entry.getValue();
             //Get phone field and append to list

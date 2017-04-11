@@ -114,6 +114,10 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
         registrationCallback();
 
+        buildGoogleLogin();
+    }
+
+    private void buildGoogleLogin() {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -135,6 +139,10 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @OnClick(R.id.btn_sign_in)
     public void onSignInClick() {
+        goToEnterActivity();
+    }
+
+    private void goToEnterActivity() {
         Intent enterActivityIntent = new Intent(getApplicationContext(), EnterActivity.class);
         startActivity(enterActivityIntent);
         finish();
@@ -142,6 +150,10 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @OnClick(R.id.btn_sign_up)
     public void onSignUpClick() {
+        goToSignUpActivity();
+    }
+
+    private void goToSignUpActivity() {
         Intent signUpActivityIntent = new Intent(this, SignUpActivity.class);
         startActivity(signUpActivityIntent);
         finish();

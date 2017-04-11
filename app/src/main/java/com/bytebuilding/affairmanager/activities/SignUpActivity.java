@@ -109,38 +109,16 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(),
-                        CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, login))) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                    .user_exists), Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getValue() == null) {
+                    successfulRegistration();
                 } else {
-                    preferences.edit().putString("login", login).apply();
-                    preferences.edit().putString("password", password).apply();
-                    preferences.edit().putString("type", getResources().getStringArray(R.array
-                            .registration_type_in_preferences)[3]).apply();
-
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            Number num = realm.where(User.class).max("userId");
-                            long nextID;
-                            if(num == null) {
-                                nextID = 0;
-                            } else {
-                                nextID = num.intValue() + 1;
-                            }
-                            User user = realm.createObject(User.class, nextID);
-                            user.setUserLogin(login);
-                            user.setUserPassword(password);
-                            user.setUserOrganization(job);
-                        }
-                    });
-
-                    saveUserToFirebase(realm.where(User.class).findAll().last());
-
-                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(),
+                            CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, login))) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                .user_exists), Toast.LENGTH_SHORT).show();
+                    } else {
+                        successfulRegistration();
+                    }
                 }
             }
 
@@ -149,6 +127,36 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
             }
         });
+    }
+
+    private void successfulRegistration() {
+        preferences.edit().putString("login", login).apply();
+        preferences.edit().putString("password", password).apply();
+        preferences.edit().putString("type", getResources().getStringArray(R.array
+                .registration_type_in_preferences)[3]).apply();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Number num = realm.where(User.class).max("userId");
+                long nextID;
+                if(num == null) {
+                    nextID = 0;
+                } else {
+                    nextID = num.intValue() + 1;
+                }
+                User user = realm.createObject(User.class, nextID);
+                user.setUserLogin(login);
+                user.setUserPassword(password);
+                user.setUserOrganization(job);
+            }
+        });
+
+        saveUserToFirebase(realm.where(User.class).findAll().last());
+
+        Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private boolean checkRegisteredUser(Map<String, Object> users, String login) {

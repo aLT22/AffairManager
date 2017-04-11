@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/imgView_calendar_enterActivity"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
@@ -58,7 +58,6 @@
             android:id="@+id/btn_sign_in_enterActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_sign_up"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/etPassword"
@@ -68,12 +67,24 @@
             android:theme="@style/SignButtons" />
 
         <Button
-            android:id="@+id/btn_sign_in_offline"
+            android:id="@+id/btn_sign_up_enterActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/btn_sign_in_enterActivity"
+            android:padding="@dimen/padding_sign_buttons"
+            android:text="@string/sign_up"
+            android:textStyle="normal|bold|italic"
+            android:theme="@style/SignButtons" />
+
+        <Button
+            android:id="@+id/btn_sign_in_offline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btn_sign_up_enterActivity"
             android:padding="@dimen/padding_sign_buttons"
             android:text="@string/sign_in_offline"
             android:textStyle="normal|bold|italic"
