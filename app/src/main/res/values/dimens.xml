@@ -14,4 +14,6 @@
 
     <dimen name="separator_height">24dp</dimen>
     <dimen name="separator_text_size">20sp</dimen>
+
+    <dimen name="tv_text_size">16dp</dimen>
 </resources>

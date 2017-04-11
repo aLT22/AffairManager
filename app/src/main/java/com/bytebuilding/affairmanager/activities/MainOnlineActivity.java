@@ -3,12 +3,16 @@ package com.bytebuilding.affairmanager.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
+import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -30,20 +34,19 @@ import butterknife.Unbinder;
 
 public class MainOnlineActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.fab_add_group)
-    FloatingActionButton fabAddGroup;
-    @BindView(R.id.fab_add_affair)
-    FloatingActionButton fabAddAffair;
-    @BindView(R.id.fab_menu)
-    FloatingActionsMenu fabMenu;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab_add_group) FloatingActionButton fabAddGroup;
+    @BindView(R.id.fab_add_affair) FloatingActionButton fabAddAffair;
+    @BindView(R.id.fab_menu) FloatingActionsMenu fabMenu;
+    @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
     private Drawer drawerBuilder;
 
     private Unbinder unbinder;
 
     private SharedPreferences preferences;
+
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,15 @@ public class MainOnlineActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         createNavigationDrawer();
+
+        fragmentManager = getSupportFragmentManager();
+
+        if (fragmentContainer != null) {
+            UserProfileFragment userProfileFragment = new UserProfileFragment();
+
+            fragmentManager.beginTransaction().add(R.id.fragment_container, userProfileFragment)
+                    .commit();
+        }
     }
 
     @OnClick(R.id.fab_add_affair)
@@ -84,6 +96,7 @@ public class MainOnlineActivity extends AppCompatActivity {
 
         drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
+                .withSelectedItem(3)
                 .withShowDrawerOnFirstLaunch(false)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggleAnimated(true)
@@ -92,9 +105,6 @@ public class MainOnlineActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (position == 0) {
-                            Toast.makeText(getApplicationContext(), position, Toast.LENGTH_SHORT).show();
-                        }
                         return false;
                     }
                 })

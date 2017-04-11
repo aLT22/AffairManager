@@ -24,7 +24,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
-        android:id="@+id/drawer_container"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appbar_online_activity">
@@ -36,8 +36,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent"/>
 
             <com.getbase.floatingactionbutton.FloatingActionsMenu
                 android:id="@+id/fab_menu"
