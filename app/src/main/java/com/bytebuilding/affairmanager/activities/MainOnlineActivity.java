@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -102,7 +103,8 @@ public class MainOnlineActivity extends AppCompatActivity {
 
     private AccountHeader setAccountHeader() {
         IProfile profile = new ProfileDrawerItem()
-                .withEmail(preferences.getString("login", "User"))
+                .withEmail(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, preferences
+                        .getString("login", "Non-identifier User")))
                 .withIcon(R.drawable.ic_account_circle_white_48dp);
 
         return new AccountHeaderBuilder()

@@ -72,12 +72,19 @@ public class EnterActivity extends AppCompatActivity {
                                         .toString(), etPassword.getText().toString())) {
 
                                     getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                            .putString("login", etEmail.getText().toString()).apply();
+                                            .putString("login", CryptoUtils.encrypt(CryptoUtils.KEY,
+                                                    CryptoUtils.VECTOR, etEmail.getText().toString()))
+                                            .apply();
                                     getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                            .putString("password", etPassword.getText().toString()).apply();
+                                            .putString("password", CryptoUtils.encrypt(CryptoUtils.KEY,
+                                                    CryptoUtils.VECTOR, etPassword.getText().toString()))
+                                            .apply();
                                     getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                            .putString("type", getResources().getStringArray(R.array
-                                                    .registration_type_in_preferences)[3]).apply();
+                                            .putString("type", CryptoUtils.encrypt(CryptoUtils.KEY,
+                                                    CryptoUtils.VECTOR, getResources()
+                                                            .getStringArray(R.array
+                                                                    .registration_type_in_preferences)[3]))
+                                            .apply();
 
                                     Intent intent = new Intent(getApplicationContext(), MainOnlineActivity
                                             .class);
@@ -109,7 +116,12 @@ public class EnterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_sign_up_enterActivity)
     public void onSignUpEnterActivityButtonClick() {
-        goToSignUpActivity();
+        if (isNetworkAvailable()) {
+            goToSignUpActivity();
+        } else {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                    .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void goToSignUpActivity() {
@@ -119,6 +131,10 @@ public class EnterActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_sign_in_offline)
     public void onSignInOffline() {
+        goToMainOfflineActivity();
+    }
+
+    private void goToMainOfflineActivity() {
         Intent startAppInOffline = new Intent(getApplicationContext(), MainOfflineActivity.class);
         startActivity(startAppInOffline);
         finish();
