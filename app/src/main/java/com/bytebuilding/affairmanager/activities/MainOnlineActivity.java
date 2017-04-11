@@ -16,6 +16,11 @@ import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -26,6 +31,9 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +55,10 @@ public class MainOnlineActivity extends AppCompatActivity {
     private SharedPreferences preferences;
 
     private FragmentManager fragmentManager;
+
+    private DatabaseReference rootReference = FirebaseDatabase.getInstance()
+            .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
+    private DatabaseReference userReference = rootReference.child("users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

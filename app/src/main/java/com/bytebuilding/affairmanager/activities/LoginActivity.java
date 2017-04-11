@@ -139,7 +139,11 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @OnClick(R.id.btn_sign_in)
     public void onSignInClick() {
+        btnSignIn.setEnabled(false);
+
         goToEnterActivity();
+
+        btnSignIn.setEnabled(true);
     }
 
     private void goToEnterActivity() {
@@ -150,7 +154,11 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @OnClick(R.id.btn_sign_up)
     public void onSignUpClick() {
+        btnSignUp.setEnabled(false);
+
         goToSignUpActivity();
+
+        btnSignUp.setEnabled(true);
     }
 
     private void goToSignUpActivity() {
@@ -201,8 +209,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                                         }
                                     });
 
-                                    preferences.edit().putString("login", login).apply();
-                                    preferences.edit().putString("password", password).apply();
+                                    setUserPreferences(id, login, password);
 
                                     saveUserToFirebase(realm.where(User.class).findAll().last());
 
@@ -246,6 +253,12 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
         });
     }
 
+    private void setUserPreferences(long id, String login, String password) {
+        preferences.edit().putLong("id", id).apply();
+        preferences.edit().putString("login", login).apply();
+        preferences.edit().putString("password", password).apply();
+    }
+
     @Override
     protected void onDestroy() {
         unbinder.unbind();
@@ -284,8 +297,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                         }
                     });
 
-                    preferences.edit().putString("login", login).apply();
-                    preferences.edit().putString("password", password).apply();
+                    setUserPreferences(id, login, password);
 
                     saveUserToFirebase(realm.where(User.class).findAll().last());
 
@@ -317,8 +329,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                         }
                     });
 
-                    preferences.edit().putString("login", login).apply();
-                    preferences.edit().putString("password", password).apply();
+                    setUserPreferences(id, login, password);
 
                     saveUserToFirebase(realm.where(User.class).findAll().last());
 

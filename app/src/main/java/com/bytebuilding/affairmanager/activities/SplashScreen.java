@@ -54,19 +54,31 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
         if (isNetworkAvailable()) {
             if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
                     .registration_type_in_preferences)[3])) {
-                Intent intent = new Intent(this, EnterActivity.class);
-                startActivity(intent);
-                finish();
+                goToEnterActivity();
             } else {
-                Intent intent = new Intent(this, MainOnlineActivity.class);
-                startActivity(intent);
-                finish();
+                goToMainOnlineActivity();
             }
         } else {
-            Intent intent = new Intent(this, MainOfflineActivity.class);
-            startActivity(intent);
-            finish();
+            goToMainOfflineActivity();
         }
+    }
+
+    private void goToMainOfflineActivity() {
+        Intent intent = new Intent(this, MainOfflineActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goToMainOnlineActivity() {
+        Intent intent = new Intent(this, MainOnlineActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goToEnterActivity() {
+        Intent intent = new Intent(this, EnterActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -76,9 +88,7 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
             startActivity(intent);
             finish();
         } else {
-            Intent intent = new Intent(this, MainOfflineActivity.class);
-            startActivity(intent);
-            finish();
+            goToMainOfflineActivity();
         }
     }
 

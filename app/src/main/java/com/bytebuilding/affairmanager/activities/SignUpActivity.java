@@ -95,6 +95,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
     @OnClick(R.id.btn_user_accept)
     public void onRegistrateClick() {
+        btnUserRegistrate.setEnabled(false);
+
         login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, etUserLogin.getText()
                     .toString());
         password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, etUserPassword.getText()
@@ -127,11 +129,14 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
             }
         });
+
+        btnUserRegistrate.setEnabled(true);
     }
 
     private void successfulRegistration() {
         final long id = System.currentTimeMillis();
 
+        preferences.edit().putLong("id", id).apply();
         preferences.edit().putString("login", login).apply();
         preferences.edit().putString("password", password).apply();
         preferences.edit().putString("type", getResources().getStringArray(R.array
