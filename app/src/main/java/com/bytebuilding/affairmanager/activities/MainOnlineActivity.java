@@ -3,15 +3,22 @@ package com.bytebuilding.affairmanager.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
+import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
+import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
+import com.bytebuilding.affairmanager.fragments.drawer.UserGroupsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -117,10 +124,61 @@ public class MainOnlineActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Fragment currentFragment = null;
+
+                        currentFragment = getFragmentForDrawer(position);
+
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container, currentFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
                         return false;
                     }
                 })
                 .build();
+    }
+
+    @NonNull
+    private Fragment getFragmentForDrawer(int position) {
+        Fragment currentFragment;
+        switch (position) {
+            case 0:
+                currentFragment = new UserAffairsFragment();
+                break;
+
+            case 1:
+                currentFragment = new UserAffairsFragment();
+                break;
+
+            case 2:
+                currentFragment = new UserGroupsFragment();
+                break;
+
+            case 3:
+                currentFragment = new UserCoworkersFragment()
+                break;
+
+            case 4:
+                currentFragment = new UserProfileFragment();
+                break;
+
+            case 5:
+                currentFragment = new AboutProgramFragment();
+                break;
+
+            case 6:
+                break;
+
+            case 7:
+                currentFragment = new UserProfileFragment();
+                break;
+
+            default:
+                currentFragment = new UserProfileFragment();
+                break;
+        }
+        return currentFragment;
     }
 
     private AccountHeader setAccountHeader() {

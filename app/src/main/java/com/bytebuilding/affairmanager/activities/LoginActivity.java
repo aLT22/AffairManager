@@ -206,6 +206,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                                             User user = realm.createObject(User.class, id);
                                             user.setUserLogin(login);
                                             user.setUserPassword(password);
+                                            user.setUserOrganization("");
                                         }
                                     });
 
@@ -294,6 +295,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                             User user = realm.createObject(User.class, id);
                             user.setUserLogin(login);
                             user.setUserPassword(password);
+                            user.setUserOrganization("");
                         }
                     });
 
@@ -326,6 +328,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                             User user = realm.createObject(User.class, id);
                             user.setUserLogin(login);
                             user.setUserPassword(password);
+                            user.setUserOrganization("");
                         }
                     });
 
