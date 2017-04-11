@@ -186,6 +186,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 try {
+                                    final long id = System.currentTimeMillis();
                                     final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils
                                             .VECTOR, object.getString("email"));
                                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY,
@@ -194,14 +195,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override
                                         public void execute(Realm realm) {
-                                            Number num = realm.where(User.class).max("userId");
-                                            long nextID;
-                                            if(num == null) {
-                                                nextID = 0;
-                                            } else {
-                                                nextID = num.intValue() + 1;
-                                            }
-                                            User user = realm.createObject(User.class, nextID);
+                                            User user = realm.createObject(User.class, id);
                                             user.setUserLogin(login);
                                             user.setUserPassword(password);
                                         }
@@ -275,6 +269,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                     // Signed in successfully, show authenticated UI.
                     GoogleSignInAccount acct = result.getSignInAccount();
 
+                    final long id = System.currentTimeMillis();
                     final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
                             .getEmail());
                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
@@ -283,14 +278,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            Number num = realm.where(User.class).max("userId");
-                            long nextID;
-                            if(num == null) {
-                                nextID = 0;
-                            } else {
-                                nextID = num.intValue() + 1;
-                            }
-                            User user = realm.createObject(User.class, nextID);
+                            User user = realm.createObject(User.class, id);
                             user.setUserLogin(login);
                             user.setUserPassword(password);
                         }
@@ -314,6 +302,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                 @Override
                 public void onResult(VKAccessToken res) {
                     // Пользователь успешно авторизовался
+                    final long id = System.currentTimeMillis();
                     final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
                             .email);
                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
@@ -322,14 +311,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            Number num = realm.where(User.class).max("userId");
-                            long nextID;
-                            if(num == null) {
-                                nextID = 0;
-                            } else {
-                                nextID = num.intValue() + 1;
-                            }
-                            User user = realm.createObject(User.class, nextID);
+                            User user = realm.createObject(User.class, id);
                             user.setUserLogin(login);
                             user.setUserPassword(password);
                         }
@@ -365,7 +347,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @Override
     public void saveUserToFirebase(User user) {
-        userReference.child(String.valueOf(System.currentTimeMillis())).setValue(user);
+        userReference.child(String.valueOf(user.getUserId())).setValue(user);
     }
 
     @Override

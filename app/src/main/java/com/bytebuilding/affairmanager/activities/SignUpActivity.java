@@ -130,6 +130,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
     }
 
     private void successfulRegistration() {
+        final long id = System.currentTimeMillis();
+
         preferences.edit().putString("login", login).apply();
         preferences.edit().putString("password", password).apply();
         preferences.edit().putString("type", getResources().getStringArray(R.array
@@ -138,14 +140,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Number num = realm.where(User.class).max("userId");
-                long nextID;
-                if(num == null) {
-                    nextID = 0;
-                } else {
-                    nextID = num.intValue() + 1;
-                }
-                User user = realm.createObject(User.class, nextID);
+                User user = realm.createObject(User.class, id);
                 user.setUserLogin(login);
                 user.setUserPassword(password);
                 user.setUserOrganization(job);
@@ -246,11 +241,12 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
     protected void onDestroy() {
         unbinder.unbind();
         realm.close();
+
         super.onDestroy();
     }
 
     @Override
     public void saveUserToFirebase(User user) {
-        userReference.child(String.valueOf(System.currentTimeMillis())).setValue(user);
+        userReference.child(String.valueOf(user.getUserId())).setValue(user);
     }
 }
