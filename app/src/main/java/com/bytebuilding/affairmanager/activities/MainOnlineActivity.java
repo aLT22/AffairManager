@@ -141,7 +141,7 @@ public class MainOnlineActivity extends AppCompatActivity {
 
     @NonNull
     private Fragment getFragmentForDrawer(int position) {
-        Fragment currentFragment;
+        Fragment currentFragment = null;
         switch (position) {
             case 0:
                 currentFragment = new UserAffairsFragment();
@@ -156,7 +156,7 @@ public class MainOnlineActivity extends AppCompatActivity {
                 break;
 
             case 3:
-                currentFragment = new UserCoworkersFragment()
+                currentFragment = new UserCoworkersFragment();
                 break;
 
             case 4:
