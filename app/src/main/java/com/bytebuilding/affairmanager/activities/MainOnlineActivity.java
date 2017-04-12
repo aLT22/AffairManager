@@ -143,10 +143,6 @@ public class MainOnlineActivity extends AppCompatActivity {
     private Fragment getFragmentForDrawer(int position) {
         Fragment currentFragment = null;
         switch (position) {
-            case 0:
-                currentFragment = new UserAffairsFragment();
-                break;
-
             case 1:
                 currentFragment = new UserAffairsFragment();
                 break;
@@ -159,23 +155,16 @@ public class MainOnlineActivity extends AppCompatActivity {
                 currentFragment = new UserCoworkersFragment();
                 break;
 
-            case 4:
-                currentFragment = new UserProfileFragment();
-                break;
-
             case 5:
-                currentFragment = new AboutProgramFragment();
-                break;
-
-            case 6:
+                currentFragment = new UserProfileFragment();
                 break;
 
             case 7:
-                currentFragment = new UserProfileFragment();
+                currentFragment = new AboutProgramFragment();
                 break;
 
-            default:
-                currentFragment = new UserProfileFragment();
+            case 8:
+                currentFragment = new UserGroupsFragment();
                 break;
         }
         return currentFragment;

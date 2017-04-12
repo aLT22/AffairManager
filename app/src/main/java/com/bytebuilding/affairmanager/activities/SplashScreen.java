@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.Preference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -13,14 +12,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
-import com.bytebuilding.affairmanager.utils.LoadingTask;
+import com.bytebuilding.affairmanager.utils.SplashScreenLoadingTask;
 import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class SplashScreen extends AppCompatActivity implements LoadingTask
+public class SplashScreen extends AppCompatActivity implements SplashScreenLoadingTask
         .LoadingTaskFinishedListener {
 
     public static final String PREFERENCES_NAME = "AffairManagerPreferences";
@@ -46,7 +45,7 @@ public class SplashScreen extends AppCompatActivity implements LoadingTask
         splashProgressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(this)
                 .build());
 
-        new LoadingTask(splashProgressBar, this).execute("test_params");
+        new SplashScreenLoadingTask(splashProgressBar, this).execute("test_params");
     }
 
     @Override

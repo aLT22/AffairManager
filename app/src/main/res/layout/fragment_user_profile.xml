@@ -91,5 +91,4 @@
             android:textSize="@dimen/tv_text_size"/>
 
     </LinearLayout>
-
 </LinearLayout>

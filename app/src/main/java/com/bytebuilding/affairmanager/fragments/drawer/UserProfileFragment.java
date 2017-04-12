@@ -2,7 +2,6 @@ package com.bytebuilding.affairmanager.fragments.drawer;
 
 
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
-import com.bytebuilding.affairmanager.activities.MainOnlineActivity;
 import com.bytebuilding.affairmanager.activities.SignUpActivity;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -31,9 +29,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class UserProfileFragment extends Fragment {
 
-    @BindView(R.id.tv_user_profile_login) TextView userProfileLogin;
-    @BindView(R.id.tv_user_profile_job) TextView userProfileJob;
-    @BindView(R.id.tv_user_profile_coworkers) TextView userProfileCoworkers;
+    @BindView(R.id.tv_user_profile_login)
+    TextView userProfileLogin;
+    @BindView(R.id.tv_user_profile_job)
+    TextView userProfileJob;
+    @BindView(R.id.tv_user_profile_coworkers)
+    TextView userProfileCoworkers;
 
     private Unbinder unbinder;
 
@@ -54,15 +55,6 @@ public class UserProfileFragment extends Fragment {
                 .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
         userReference = rootReference.child("users");
 
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
-
-        unbinder = ButterKnife.bind(this, rootView);
 
         userReference.child(String.valueOf(preferences.getLong("id", 0)))
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -81,9 +73,18 @@ public class UserProfileFragment extends Fragment {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
+
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
 
         return rootView;
     }
