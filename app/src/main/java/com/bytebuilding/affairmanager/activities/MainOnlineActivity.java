@@ -1,33 +1,27 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
-import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserGroupsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -39,12 +33,8 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import java.util.Map;
-import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class MainOnlineActivity extends AppCompatActivity {
@@ -149,10 +139,48 @@ public class MainOnlineActivity extends AppCompatActivity {
                 break;
 
             case 8:
-                currentFragment = new UserGroupsFragment();
+                currentFragment = new AboutProgramFragment();
+                showQuitDialog();
                 break;
         }
         return currentFragment;
+    }
+
+    private void showQuitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainOnlineActivity.this,
+                R.style.Theme_AppCompat_Dialog);
+        builder.setTitle(R.string.quit_dialog_title);
+        builder.setIcon(R.mipmap.ic_launcher);
+
+        String[] dialogItems = getResources().getStringArray(R.array.quite_dialog_items);
+
+        builder.setSingleChoiceItems(dialogItems, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        String positiveButtonText = getString(android.R.string.ok);
+
+        builder.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        String negativeButtopnText = getString(android.R.string.cancel);
+
+        builder.setNegativeButton(negativeButtopnText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private AccountHeader setAccountHeader() {
