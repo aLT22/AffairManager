@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +11,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
@@ -53,6 +56,8 @@ public class MainOnlineActivity extends AppCompatActivity {
     private DatabaseReference rootReference = FirebaseDatabase.getInstance()
             .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
     private DatabaseReference userReference = rootReference.child("users");
+
+    private boolean quitOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +162,11 @@ public class MainOnlineActivity extends AppCompatActivity {
         builder.setSingleChoiceItems(dialogItems, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                if (which == 0) {
+                    quitOptions = true;
+                } else {
+                    quitOptions = false;
+                }
             }
         });
 
@@ -166,7 +175,13 @@ public class MainOnlineActivity extends AppCompatActivity {
         builder.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                if (quitOptions) {
+                    Intent intent = new Intent(getApplicationContext(), MainOfflineActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "quit from acc", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -175,7 +190,7 @@ public class MainOnlineActivity extends AppCompatActivity {
         builder.setNegativeButton(negativeButtopnText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
             }
         });
 

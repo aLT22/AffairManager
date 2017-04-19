@@ -145,9 +145,9 @@ public class EnterActivity extends AppCompatActivity {
         List<String> passwords = new ArrayList<>();
 
         for (Map.Entry<String, Object> entry : users.entrySet()) {
-            //Get user map
+
             Map singleUser = (Map) entry.getValue();
-            //Get phone field and append to list
+
             String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
                     (String) singleUser.get("userLogin"));
             String pass = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
