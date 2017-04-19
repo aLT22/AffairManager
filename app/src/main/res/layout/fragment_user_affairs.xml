@@ -7,7 +7,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_online_user_affairs"
         android:layout_width="match_parent"
-        android:background="@color/accent"
         android:layout_height="match_parent"/>
 
 </FrameLayout>
