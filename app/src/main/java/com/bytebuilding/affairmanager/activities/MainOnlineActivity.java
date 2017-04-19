@@ -50,9 +50,6 @@ import butterknife.Unbinder;
 public class MainOnlineActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab_add_group) FloatingActionButton fabAddGroup;
-    @BindView(R.id.fab_add_affair) FloatingActionButton fabAddAffair;
-    @BindView(R.id.fab_menu) FloatingActionsMenu fabMenu;
     @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
 
     private Drawer drawerBuilder;
@@ -89,19 +86,7 @@ public class MainOnlineActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.fab_add_affair)
-    public void onAddAffairFabClick() {
-        Toast.makeText(getApplicationContext(), "Add Affair Clicked", Toast.LENGTH_LONG)
-                .show();
-        fabMenu.collapse();
-    }
 
-    @OnClick(R.id.fab_add_group)
-    public void onAddGroupFabClick() {
-        Toast.makeText(getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
-                .show();
-        fabMenu.collapse();
-    }
 
     @Override
     protected void onDestroy() {

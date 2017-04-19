@@ -1,12 +1,42 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/tools"
+             xmlns:fab="http://schemas.android.com/apk/res-auto"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.bytebuilding.affairmanager.fragments.drawer.UserGroupsFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="groups"/>
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fragment_user_groups_fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right|end"
+        android:elevation="@dimen/fab_elevation"
+        fab:fab_addButtonColorNormal="@color/color_accent"
+        fab:fab_addButtonColorPressed="@color/color_accent"
+        fab:fab_addButtonPlusIconColor="@color/color_white"
+        fab:fab_icon="@drawable/ic_add_white_36dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_user_groups_fab_add_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            fab:fab_colorNormal="@color/color_accent"
+            fab:fab_colorPressed="@color/color_accent"
+            fab:fab_icon="@drawable/add_group_icon"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_user_groups_fab_add_affair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            fab:fab_colorNormal="@color/color_accent"
+            fab:fab_colorPressed="@color/color_accent"
+            fab:fab_icon="@drawable/add_affair_icon"/>
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </FrameLayout>
