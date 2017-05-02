@@ -185,13 +185,13 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     @Override
     public void onAffairAddingCancel() {
-        Toast.makeText(getApplicationContext(), "Задача не была добавлена", Toast.LENGTH_SHORT)
+        Toast.makeText(getApplicationContext(), R.string.affair_adding_cancel, Toast.LENGTH_SHORT)
                 .show();
     }
 
     @OnClick(R.id.fab_add_affair_offline)
     public void onFabAddAffairOfflineClick() {
-        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
+        DialogFragment addingAffairDialogFragment = new DialogFragment();
 
         addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
     }

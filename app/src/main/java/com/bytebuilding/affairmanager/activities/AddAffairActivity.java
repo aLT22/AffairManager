@@ -105,7 +105,7 @@ public class AddAffairActivity extends AppCompatActivity implements AddingAffair
                     etDate.setText("   ");
                 }
 
-                DialogFragment datePickerFragment = new DatePickerFragment() {
+                android.support.v4.app.DialogFragment datePickerFragment = new DatePickerFragment() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         calendar.set(Calendar.YEAR, year);
@@ -120,7 +120,7 @@ public class AddAffairActivity extends AppCompatActivity implements AddingAffair
                         etDate.setText("");
                     }
                 };
-                datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
+                datePickerFragment.show(getSupportFragmentManager(), "DatePickerFragment");
             }
         });
 
@@ -131,7 +131,7 @@ public class AddAffairActivity extends AppCompatActivity implements AddingAffair
                     etTime.setText("   ");
                 }
 
-                DialogFragment timePickerFragment = new TimePickerFragment() {
+                android.support.v4.app.DialogFragment timePickerFragment = new TimePickerFragment() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -146,7 +146,7 @@ public class AddAffairActivity extends AppCompatActivity implements AddingAffair
                         etTime.setText("");
                     }
                 };
-                timePickerFragment.show(getFragmentManager(), "TimePickerFragment");
+                timePickerFragment.show(getSupportFragmentManager(), "TimePickerFragment");
             }
         });
     }

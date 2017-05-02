@@ -172,6 +172,9 @@
     <string name="tv_user_profile_coworkers">Количество коллег в приложении: </string>
 
     <string name="quit_dialog_title">Выйти?</string>
+
+    <string name="affair_adding_cancel">Задача не была добавлена</string>
+
     <string-array name="quite_dialog_items">
         <item>Выйти в оффлайн версию</item>
     </string-array>

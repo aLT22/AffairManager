@@ -17,11 +17,14 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserGroupsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
+import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainOnlineActivity extends AppCompatActivity {
+public class MainOnlineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -57,9 +60,10 @@ public class MainOnlineActivity extends AppCompatActivity {
 
     private DatabaseReference rootReference = FirebaseDatabase.getInstance()
             .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
+
     private DatabaseReference userReference = rootReference.child("users");
 
-    private boolean quitOptions;
+    private DatabaseReference affairReference = rootReference.child("affairs");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class MainOnlineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_online);
 
         unbinder = ButterKnife.bind(this);
+
+        OfflineNotificationHelper.getInstance().initializeAlarmManager(getApplicationContext());
 
         preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
 
@@ -164,9 +170,7 @@ public class MainOnlineActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    quitOptions = true;
                 } else {
-                    quitOptions = false;
                 }
             }
         });
@@ -254,5 +258,16 @@ public class MainOnlineActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (drawerBuilder != null && drawerBuilder.isDrawerOpen()) drawerBuilder.closeDrawer();
         else super.onBackPressed();
+    }
+
+    @Override
+    public void onAffairAdded(Affair affair) {
+
+    }
+
+    @Override
+    public void onAffairAddingCancel() {
+        Toast.makeText(getApplicationContext(), R.string.affair_adding_cancel, Toast.LENGTH_SHORT)
+                .show();
     }
 }

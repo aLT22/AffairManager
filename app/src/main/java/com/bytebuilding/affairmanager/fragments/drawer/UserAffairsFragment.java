@@ -1,6 +1,7 @@
 package com.bytebuilding.affairmanager.fragments.drawer;
 
 
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,8 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.SignUpActivity;
+import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
+import com.bytebuilding.affairmanager.model.Affair;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +36,13 @@ public class UserAffairsFragment extends Fragment {
 
     private Unbinder unbinder;
 
+    private DatabaseReference rootReference = FirebaseDatabase.getInstance()
+            .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
+
+    private DatabaseReference userReference = rootReference.child("users");
+
+    private DatabaseReference affairReference = rootReference.child("affairs");
+
     public UserAffairsFragment() {
     }
 
@@ -46,9 +59,10 @@ public class UserAffairsFragment extends Fragment {
 
     @OnClick(R.id.fragment_user_affairs_fab_add_affair)
     public void onAddAffairFabClick() {
-        Toast.makeText(getContext().getApplicationContext(), "Add Affair Clicked", Toast.LENGTH_LONG)
-                .show();
         fabMenu.collapse();
+        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
+
+        addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
     }
 
     @OnClick(R.id.fragment_user_affairs_fab_add_group)
