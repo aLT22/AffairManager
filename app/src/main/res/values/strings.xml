@@ -1,0 +1,178 @@
+<resources>
+    <integer name="com_vk_sdk_AppId">5944876</integer>
+
+    <string name="app_name">Affair Manager</string>
+
+    <string name="about_application">О приложении</string>
+    <string name="about_application_description">Данное приложение было написано студентом
+        для студентов или группы людей, которым необходим простой органайзер или менеджер дел
+        , обеспечивающий удобство работы и координирующий каждого пользователя приложения.
+        Используйте комфортный менеджер, который, надеюсь, придется Вам по душе! Если хотите
+        свяаться с создателем, чтобы поблагодарить, указать на уязвимость или посоветовать что-либо
+        для продвижения проекта, можете связаться с создателем по реквезитам, указанным ниже.
+        \n\nУдачного использования!\n\n
+    </string>
+    <string name="admin_email">altsworks@gmail.com</string>
+    <string name="admin_vk">vk.com/atlas_f</string>
+    <string name="admin_github">github.com/aLT22</string>
+
+    <string name="sign_in">Войти</string>
+    <string name="sign_in_offline">Войти оффлайн</string>
+    <string name="sign_up">Зарегистрироваться</string>
+
+    <string name="sign_in_with_vk">VK Login</string>
+    <string name="sign_in_with_gmail">Google Login</string>
+    <string name="sign_in_with_facebook">Facebook Login</string>
+
+    <string name="online_mod">Онлайн напоминания</string>
+    <string name="offline_mod">Оффлайн напоминания</string>
+
+    <string name="enter_email">E-MAIL OR LOGIN</string>
+    <string name="enter_password">PASSWORD</string>
+
+    <string name="current_affairs">Текущие задачи</string>
+    <string name="done_affairs">Выполненные задачи</string>
+
+    <string name="title_adding_affair_dialog_fragment"> Добавить дело</string>
+
+    <string-array name="affair_priorities">
+        <item>Низкий приоритет</item>
+        <item>Средний приоритет</item>
+        <item>Высокий приоритет</item>
+    </string-array>
+
+    <string-array name="affair_repeats_type">
+        <item>По минутам-часам</item>
+        <item>По дням</item>
+        <item>По неделям</item>
+        <item>По месяцам</item>
+        <item>По годам</item>
+    </string-array>
+    <string-array name="affair_repeats_by_hours">
+        <item>-</item>
+        <item>Каждые 5 минут</item>
+        <item>Каждые 10 минут</item>
+        <item>Каждые 15 мин.</item>
+        <item>Каждые 30 мин.</item>
+        <item>Каждый час</item>
+        <item>Каждые 2 часа</item>
+        <item>Каждые 3 часа</item>
+        <item>Каждые 5 часов</item>
+        <item>Каждые 6 часов</item>
+        <item>Каждые 8 часов</item>
+        <item>Каждые 10 часов</item>
+        <item>Каждые 12 часов</item>
+    </string-array>
+    <string-array name="affair_repeats_by_days">
+        <item>-</item>
+        <item>Каждый день</item>
+        <item>Каждые 2 дня</item>
+        <item>Каждые 3 дня</item>
+        <item>Каждые 5 дней</item>
+    </string-array>
+    <string-array name="affair_repeats_by_weeks">
+        <item>-</item>
+        <item>Каждую неделю</item>
+        <item>Каждые 2 недели</item>
+        <item>Каждые 3 недели</item>
+    </string-array>
+    <string-array name="affair_repeats_by_months">
+        <item>-</item>
+        <item>Каждый месяц</item>
+        <item>Каждые 2 месяца</item>
+        <item>Каждые 3 месяца</item>
+        <item>Каждые пол-года</item>
+    </string-array>
+    <string-array name="affair_repeats_by_years">
+        <item>-</item>
+        <item>Каждый год</item>
+        <item>Каждые 2 года</item>
+        <item>Каждые 3 года</item>
+        <item>Каждые 5 лет</item>
+        <item>Каждые 10 лет</item>
+    </string-array>
+
+    <string name="button_accept">Принять</string>
+    <string name="button_decline">Отмена</string>
+
+    <string name="dialog_error_edit_text">Ошибка! Заполните поле</string>
+    <string name="dialog_error_edit_texts">Ошибка! Заполните поля</string>
+
+    <string name="error_password_edit_text">Введите не менее 5 символов!</string>
+
+    <string name="spinner_prompt_priority">Выберите приоритет</string>
+    <string name="spinner_prompt_repeate_type">Выберите тип повтора</string>
+    <string name="spinner_prompt_repeate_time">Выберите время</string>
+
+    <string name="dialog_title_hint">Заголовок</string>
+    <string name="dialog_date_hint">Дата</string>
+    <string name="dialog_time_hint">Время</string>
+    <string name="dialog_description_hint">Описание</string>
+    <string name="dialog_object_hint">Объект</string>
+    <string name="dialog_type_hint">Тип</string>
+    <string name="dialog_place_hint">Место</string>
+
+    <string name="delete_dialog_message">Удалить объект?</string>
+    <string name="successful_delete">Объект удален успешно!</string>
+
+    <string name="toast_delete_dialog_cancel">Задача не была удалена</string>
+    <string name="toast_delete_dialog_accept">Задача была успешно удалена</string>
+
+    <string name="detailActivity_title">Название</string>
+    <string name="detailActivity_description">Описание</string>
+    <string name="detailActivity_date">Дата</string>
+    <string name="detailActivity_time">Время</string>
+    <string name="detailActivity_object">Объект встречи</string>
+    <string name="detailActivity_type">Тип встречи</string>
+    <string name="detailActivity_place">Место встречи</string>
+    <string name="detailActivity_status">Статус встречи</string>
+
+    <string name="detailActivity_status_done">Завершено</string>
+    <string name="detailActivity_status_current">В процессе</string>
+    <string name="detailActivity_date_not_specified">Не указана</string>
+    <string name="detailActivity_time_not_specified">Не указано</string>
+
+    <string name="registrate">Регистрация</string>
+
+    <string name="signup_hint_login">Логин или e-mail</string>
+    <string name="signup_hint_password">Пароль</string>
+    <string name="signup_hint_job">Организация</string>
+
+    <string name="alert_dialog_newbie_title">Первое использование?</string>
+    <string name="alert_dialog_newbie_message">Чтобы максимально использовать функции приложения,
+            подключитесь к сети Internet и зарегистрируйтесь!</string>
+    <string name="alert_dialog_newbie_button_text">Понятно!</string>
+
+    <string name="toast_vk_autorization_decline">Вы не авторизовались!</string>
+
+    <string-array name="registration_type_in_preferences">
+        <item>facebook</item>
+        <item>gmail</item>
+        <item>vk</item>
+        <item>in-app-reg</item>
+    </string-array>
+
+    <string name="error_getting_data_from_firebase">Ошибка! Повторите позже или пользуйтесь оффлайн</string>
+
+    <string name="error_entering_into_application">Зарегестрируйтесь или введите верные данные!</string>
+
+    <string name="facebook_app_id">1857309034510854</string>
+    <string name="server_client_id">859069602582-vl7iapa0uivuff1ps0eolb3143u5o4vl.apps.googleusercontent.com</string>
+
+    <string name="user_exists">Данный пользователь уже зарегестрирован!</string>
+
+    <string name="navigation_item_all_affairs">Мои встречи</string>
+    <string name="navigation_item_all_groups">Мои группы</string>
+    <string name="navigation_item_all_coworkers">Мои коллеги</string>
+    <string name="navigation_item_account_info">Профиль</string>
+    <string name="navigation_item_about">О программе</string>
+    <string name="navigation_item_exit">Выйти</string>
+
+    <string name="tv_user_profile_organization">Организация: </string>
+    <string name="tv_user_profile_coworkers">Количество коллег в приложении: </string>
+
+    <string name="quit_dialog_title">Выйти?</string>
+    <string-array name="quite_dialog_items">
+        <item>Выйти в оффлайн версию</item>
+    </string-array>
+</resources>

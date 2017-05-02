@@ -1,0 +1,38 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        /*данный компонент скрывает тень от статус бара*/
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:textColorPrimary">@color/color_white</item>
+
+        <item name="material_drawer_background">@color/color_primary</item>
+        <item name="material_drawer_primary_text">@color/color_white</item>
+        <item name="material_drawer_secondary_text">@color/color_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/color_accent</item>
+        <item name="material_drawer_divider">@color/color_accent</item>
+        <item name="material_drawer_selected">@color/color_accent</item>
+        <item name="material_drawer_selected_text">@color/color_white</item>
+        <item name="material_drawer_header_selection_text">@color/color_white</item>
+
+    </style>
+
+    <style name="SignButtons" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/color_accent</item>
+        <item name="colorButtonNormal">@color/color_primary</item>
+        <item name="android:textColor">@color/color_white</item>
+
+    </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

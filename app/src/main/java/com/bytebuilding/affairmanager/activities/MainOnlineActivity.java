@@ -42,8 +42,10 @@ import butterknife.Unbinder;
 
 public class MainOnlineActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fragment_container) FrameLayout fragmentContainer;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fragment_container)
+    FrameLayout fragmentContainer;
 
     private Drawer drawerBuilder;
 
@@ -80,7 +82,6 @@ public class MainOnlineActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
 
 
     @Override
@@ -175,19 +176,15 @@ public class MainOnlineActivity extends AppCompatActivity {
         builder.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (quitOptions) {
-                    Intent intent = new Intent(getApplicationContext(), MainOfflineActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "quit from acc", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(getApplicationContext(), MainOfflineActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
-        String negativeButtopnText = getString(android.R.string.cancel);
+        String negativeButtonText = getString(android.R.string.cancel);
 
-        builder.setNegativeButton(negativeButtopnText, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(negativeButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
