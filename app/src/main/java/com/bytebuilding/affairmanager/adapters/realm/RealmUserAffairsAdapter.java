@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.adapters.realm;
 
+import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.utils.DateUtils;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,15 +44,46 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
 
         holder.data = userAffair;
 
+        final Resources resources = holder.itemView.getResources();
+
         holder.userAffairTitle.setText(userAffair.getTitle());
         holder.userAffairDescription.setText(userAffair.getDescription());
-        holder.userAffairDate.setText(DateUtils.getDate(userAffair.getDate()));
-        holder.userAffairTime.setText(DateUtils.getTime(userAffair.getTime()));
+        if (userAffair.getDate() != 0) {
+            holder.userAffairDate.setText(DateUtils.getDate(userAffair.getTimestamp()));
+        } else {
+            holder.userAffairDate.setText("-");
+        }
+
+        if (userAffair.getTime() != 0) {
+            holder.userAffairTime.setText(DateUtils.getTime(userAffair.getTimestamp()));
+        } else {
+            holder.userAffairTime.setText("-");
+        }
+
+        holder.userAffairPriority.setEnabled(true);
+
+        if (userAffair.getDate() != 0 && userAffair.getDate() < Calendar.getInstance().getTimeInMillis()) {
+            holder.userAffairContainer.setBackgroundColor(resources.getColor(R.color.color_primary_light));
+        }
+
+        holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
+        holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+
+        holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_primary_text));
+
+        holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+
+        holder.userAffairDate.setTextColor(resources.getColor(R.color.color_primary_text));
+
+        holder.userAffairTime.setTextColor(resources.getColor(R.color.color_primary_text));
     }
 
     public class UserAffairsViewHolder extends RecyclerView.ViewHolder {
 
         public UserAffair data = null;
+
+        @BindView(R.id.affair_model_container)
+        View userAffairContainer;
 
         @BindView(R.id.civ_affair_model)
         CircleImageView userAffairPriority;

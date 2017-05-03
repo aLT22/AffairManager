@@ -196,7 +196,7 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     @OnClick(R.id.fab_add_affair_offline)
     public void onFabAddAffairOfflineClick() {
-        DialogFragment addingAffairDialogFragment = new DialogFragment();
+        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
 
         addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
     }

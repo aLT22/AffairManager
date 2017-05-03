@@ -96,8 +96,7 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
             affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
             affairViewHolder.affairModelCircleImageView.setColorFilter(resources.getColor(affair.getColor()));
             affairViewHolder.affairModelTitle.setTextColor(resources.getColor(R.color.color_primary_text));
-            affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color
-                    .color_secondary_text));
+            affairViewHolder.affairModelDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
             affairViewHolder.affairModelDate.setTextColor(resources.getColor(R.color.color_primary_text));
             affairViewHolder.affairModelTime.setTextColor(resources.getColor(R.color.color_primary_text));
 
@@ -160,15 +159,12 @@ public class CurrentOfflineAffairsAdapter extends AffairAdapter {
                             if (affair.getStatus() == Affair.STATUS_DONE) {
                                 affairViewHolder.affairModelCircleImageView.setImageResource(R.drawable.icon_done_affair);
 
-                                ObjectAnimator animationGoneLeft = ObjectAnimator.ofFloat(itemView, "translationX", 0f,
-                                        -350f);
-                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView, "translationX", 0f,
-                                        itemView.getWidth());
+                                ObjectAnimator animationGoneLeft = ObjectAnimator.ofFloat(itemView, "translationX", 0f, -350f);
+                                ObjectAnimator animationGone = ObjectAnimator.ofFloat(itemView, "translationX", 0f, itemView.getWidth());
                                 animationGone.setStartDelay(150);
                                 animationGone.setDuration(200);
 
-                                ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(itemView,
-                                        "translationX", itemView.getWidth(), 0f);
+                                ObjectAnimator animationComeIn = ObjectAnimator.ofFloat(itemView, "translationX", itemView.getWidth(), 0f);
                                 animationComeIn.setStartDelay(150);
 
                                 animationGone.addListener(new Animator.AnimatorListener() {

@@ -1,9 +1,9 @@
 package com.bytebuilding.affairmanager.fragments.drawer;
 
 
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +66,7 @@ public class UserAffairsFragment extends Fragment {
 
     @OnClick(R.id.fragment_user_affairs_fab_add_group)
     public void onAddGroupFabClick() {
-        Toast.makeText(getContext().getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
+        Toast.makeText(getActivity().getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
                 .show();
         fabMenu.collapse();
     }

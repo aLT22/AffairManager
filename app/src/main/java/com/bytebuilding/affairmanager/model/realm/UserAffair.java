@@ -134,7 +134,7 @@ public class UserAffair extends RealmObject {
         this.status = status;
     }
 
-    /*public int getColor() {
+    public int getColor() {
         switch (getPriority()) {
             case 2:
                 if (getStatus() == Affair.STATUS_CURRENT || getStatus() == Affair.STATUS_OVERDUE) {
@@ -157,7 +157,7 @@ public class UserAffair extends RealmObject {
             default:
                 return 0;
         }
-    }*/
+    }
 
     public String getFullDate() {
         return DateUtils.getFullDate(this.timestamp);

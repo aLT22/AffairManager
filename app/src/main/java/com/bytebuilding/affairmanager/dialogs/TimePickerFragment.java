@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
@@ -28,7 +28,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this,
-                hour, minute, DateFormat.is24HourFormat(getActivity().getApplicationContext()));
+        return new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, hour, minute,
+                DateFormat.is24HourFormat(getActivity().getApplicationContext()));
     }
 }

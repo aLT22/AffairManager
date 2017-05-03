@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -94,7 +94,7 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
         setSupportActionBar(toolbar);
         createNavigationDrawer();
 
-        fragmentManager = getSupportFragmentManager();
+        fragmentManager = getFragmentManager();
 
         if (fragmentContainer != null) {
             UserProfileFragment userProfileFragment = new UserProfileFragment();
@@ -133,7 +133,7 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
                         currentFragment = getFragmentForDrawer(position);
 
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment_container, currentFragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
