@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.SignUpActivity;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
-import com.bytebuilding.affairmanager.model.Affair;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.database.DatabaseReference;
@@ -71,6 +70,8 @@ public class UserAffairsFragment extends Fragment {
                 .show();
         fabMenu.collapse();
     }
+
+
 
     @Override
     public void onDestroyView() {

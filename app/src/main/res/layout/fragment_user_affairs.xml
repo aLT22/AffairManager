@@ -1,10 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/tools"
-             xmlns:fab="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment">
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fragment_user_affairs_fab_menu"
@@ -43,5 +44,4 @@
         android:id="@+id/rv_online_user_affairs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-</FrameLayout>
+</RelativeLayout>

@@ -90,9 +90,7 @@ public class UserProfileFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getActivity());
 
-        //userProfileLogin.setSelected(false);
         userProfileLogin.setFocusable(false);
-        //userProfileJob.setSelected(false);
         userProfileJob.setFocusable(false);
 
         userProfileAcceptChanges.setClickable(false);

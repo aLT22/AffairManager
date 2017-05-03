@@ -54,6 +54,7 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     OfflineAffairFragment currentOfflineAffairsFragment;
 
     OfflineAffairFragment doneOfflineAffairsFragment;
+
     public DBHelper dbHelper;
 
     public OfflineAffairFragment getCurrentOfflineAffairsFragment() {

@@ -11,12 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
@@ -45,6 +45,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.realm.Realm;
 
 public class MainOnlineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener, FirebaseHelper {
 
@@ -73,12 +74,16 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     private UserAffairsFragment userAffairsFragment;
 
+    private Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_online);
 
         unbinder = ButterKnife.bind(this);
+
+        realm = Realm.getDefaultInstance();
 
         userAffairsFragment = new UserAffairsFragment();
 
@@ -103,9 +108,12 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+        realm.close();
 
         super.onDestroy();
     }
+
+
 
     private void createNavigationDrawer() {
         AccountHeader accountHeaderBuilder = setAccountHeader();
@@ -292,7 +300,7 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     @Override
     public void onAffairAdded(Affair affair) {
-
+        //userAffairsFragment.addUserAffair(affair);
     }
 
     @Override
