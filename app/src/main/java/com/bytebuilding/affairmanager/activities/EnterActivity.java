@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -37,6 +38,8 @@ public class EnterActivity extends AppCompatActivity {
     @BindView(R.id.btn_sign_in_offline) Button btnSignInOffline;
     @BindView(R.id.btn_sign_up_enterActivity) Button btnSignUpEnterActivity;
 
+    private ProgressDialog progressDialog;
+
     private Unbinder unbinder;
 
     private DatabaseReference rootReference = FirebaseDatabase.getInstance()
@@ -50,68 +53,87 @@ public class EnterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_enter);
 
         unbinder = ButterKnife.bind(this);
+
+        progressDialog = new ProgressDialog(EnterActivity.this);
     }
 
     @OnClick(R.id.btn_sign_in_enterActivity)
     public void onSignInEnterActivityButtonClick() {
-        if (isNetworkAvailable()) {
-            if (etEmail.getText().length() == 0 || etPassword.getText().length() == 0) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                        .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
-            } else {
-                if (rootReference.child("users").toString() != "users") {
-                    userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() == null) {
-                                Toast.makeText(getApplicationContext(), getResources().getString(R
-                                        .string.error_entering_into_application), Toast.LENGTH_SHORT)
-                                        .show();
-                            } else {
-                                if (checkUser((Map<String, Object>) dataSnapshot.getValue(), etEmail.getText()
-                                        .toString(), etPassword.getText().toString())) {
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                                    getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                            .putString("login", CryptoUtils.encrypt(CryptoUtils.KEY,
-                                                    CryptoUtils.VECTOR, etEmail.getText().toString()))
-                                            .apply();
-                                    getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                            .putString("password", CryptoUtils.encrypt(CryptoUtils.KEY,
-                                                    CryptoUtils.VECTOR, etPassword.getText().toString()))
-                                            .apply();
-                                    getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).edit()
-                                            .putString("type", CryptoUtils.encrypt(CryptoUtils.KEY,
-                                                    CryptoUtils.VECTOR, getResources()
-                                                            .getStringArray(R.array
-                                                                    .registration_type_in_preferences)[3]))
-                                            .apply();
+                if (isNetworkAvailable()) {
+                    if (etEmail.getText().length() == 0 || etPassword.getText().length() == 0) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (rootReference.child("users").toString() != "users") {
+                            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue() == null) {
+                                        Toast.makeText(getApplicationContext(), getResources().getString(R
+                                                .string.error_entering_into_application), Toast.LENGTH_SHORT)
+                                                .show();
+                                    } else {
+                                        if (checkUser((Map<String, Object>) dataSnapshot.getValue(), etEmail.getText()
+                                                .toString(), etPassword.getText().toString())) {
 
-                                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity
-                                            .class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                            .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                                            getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
+                                                    .putString("login", CryptoUtils.encrypt(CryptoUtils.KEY,
+                                                            CryptoUtils.VECTOR, etEmail.getText().toString()))
+                                                    .apply();
+                                            getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
+                                                    .putString("password", CryptoUtils.encrypt(CryptoUtils.KEY,
+                                                            CryptoUtils.VECTOR, etPassword.getText().toString()))
+                                                    .apply();
+                                            getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
+                                                    .putString("type", CryptoUtils.encrypt(CryptoUtils.KEY,
+                                                            CryptoUtils.VECTOR, getResources()
+                                                                    .getStringArray(R.array
+                                                                            .registration_type_in_preferences)[3]))
+                                                    .apply();
+
+                                            goToMainOnlineActivity();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                                    .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                            .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string
                                     .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string
                             .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
                 }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                });
             }
-        } else {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                    .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
-        }
+        }).start();
+    }
+
+    private void goToMainOnlineActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.btn_sign_up_enterActivity)

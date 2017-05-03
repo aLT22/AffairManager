@@ -74,7 +74,7 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
         OfflineNotificationHelper.getInstance().initializeAlarmManager(getApplicationContext());
 
-        preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
+        preferences = getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
         createNavigationDrawer();
@@ -256,7 +256,9 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     @Override
     public void onBackPressed() {
-        if (drawerBuilder != null && drawerBuilder.isDrawerOpen()) drawerBuilder.closeDrawer();
+        if (drawerBuilder != null && drawerBuilder.isDrawerOpen()) {
+            drawerBuilder.closeDrawer();
+        }
         else super.onBackPressed();
     }
 
