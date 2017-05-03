@@ -2,26 +2,21 @@ package com.bytebuilding.affairmanager.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatRadioButton;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.User;
+import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
         btnUserRegistrate.setEnabled(false);
 
-        preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
+        preferences = getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE);
 
         realm = Realm.getDefaultInstance();
 
@@ -168,11 +163,11 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         List<String> logins = new ArrayList<>();
 
         for (Map.Entry<String, Object> entry : users.entrySet()){
-            //Get user map
             Map singleUser = (Map) entry.getValue();
-            //Get phone field and append to list
+
             String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
                     (String) singleUser.get("userLogin"));
+
             logins.add(log);
         }
 
@@ -258,5 +253,10 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
     @Override
     public void saveUserToFirebase(User user) {
         userReference.child(String.valueOf(user.getUserId())).setValue(user);
+    }
+
+    @Override
+    public void saveAffairToFireBase(UserAffair userAffair) {
+
     }
 }

@@ -3,27 +3,21 @@ package com.bytebuilding.affairmanager.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.User;
-import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
+import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -33,35 +27,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKParameters;
-import com.vk.sdk.api.methods.VKApiUsers;
-import com.vk.sdk.api.model.VKApiUser;
-import com.vk.sdk.api.model.VKApiUserFull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.realm.Realm;
-import io.realm.RealmObject;
 
 import static com.bytebuilding.affairmanager.activities.SignUpActivity.FIREBASE_DATABASE_URL;
 
@@ -362,6 +345,11 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
     @Override
     public void saveUserToFirebase(User user) {
         userReference.child(String.valueOf(user.getUserId())).setValue(user);
+    }
+
+    @Override
+    public void saveAffairToFireBase(UserAffair userAffair) {
+        
     }
 
     @Override

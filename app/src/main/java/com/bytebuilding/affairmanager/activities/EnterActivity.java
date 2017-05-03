@@ -205,7 +205,6 @@ public class EnterActivity extends AppCompatActivity {
             if (temporaryLogin.equals(login)) {
                 userInfo.add((String) singleUser.get("userLogin"));
                 userInfo.add((String) singleUser.get("userOrganization"));
-                Log.e("GLUBINA PIZDECA", "getUserInfo: " + singleUser.get("userOrganization"));
             } else {
             }
         }

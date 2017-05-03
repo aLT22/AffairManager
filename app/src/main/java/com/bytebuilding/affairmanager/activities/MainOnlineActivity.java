@@ -24,8 +24,11 @@ import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserGroupsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.model.realm.User;
+import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -43,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainOnlineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener {
+public class MainOnlineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener, FirebaseHelper {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -67,12 +70,16 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     private boolean quitOptions = true;
 
+    private UserAffairsFragment userAffairsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_online);
 
         unbinder = ButterKnife.bind(this);
+
+        userAffairsFragment = new UserAffairsFragment();
 
         OfflineNotificationHelper.getInstance().initializeAlarmManager(getApplicationContext());
 
@@ -291,5 +298,15 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
     public void onAffairAddingCancel() {
         Toast.makeText(getApplicationContext(), R.string.affair_adding_cancel, Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    @Override
+    public void saveUserToFirebase(User user) {
+
+    }
+
+    @Override
+    public void saveAffairToFireBase(UserAffair userAffair) {
+
     }
 }
