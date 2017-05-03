@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,6 +82,9 @@ public class EnterActivity extends AppCompatActivity {
                                         if (checkUser((Map<String, Object>) dataSnapshot.getValue(), etEmail.getText()
                                                 .toString(), etPassword.getText().toString())) {
 
+                                            List<String> userInfo = getUserInfo((Map<String, Object>) dataSnapshot.getValue(), etEmail.getText()
+                                                    .toString());
+
                                             getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
                                                     .putString("login", CryptoUtils.encrypt(CryptoUtils.KEY,
                                                             CryptoUtils.VECTOR, etEmail.getText().toString()))
@@ -94,6 +98,9 @@ public class EnterActivity extends AppCompatActivity {
                                                             CryptoUtils.VECTOR, getResources()
                                                                     .getStringArray(R.array
                                                                             .registration_type_in_preferences)[3]))
+                                                    .apply();
+                                            getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
+                                                    .putString("job", userInfo.get(1))
                                                     .apply();
 
                                             goToMainOnlineActivity();
@@ -162,7 +169,7 @@ public class EnterActivity extends AppCompatActivity {
         finish();
     }
 
-    public boolean checkUser(Map<String, Object> users, String login, String password) {
+    private boolean checkUser(Map<String, Object> users, String login, String password) {
         List<String> logins = new ArrayList<>();
         List<String> passwords = new ArrayList<>();
 
@@ -183,6 +190,27 @@ public class EnterActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    private List<String> getUserInfo(Map<String, Object> users, String login) {
+        List<String> userInfo = new ArrayList<>();
+
+        for (Map.Entry<String, Object> entry : users.entrySet()) {
+
+            Map singleUser = (Map) entry.getValue();
+
+            String temporaryLogin = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
+                    (String) singleUser.get("userLogin"));
+
+            if (temporaryLogin.equals(login)) {
+                userInfo.add((String) singleUser.get("userLogin"));
+                userInfo.add((String) singleUser.get("userOrganization"));
+                Log.e("GLUBINA PIZDECA", "getUserInfo: " + singleUser.get("userOrganization"));
+            } else {
+            }
+        }
+
+        return userInfo;
     }
 
     @Override

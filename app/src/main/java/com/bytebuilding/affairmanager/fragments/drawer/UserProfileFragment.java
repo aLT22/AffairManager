@@ -1,10 +1,12 @@
 package com.bytebuilding.affairmanager.fragments.drawer;
 
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,8 @@ public class UserProfileFragment extends Fragment {
     @BindView(R.id.tv_user_profile_coworkers)
     TextView userProfileCoworkers;
 
+    private ProgressDialog progressDialog;
+
     private Unbinder unbinder;
 
     private SharedPreferences preferences;
@@ -55,27 +59,6 @@ public class UserProfileFragment extends Fragment {
                 .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
         userReference = rootReference.child("users");
 
-
-        userReference.child(String.valueOf(preferences.getLong("id", 0)))
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getValue() != null) {
-                            Map<String, Object> userInfo = (Map<String, Object>) dataSnapshot.getValue();
-
-                            userProfileLogin.setText(CryptoUtils.decrypt(CryptoUtils.KEY,
-                                    CryptoUtils.VECTOR, userInfo.get("userLogin").toString()));
-                            userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY,
-                                    CryptoUtils.VECTOR, userInfo.get("userOrganization").toString()));
-                            userProfileCoworkers.setText("0");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
-
         super.onCreate(savedInstanceState);
 
     }
@@ -84,7 +67,23 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
+
         unbinder = ButterKnife.bind(this, rootView);
+
+        progressDialog = new ProgressDialog(getActivity());
+
+        Log.e("LOGIN", "onDataChange: " + CryptoUtils.decrypt(CryptoUtils.KEY,
+                CryptoUtils.VECTOR, preferences.getString("login", "Default user")) + " " + preferences
+                .getString("login", "Default user"));
+
+        Log.e("JOB", "onDataChange: " + CryptoUtils.decrypt(CryptoUtils.KEY,
+                CryptoUtils.VECTOR, preferences.getString("job", "")) + " " + preferences.getString("job", ""));
+
+        userProfileLogin.setText(CryptoUtils.decrypt(CryptoUtils.KEY,
+                CryptoUtils.VECTOR, preferences.getString("login", "Default user")));
+        userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY,
+                CryptoUtils.VECTOR, preferences.getString("job", "")));
+        userProfileCoworkers.setText("0");
 
         return rootView;
     }

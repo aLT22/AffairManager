@@ -141,6 +141,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         preferences.edit().putString("password", password).apply();
         preferences.edit().putString("type", getResources().getStringArray(R.array
                 .registration_type_in_preferences)[3]).apply();
+        preferences.edit().putString("job", job).apply();
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -154,6 +155,10 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
 
         saveUserToFirebase(realm.where(User.class).findAll().last());
 
+        goToMainOnlineActivity();
+    }
+
+    private void goToMainOnlineActivity() {
         Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
         startActivity(intent);
         finish();
