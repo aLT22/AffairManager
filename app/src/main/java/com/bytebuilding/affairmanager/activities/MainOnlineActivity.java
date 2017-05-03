@@ -65,6 +65,8 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     private DatabaseReference affairReference = rootReference.child("affairs");
 
+    private boolean quitOptions = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,7 +172,9 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
+                    quitOptions = true;
                 } else {
+                    quitOptions = false;
                 }
             }
         });
@@ -180,9 +184,13 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
         builder.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getApplicationContext(), MainOfflineActivity.class);
-                startActivity(intent);
-                finish();
+                if (quitOptions) {
+                    goToMainOfflineActivity();
+                } else {
+                    quitOptions = true;
+                    goToEnterActivity();
+                }
+
             }
         });
 
@@ -197,6 +205,18 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void goToEnterActivity() {
+        Intent enterActivityIntent = new Intent(getApplicationContext(), EnterActivity.class);
+        startActivity(enterActivityIntent);
+        finish();
+    }
+
+    private void goToMainOfflineActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainOfflineActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private AccountHeader setAccountHeader() {

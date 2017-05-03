@@ -177,5 +177,6 @@
 
     <string-array name="quite_dialog_items">
         <item>Выйти в оффлайн версию</item>
+        <item>Выйти из аккаунта</item>
     </string-array>
 </resources>
