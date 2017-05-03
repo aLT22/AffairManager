@@ -36,12 +36,16 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
     @BindView(R.id.vp_main_offline_activity)
     ViewPager vpMainOfflineActivity;
+
     @BindView(R.id.fab_add_affair_offline)
     FloatingActionButton fabAddAffairOffline;
+
     @BindView(R.id.search_view)
     SearchView searchView;
 

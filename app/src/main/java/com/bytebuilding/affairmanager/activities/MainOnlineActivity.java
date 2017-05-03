@@ -50,6 +50,7 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.fragment_container)
     FrameLayout fragmentContainer;
 

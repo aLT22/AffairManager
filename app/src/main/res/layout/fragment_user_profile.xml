@@ -1,94 +1,130 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    tools:context="com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_sign_buttons"
-        android:orientation="horizontal">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@color/color_white"
+                  android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_sign_buttons"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_account_circle_color_accent_48dp"/>
+
+                <EditText
+                    android:id="@+id/tv_user_profile_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:textColor="@color/color_secondary_text"
+                    android:textSize="@dimen/tv_text_size"/>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/ib_user_profile_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="@dimen/padding_sign_buttons"
+                android:background="@color/color_white"
+                android:src="@drawable/pencil"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/padding_sign_buttons"
+                android:inputType="text"
+                android:padding="@dimen/padding_sign_buttons"
+                android:text="@string/tv_user_profile_organization"
+                android:textColor="@color/color_secondary_text"
+                android:textSize="@dimen/tv_text_size"/>
+
+            <EditText
+                android:id="@+id/tv_user_profile_job"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/padding_sign_buttons"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:padding="@dimen/padding_sign_buttons"
+                android:textColor="@color/color_secondary_text"
+                android:textSize="@dimen/tv_text_size"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/padding_sign_buttons"
+                android:padding="@dimen/padding_sign_buttons"
+                android:text="@string/tv_user_profile_coworkers"
+                android:textSize="@dimen/tv_text_size"/>
+
+            <TextView
+                android:id="@+id/tv_user_profile_coworkers"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/padding_sign_buttons"
+                android:inputType="text"
+                android:maxLength="3"
+                android:padding="@dimen/padding_sign_buttons"
+                android:textColor="@color/color_secondary_text"
+                android:textSize="@dimen/tv_text_size"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_accept_changes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_account_circle_color_accent_48dp"/>
-
-        <TextView
-            android:id="@+id/tv_user_profile_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:inputType="textEmailAddress"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:textColor="@color/color_secondary_text"
-            android:textSize="@dimen/tv_text_size"/>
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:padding="@dimen/padding_sign_buttons"
+            android:text="@string/accept_changes"
+            android:theme="@style/SignButtons"/>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_sign_buttons"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:inputType="text"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/tv_user_profile_organization"
-            android:textColor="@color/color_secondary_text"
-            android:textSize="@dimen/tv_text_size"/>
-
-        <TextView
-            android:id="@+id/tv_user_profile_job"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:inputType="text"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:padding="@dimen/padding_sign_buttons"
-            android:textColor="@color/color_secondary_text"
-            android:textSize="@dimen/tv_text_size"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_sign_buttons"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/tv_user_profile_coworkers"
-            android:textSize="@dimen/tv_text_size"/>
-
-        <TextView
-            android:id="@+id/tv_user_profile_coworkers"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:inputType="text"
-            android:maxLength="3"
-            android:padding="@dimen/padding_sign_buttons"
-            android:textColor="@color/color_secondary_text"
-            android:textSize="@dimen/tv_text_size"/>
-
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -179,4 +179,10 @@
         <item>Выйти в оффлайн версию</item>
         <item>Выйти из аккаунта</item>
     </string-array>
+
+    <string name="accept_changes"> Подтвердить изменения </string>
+
+    <string name="attention_dialog_title">Предупреждение</string>
+    <string name="attention_dialog_message">Внимание, принятые настройки вступят в силу
+        в полной мере только после перезапуска приложения.\n Извините за неудобства!</string>
 </resources>

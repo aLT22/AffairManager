@@ -102,6 +102,9 @@ public class EnterActivity extends AppCompatActivity {
                                             getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
                                                     .putString("job", userInfo.get(1))
                                                     .apply();
+                                            getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).edit()
+                                                    .putLong("id", Long.valueOf(userInfo.get(2)))
+                                                    .apply();
 
                                             goToMainOnlineActivity();
                                         } else {
@@ -205,6 +208,7 @@ public class EnterActivity extends AppCompatActivity {
             if (temporaryLogin.equals(login)) {
                 userInfo.add((String) singleUser.get("userLogin"));
                 userInfo.add((String) singleUser.get("userOrganization"));
+                userInfo.add(String.valueOf(singleUser.get("userId")));
             } else {
             }
         }
