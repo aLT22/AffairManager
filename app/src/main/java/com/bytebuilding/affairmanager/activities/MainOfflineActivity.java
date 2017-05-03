@@ -81,7 +81,7 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         initTabs();
         setSearchViewListener();
 
-        if (!getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE).contains("login")) {
+        if (!getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE).contains("login")) {
             showNewbieDialog();
         }
     }
