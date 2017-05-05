@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import java.util.Calendar;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.SplashScreen;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 
 /**
@@ -20,6 +24,8 @@ import com.bytebuilding.affairmanager.model.realm.UserGroup;
  */
 
 public class AddingUserGroupDialogFragment extends DialogFragment {
+
+    private SharedPreferences preferences;
 
     private AddingUserGroupAffairListener addingUserGroupAffairListener;
 
@@ -39,13 +45,15 @@ public class AddingUserGroupDialogFragment extends DialogFragment {
             addingUserGroupAffairListener = (AddingUserGroupAffairListener) activity;
         } catch (ClassCastException cca) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement AddingAffairListener");
+                    + " must implement AddingUserGroupAffairListener");
         }
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        preferences = getActivity().getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View containerDialogFragment = inflater.inflate(R.layout.dialog_add_group, null);
@@ -65,6 +73,9 @@ public class AddingUserGroupDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 userGroup.setUserGroupId(Calendar.getInstance().getTimeInMillis());
+                userGroup.addUser(preferences.getLong("id", 0));
+                userGroup.setUserGroupName(etTitle.getText().toString());
+                userGroup.setUserGroupDescription(etDescription.getText().toString());
             }
         });
 
