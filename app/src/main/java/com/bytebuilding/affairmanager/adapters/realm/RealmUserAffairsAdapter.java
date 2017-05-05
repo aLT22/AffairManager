@@ -46,28 +46,28 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
 
         final Resources resources = holder.itemView.getResources();
 
-        holder.userAffairTitle.setText(userAffair.getTitle());
-        holder.userAffairDescription.setText(userAffair.getDescription());
-        if (userAffair.getDate() != 0) {
-            holder.userAffairDate.setText(DateUtils.getDate(userAffair.getTimestamp()));
+        holder.userAffairTitle.setText(holder.data.getTitle());
+        holder.userAffairDescription.setText(holder.data.getDescription());
+        if (holder.data.getDate() != 0) {
+            holder.userAffairDate.setText(DateUtils.getDate(holder.data.getTimestamp()));
         } else {
             holder.userAffairDate.setText("-");
         }
 
-        if (userAffair.getTime() != 0) {
-            holder.userAffairTime.setText(DateUtils.getTime(userAffair.getTimestamp()));
+        if (holder.data.getTime() != 0) {
+            holder.userAffairTime.setText(DateUtils.getTime(holder.data.getTimestamp()));
         } else {
             holder.userAffairTime.setText("-");
         }
 
         holder.userAffairPriority.setEnabled(true);
 
-        if (userAffair.getDate() != 0 && userAffair.getDate() < Calendar.getInstance().getTimeInMillis()) {
+        if (holder.data.getDate() != 0 && holder.data.getDate() < Calendar.getInstance().getTimeInMillis()) {
             holder.userAffairContainer.setBackgroundColor(resources.getColor(R.color.color_primary_light));
         }
 
         holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
-        holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+        holder.userAffairPriority.setColorFilter(resources.getColor(holder.data.getColor()));
 
         holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_primary_text));
 
@@ -80,7 +80,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
 
     public class UserAffairsViewHolder extends RecyclerView.ViewHolder {
 
-        public UserAffair data = null;
+        public UserAffair data;
 
         @BindView(R.id.affair_model_container)
         View userAffairContainer;

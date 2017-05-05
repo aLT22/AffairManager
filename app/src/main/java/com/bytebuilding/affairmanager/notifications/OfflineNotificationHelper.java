@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.model.realm.UserAffair;
 
 public class OfflineNotificationHelper {
 
@@ -39,6 +40,22 @@ public class OfflineNotificationHelper {
         if (affair.getStatus() != Affair.STATUS_DONE) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair
                     .getRepeatTimestamp(), pendingIntent);
+        }
+    }
+
+    public void setReceiver(UserAffair userAffair) {
+        Intent intent = new Intent(context, OfflineNotification.class);
+
+        intent.putExtra("title", userAffair.getTitle());
+        intent.putExtra("timestamp", userAffair.getTimestamp());
+        intent.putExtra("color", userAffair.getColor());
+        intent.putExtra("description", userAffair.getDescription());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
+                (int) userAffair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (userAffair.getStatus() != Affair.STATUS_DONE) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userAffair.getDate(), userAffair.getRepeatTimestamp(), pendingIntent);
         }
     }
 

@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +23,7 @@ import android.widget.TimePicker;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
@@ -30,7 +32,10 @@ import java.util.concurrent.TimeUnit;
 
 public class AddingAffairDialogFragment extends DialogFragment {
 
+    private AddingUserAffairListener addingUserAffairListener;
+
     private AddingAffairListener addingAffairListener;
+
     private long repeating = 0;
 
     public interface AddingAffairListener {
@@ -39,12 +44,19 @@ public class AddingAffairDialogFragment extends DialogFragment {
         void onAffairAddingCancel();
     }
 
+    public interface AddingUserAffairListener {
+        void onUserAffairAdded(UserAffair userAffair);
+
+        void onUserAffairAddingCancel();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         try {
             addingAffairListener = (AddingAffairListener) activity;
+            addingUserAffairListener = (AddingUserAffairListener) activity;
         } catch (ClassCastException cca) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement AddingAffairListener");
@@ -60,42 +72,32 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         View container = inflater.inflate(R.layout.dialog_add_affair, null);
 
-        final TextInputLayout tilTitle = (TextInputLayout) container
-                .findViewById(R.id.til_affair_title);
+        final TextInputLayout tilTitle = (TextInputLayout) container.findViewById(R.id.til_affair_title);
         final EditText etTitle = tilTitle.getEditText();
 
-        final TextInputLayout tilDate = (TextInputLayout) container.findViewById(R.id
-                .til_affair_date);
+        final TextInputLayout tilDate = (TextInputLayout) container.findViewById(R.id.til_affair_date);
         final EditText etDate = tilDate.getEditText();
 
-        TextInputLayout tilTime = (TextInputLayout) container
-                .findViewById(R.id.til_affair_time);
+        TextInputLayout tilTime = (TextInputLayout) container.findViewById(R.id.til_affair_time);
         final EditText etTime = tilTime.getEditText();
 
-        TextInputLayout tilDescription = (TextInputLayout) container.findViewById(R.id
-                .til_affair_description);
+        TextInputLayout tilDescription = (TextInputLayout) container.findViewById(R.id.til_affair_description);
         final EditText etDescription = tilDescription.getEditText();
 
-        TextInputLayout tilObject = (TextInputLayout) container
-                .findViewById(R.id.til_affair_object);
+        TextInputLayout tilObject = (TextInputLayout) container.findViewById(R.id.til_affair_object);
         final EditText etObject = tilObject.getEditText();
 
-        TextInputLayout tilType = (TextInputLayout) container.findViewById(R.id
-                .til_affair_type);
+        TextInputLayout tilType = (TextInputLayout) container.findViewById(R.id.til_affair_type);
         final EditText etType = tilType.getEditText();
 
-        TextInputLayout tilPlace = (TextInputLayout) container
-                .findViewById(R.id.til_affair_place);
+        TextInputLayout tilPlace = (TextInputLayout) container.findViewById(R.id.til_affair_place);
         final EditText etPlace = tilPlace.getEditText();
 
-        final Spinner spinnerAffairPriority = (Spinner) container.findViewById(R.id
-                .spinner_affair_priority);
+        final Spinner spinnerAffairPriority = (Spinner) container.findViewById(R.id.spinner_affair_priority);
 
-        Spinner spinnerAffairRepeatsType = (Spinner) container.findViewById(R.id
-                .spinner_affair_repeats_type);
+        Spinner spinnerAffairRepeatsType = (Spinner) container.findViewById(R.id.spinner_affair_repeats_type);
 
-        final Spinner spinnerAffairRepeatsTime = (Spinner) container.findViewById(R.id
-                .spinner_affair_repeats_time);
+        final Spinner spinnerAffairRepeatsTime = (Spinner) container.findViewById(R.id.spinner_affair_repeats_time);
 
         tilTitle.setHint(getString(R.string.dialog_title_hint));
         tilDate.setHint(getString(R.string.dialog_date_hint));
@@ -110,9 +112,10 @@ public class AddingAffairDialogFragment extends DialogFragment {
         alertDialogBuilder.setView(container);
 
         final Affair affair = new Affair();
+        final UserAffair userAffair = new UserAffair();
+        Log.e("INIT TEST", "onCreateDialog: " + "was INIT");
 
-        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources()
+        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources()
                 .getStringArray(R.array.affair_priorities));
         spinnerAffairPriority.setAdapter(priorityAdapter);
 
@@ -120,6 +123,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 affair.setPriority(position);
+                userAffair.setPriority(position);
             }
 
             @Override
@@ -131,8 +135,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
 
-        ArrayAdapter<String> repeatsTypeAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, getResources()
+        ArrayAdapter<String> repeatsTypeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources()
                 .getStringArray(R.array.affair_repeats_type));
         spinnerAffairRepeatsType.setAdapter(repeatsTypeAdapter);
 
@@ -475,21 +478,35 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 affair.setStatus(Affair.STATUS_CURRENT);
                 affair.setRepeatTimestamp(repeating);
 
+                userAffair.setTitle(etTitle.getText().toString());
+                userAffair.setDescription(etDescription.getText().toString());
+                userAffair.setTimestamp(calendar.getTimeInMillis());
+                userAffair.setType(etType.getText().toString());
+                userAffair.setObject(etObject.getText().toString());
+                userAffair.setPlace(etPlace.getText().toString());
+                userAffair.setStatus(Affair.STATUS_CURRENT);
+                userAffair.setRepeatTimestamp(repeating);
+
                 if (etDate.length() != 0 || etTime.length() != 0) {
                     affair.setDate(calendar.getTimeInMillis());
                     affair.setTime(calendar.getTimeInMillis());
 
-                    OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper
-                            .getInstance();
+                    userAffair.setDate(calendar.getTimeInMillis());
+                    userAffair.setTime(calendar.getTimeInMillis());
+
+                    OfflineNotificationHelper offlineNotificationHelper = OfflineNotificationHelper.getInstance();
                     offlineNotificationHelper.setReceiver(affair);
+                    offlineNotificationHelper.setReceiver(userAffair);
                 } else {
                     affair.setDate(0);
                     affair.setTime(0);
+
+                    userAffair.setDate(0);
+                    userAffair.setTime(0);
                 }
 
                 addingAffairListener.onAffairAdded(affair);
-                /*Toast.makeText(getActivity().getApplicationContext(), String.valueOf(affair
-                            .getRepeatTimestamp()), Toast.LENGTH_LONG).show();*/
+                addingUserAffairListener.onUserAffairAdded(userAffair);
                 dialog.dismiss();
             }
         });
@@ -499,6 +516,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addingAffairListener.onAffairAddingCancel();
+                addingUserAffairListener.onUserAffairAddingCancel();
                 dialog.cancel();
             }
         });
@@ -507,8 +525,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                final Button acceptButton = ((AlertDialog) dialog).getButton(DialogInterface
-                        .BUTTON_POSITIVE);
+                final Button acceptButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
 
                 if (etTitle.length() == 0) {
                     acceptButton.setEnabled(false);

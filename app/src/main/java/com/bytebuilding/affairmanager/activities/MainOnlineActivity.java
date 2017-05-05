@@ -16,8 +16,10 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
+import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
@@ -47,7 +49,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.realm.Realm;
 
-public class MainOnlineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener, FirebaseHelper {
+public class MainOnlineActivity extends AppCompatActivity implements FirebaseHelper, AddingAffairDialogFragment.AddingUserAffairListener,
+        AddingAffairDialogFragment.AddingAffairListener{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -63,8 +66,7 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     private FragmentManager fragmentManager;
 
-    private DatabaseReference rootReference = FirebaseDatabase.getInstance()
-            .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
+    private DatabaseReference rootReference = FirebaseDatabase.getInstance().getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
 
     private DatabaseReference userReference = rootReference.child("users");
 
@@ -76,6 +78,8 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
 
     private Realm realm;
 
+    private DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +88,8 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
         unbinder = ButterKnife.bind(this);
 
         realm = Realm.getDefaultInstance();
+
+        dbHelper = new DBHelper(MainOnlineActivity.this);
 
         userAffairsFragment = new UserAffairsFragment();
 
@@ -299,17 +305,6 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
     }
 
     @Override
-    public void onAffairAdded(Affair affair) {
-        //userAffairsFragment.addUserAffair(affair);
-    }
-
-    @Override
-    public void onAffairAddingCancel() {
-        Toast.makeText(getApplicationContext(), R.string.affair_adding_cancel, Toast.LENGTH_SHORT)
-                .show();
-    }
-
-    @Override
     public void saveUserToFirebase(User user) {
 
     }
@@ -317,5 +312,25 @@ public class MainOnlineActivity extends AppCompatActivity implements AddingAffai
     @Override
     public void saveAffairToFireBase(UserAffair userAffair) {
 
+    }
+
+    @Override
+    public void onUserAffairAdded(UserAffair userAffair) {
+        userAffairsFragment.addUserAffair(userAffair);
+    }
+
+    @Override
+    public void onUserAffairAddingCancel() {
+        Toast.makeText(getApplicationContext(), getString(R.string.affair_adding_cancel), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAffairAdded(Affair affair) {
+        dbHelper.saveAffair(affair);
+    }
+
+    @Override
+    public void onAffairAddingCancel() {
+        Toast.makeText(getApplicationContext(), getString(R.string.affair_adding_cancel), Toast.LENGTH_SHORT).show();
     }
 }

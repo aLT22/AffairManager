@@ -4,6 +4,8 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
@@ -16,6 +18,7 @@ public class UserAffair extends RealmObject {
 
     @PrimaryKey
     private long timestamp;
+
     private String title;
     private String description;
     private long date;
@@ -44,6 +47,18 @@ public class UserAffair extends RealmObject {
         this.repeatTimestamp = repeatTimestamp;
         this.timestamp = timestamp;
         this.status = status;
+    }
+
+    public static void create(Realm realm, UserAffair userAffair) {
+        realm.createObject(UserAffair.class, userAffair.getTimestamp());
+    }
+
+    public static void delete(Realm realm, long id) {
+        UserAffair userAffair = realm.where(UserAffair.class).equalTo("id", id).findFirst();
+
+        if (userAffair != null) {
+            userAffair.deleteFromRealm();
+        }
     }
 
     public String getTitle() {

@@ -31,6 +31,7 @@ public class AffairManagerApplication extends Application {
         Realm.init(this.getApplicationContext());
         RealmConfiguration configuration = new RealmConfiguration.Builder()
                 .encryptionKey(CryptoUtils.KEY64.getBytes())
+                .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(configuration);
 
