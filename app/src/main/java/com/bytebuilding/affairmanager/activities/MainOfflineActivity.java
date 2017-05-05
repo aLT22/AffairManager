@@ -23,6 +23,7 @@ import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.DoneOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 
@@ -32,7 +33,7 @@ import butterknife.OnClick;
 
 public class MainOfflineActivity extends AppCompatActivity implements AddingAffairDialogFragment.AddingAffairListener,
         CurrentOfflineAffairsFragment.OnAffairDoneListener, DoneOfflineAffairsFragment.OnAffairRestoreListener,
-        EditAffairDialogFragment.EditingAffairListener {
+        EditAffairDialogFragment.EditingAffairListener, AddingAffairDialogFragment.AddingUserAffairListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -227,5 +228,15 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
     public void onAffairEdited(Affair updatedAffair) {
         currentOfflineAffairsFragment.updateAffair(updatedAffair);
         dbHelper.getDbUpdateManager().affair(updatedAffair);
+    }
+
+    @Override
+    public void onUserAffairAdded(UserAffair userAffair) {
+
+    }
+
+    @Override
+    public void onUserAffairAddingCancel() {
+
     }
 }

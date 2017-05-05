@@ -113,7 +113,6 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
         final Affair affair = new Affair();
         final UserAffair userAffair = new UserAffair();
-        Log.e("INIT TEST", "onCreateDialog: " + "was INIT");
 
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, getResources()
                 .getStringArray(R.array.affair_priorities));

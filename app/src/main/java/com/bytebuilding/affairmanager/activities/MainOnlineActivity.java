@@ -306,17 +306,17 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     @Override
     public void saveUserToFirebase(User user) {
-
     }
 
     @Override
     public void saveAffairToFireBase(UserAffair userAffair) {
-
+        affairReference.child(String.valueOf(userAffair.getTimestamp())).setValue(userAffair);
     }
 
     @Override
     public void onUserAffairAdded(UserAffair userAffair) {
         userAffairsFragment.addUserAffair(userAffair);
+        saveAffairToFireBase(userAffair);
     }
 
     @Override
