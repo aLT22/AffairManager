@@ -30,12 +30,15 @@ public class UserAffair extends RealmObject {
     private long repeatTimestamp;
     private int status;
 
+    private long userGroupId;
+
     public UserAffair() {
     }
 
-    public UserAffair(String title, String description, long date, long time, int priority,
-                  String object, String type, String place, long repeatTimestamp, long timestamp,
-                  int status) {
+    public UserAffair(long timestamp, String title, String description, long date,
+                      long time, int priority, String object, String type,
+                      String place, long repeatTimestamp, int status, long userGroupId) {
+        this.timestamp = timestamp;
         this.title = title;
         this.description = description;
         this.date = date;
@@ -45,8 +48,8 @@ public class UserAffair extends RealmObject {
         this.type = type;
         this.place = place;
         this.repeatTimestamp = repeatTimestamp;
-        this.timestamp = timestamp;
         this.status = status;
+        this.userGroupId = userGroupId;
     }
 
     public static void create(Realm realm, UserAffair userAffair) {
@@ -176,5 +179,13 @@ public class UserAffair extends RealmObject {
 
     public String getFullDate() {
         return DateUtils.getFullDate(this.timestamp);
+    }
+
+    public long getUserGroupId() {
+        return userGroupId;
+    }
+
+    public void setUserGroupId(long userGroupId) {
+        this.userGroupId = userGroupId;
     }
 }

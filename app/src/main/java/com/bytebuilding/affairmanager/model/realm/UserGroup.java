@@ -16,8 +16,6 @@ public class UserGroup extends RealmObject {
     @Required
     private String userGroupName;
     private String userGroupDescription;
-    private RealmList<User> users;
-    private RealmList<UserAffair> userAffairs;
 
     public UserGroup() {
         this.userGroupId = -1;
@@ -30,8 +28,6 @@ public class UserGroup extends RealmObject {
         this.userGroupId = userGroupId;
         this.userGroupName = userGroupName;
         this.userGroupDescription = userGroupDescription;
-        this.users = users;
-        this.userAffairs = userAffairs;
     }
 
     public long getUserGroupId() {
@@ -56,21 +52,5 @@ public class UserGroup extends RealmObject {
 
     public void setUserGroupDescription(String userGroupDescription) {
         this.userGroupDescription = userGroupDescription;
-    }
-
-    public RealmList<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(RealmList<User> users) {
-        this.users = users;
-    }
-
-    public RealmList<UserAffair> getUserAffairs() {
-        return userAffairs;
-    }
-
-    public void setUserAffairs(RealmList<UserAffair> userAffairs) {
-        this.userAffairs = userAffairs;
     }
 }

@@ -334,3 +334,6 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         Toast.makeText(getApplicationContext(), getString(R.string.affair_adding_cancel), Toast.LENGTH_SHORT).show();
     }
 }
+
+// TODO: 06.05.17 need to add group-id in UserAffair and in User and when users are standing at the same groups, both of users get affairs
+// TODO: 06.05.17 when user has the same job-name with another user, there is shows in user's colleague's list

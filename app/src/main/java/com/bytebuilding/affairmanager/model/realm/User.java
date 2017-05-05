@@ -18,8 +18,8 @@ public class User extends RealmObject {
     @Required
     private String userPassword;
     private String userOrganization;
-    private RealmList<UserGroup> userGroups;
-    private RealmList<UserAffair> userAffairs;
+
+    private long userGroupId;
 
     public User() {
         this.userId = -1;
@@ -27,14 +27,12 @@ public class User extends RealmObject {
         this.userPassword = "userPass";
     }
 
-    public User(long userId, String login, String password, String organization,
-                RealmList<UserGroup> userGroups, RealmList<UserAffair> userAffairs) {
+    public User(long userId, String userLogin, String userPassword, String userOrganization, long userGroupId) {
         this.userId = userId;
-        this.userLogin = login;
-        this.userPassword = password;
-        this.userGroups = userGroups;
-        this.userAffairs = userAffairs;
-        this.userOrganization = organization;
+        this.userLogin = userLogin;
+        this.userPassword = userPassword;
+        this.userOrganization = userOrganization;
+        this.userGroupId = userGroupId;
     }
 
     public long getUserId() {
@@ -61,27 +59,19 @@ public class User extends RealmObject {
         this.userPassword = userPassword;
     }
 
-    public RealmList<UserGroup> getUserGroups() {
-        return userGroups;
-    }
-
-    public void setUserGroups(RealmList<UserGroup> userGroups) {
-        this.userGroups = userGroups;
-    }
-
-    public RealmList<UserAffair> getUserAffairs() {
-        return userAffairs;
-    }
-
-    public void setUserAffairs(RealmList<UserAffair> userAffairs) {
-        this.userAffairs = userAffairs;
-    }
-
     public String getUserOrganization() {
         return userOrganization;
     }
 
     public void setUserOrganization(String userOrganization) {
         this.userOrganization = userOrganization;
+    }
+
+    public long getUserGroupId() {
+        return userGroupId;
+    }
+
+    public void setUserGroupId(long userGroupId) {
+        this.userGroupId = userGroupId;
     }
 }
