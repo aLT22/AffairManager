@@ -3,6 +3,7 @@ package com.bytebuilding.affairmanager.model.realm;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -20,15 +21,15 @@ public class UserGroup extends RealmObject {
     private String userGroupName;
     private String userGroupDescription;
 
-    private List<Long> userIds;
-    private List<Long> affairIds;
+    private RealmList<User> users;
+    private RealmList<UserAffair> affairs;
 
     public UserGroup() {
         this.userGroupId = -1;
         this.userGroupName = "userGroupName";
         this.userGroupDescription = "userGroupDescription";
-        this.userIds = new ArrayList<>();
-        this.affairIds = new ArrayList<>();
+        this.users = new RealmList<>();
+        this.affairs = new RealmList<>();
     }
 
     public UserGroup(long userGroupId, String userGroupName, String userGroupDescription,
@@ -36,8 +37,16 @@ public class UserGroup extends RealmObject {
         this.userGroupId = userGroupId;
         this.userGroupName = userGroupName;
         this.userGroupDescription = userGroupDescription;
-        this.userIds = new ArrayList<>();
-        this.affairIds = new ArrayList<>();
+        this.users = new RealmList<>();
+        this.affairs = new RealmList<>();
+    }
+
+    public static void delete(Realm realm, long id) {
+        UserGroup userGroup = realm.where(UserGroup.class).equalTo("id", id).findFirst();
+
+        if (userGroup != null) {
+            userGroup.deleteFromRealm();
+        }
     }
 
     public long getUserGroupId() {
@@ -64,43 +73,43 @@ public class UserGroup extends RealmObject {
         this.userGroupDescription = userGroupDescription;
     }
 
-    public List<Long> getUserIds() {
-        return userIds;
+    public RealmList<User> getUsers() {
+        return users;
     }
 
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
+    public void setUsers(RealmList<User> users) {
+        this.users = users;
     }
 
-    public void addUser(long identifier) {
-        this.userIds.add(identifier);
+    public void addUser(User user) {
+        this.users.add(user);
     }
 
-    public void removeUser(long identifier) {
-        this.userIds.remove(identifier);
+    public void removeUser(User user) {
+        this.users.remove(user);
     }
 
     public void removeAllUsers() {
-        this.userIds.clear();
+        this.users.clear();
     }
 
-    public List<Long> getAffairIds() {
-        return affairIds;
+    public RealmList<UserAffair> getAffairs() {
+        return affairs;
     }
 
-    public void setAffairIds(List<Long> affairIds) {
-        this.affairIds = affairIds;
+    public void setAffairs(RealmList<UserAffair> affairs) {
+        this.affairs = affairs;
     }
 
-    public void addAffair(long identifier) {
-        this.affairIds.add(identifier);
+    public void addAffair(UserAffair userAffair) {
+        this.affairs.add(userAffair);
     }
 
-    public void removeAffair(long identifier) {
-        this.affairIds.remove(identifier);
+    public void removeAffair(UserAffair userAffair) {
+        this.affairs.remove(userAffair);
     }
 
     public void removeAllAffairs() {
-        this.affairIds.clear();
+        this.affairs.clear();
     }
 }

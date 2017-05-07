@@ -22,21 +22,21 @@ public class User extends RealmObject {
     private String userPassword;
     private String userOrganization;
 
-    private List<Long> userGroupIds;
+    private RealmList<UserGroup> userGroups;
 
     public User() {
         this.userId = -1;
         this.userLogin = "userLogin";
         this.userPassword = "userPass";
-        this.userGroupIds = new ArrayList<>();
+        this.userGroups = new RealmList<>();
     }
 
-    public User(long userId, String userLogin, String userPassword, String userOrganization, List<Long> userGroupIds) {
+    public User(long userId, String userLogin, String userPassword, String userOrganization, RealmList<UserGroup> userGroups) {
         this.userId = userId;
         this.userLogin = userLogin;
         this.userPassword = userPassword;
         this.userOrganization = userOrganization;
-        this.userGroupIds = userGroupIds;
+        this.userGroups = userGroups;
     }
 
     public long getUserId() {
@@ -71,11 +71,15 @@ public class User extends RealmObject {
         this.userOrganization = userOrganization;
     }
 
-    public List<Long> getUserGroupIds() {
-        return userGroupIds;
+    public RealmList<UserGroup> getUserGroups() {
+        return userGroups;
     }
 
-    public void setUserGroupId(List<Long> userGroupIds) {
-        this.userGroupIds = userGroupIds;
+    public void setUserGroups(RealmList<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    public void addUserGroup(UserGroup userGroup) {
+        this.userGroups.add(userGroup);
     }
 }

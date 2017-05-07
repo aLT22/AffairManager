@@ -188,4 +188,6 @@
 
     <string name="dialog_add_group_hint_title">Название группы</string>
     <string name="dialog_add_group_hint_description">Описание группы</string>
+
+    <string name="dialog_adding_group_cancel">Группа не была добавлена!</string>
 </resources>

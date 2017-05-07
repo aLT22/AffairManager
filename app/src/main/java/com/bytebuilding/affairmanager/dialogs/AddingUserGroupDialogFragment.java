@@ -11,12 +11,16 @@ import java.util.Calendar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
+import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 
 /**
@@ -69,16 +73,78 @@ public class AddingUserGroupDialogFragment extends DialogFragment {
 
         final UserGroup userGroup = new UserGroup();
 
+        builder.setView(containerDialogFragment);
+
         builder.setPositiveButton(getResources().getString(R.string.button_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                User currentUser = new User();
+                currentUser.setUserId(preferences.getLong("id", 0));
+                currentUser.setUserLogin(preferences.getString("login", "Non-identified"));
+                currentUser.setUserPassword(preferences.getString("password", "null"));
+                currentUser.setUserOrganization(preferences.getString("job", "job"));
+
                 userGroup.setUserGroupId(Calendar.getInstance().getTimeInMillis());
-                userGroup.addUser(preferences.getLong("id", 0));
+                userGroup.addUser(currentUser);
                 userGroup.setUserGroupName(etTitle.getText().toString());
                 userGroup.setUserGroupDescription(etDescription.getText().toString());
+
+                currentUser.addUserGroup(userGroup);
+
+                addingUserGroupAffairListener.onGroupAdded(userGroup);
+
+                dialog.dismiss();
             }
         });
 
-        return super.onCreateDialog(savedInstanceState);
+        builder.setNegativeButton(getString(R.string.button_decline), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addingUserGroupAffairListener.onGroupAddingCancel();
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                final Button acceptButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                if (etTitle.length() == 0) {
+                    acceptButton.setEnabled(false);
+                    tilGroupTitle.setErrorEnabled(true);
+                    tilGroupTitle.setError(getResources().getString(R.string.dialog_error_edit_text));
+                }
+
+                etTitle.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.length() == 0) {
+                            acceptButton.setEnabled(false);
+                            tilGroupTitle.setError(getResources().getString(R.string
+                                    .dialog_error_edit_text));
+                        } else {
+                            acceptButton.setEnabled(true);
+                            tilGroupTitle.setError(null);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+            }
+        });
+
+        return alertDialog;
     }
 }

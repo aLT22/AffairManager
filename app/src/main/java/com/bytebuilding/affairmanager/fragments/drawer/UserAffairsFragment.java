@@ -17,8 +17,11 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.SignUpActivity;
 import com.bytebuilding.affairmanager.adapters.realm.RealmUserAffairsAdapter;
 import com.bytebuilding.affairmanager.database.realm.UserAffairsRealmHelper;
+import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
+import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
+import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.database.DatabaseReference;
@@ -99,26 +102,30 @@ public class UserAffairsFragment extends Fragment {
 
     @OnClick(R.id.fragment_user_affairs_fab_add_group)
     public void onAddGroupFabClick() {
-        Toast.makeText(getActivity().getApplicationContext(), "Add Group Clicked", Toast.LENGTH_LONG)
-                .show();
         fabMenu.collapse();
+        DialogFragment addingGroupDialogFragment = new AddingUserGroupDialogFragment();
+
+        addingGroupDialogFragment.show(getFragmentManager(), "AddingGroupDialogFragment");
+        /*fabMenu.collapse();
+        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
+
+        addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");*/
     }
 
     public void addUserAffair(UserAffair userAffair) {
-        /*for (int i = 0; i < adapter.getItemCount(); i++) {
-            UserAffair task = adapter.getItem(i);
-            if (userAffair.getDate() < task.getDate()) {
-                break;
-            }
-        }*/
         realm = Realm.getDefaultInstance();
 
-        //UserAffairsRealmHelper.deleteAllAffairsAsync(realm);
         UserAffairsRealmHelper.addUserAffairAsync(realm, userAffair);
     }
 
     public void addUserAffairCancel() {
-        Toast.makeText(getActivity(), "CANCEL", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.affair_adding_cancel), Toast.LENGTH_SHORT).show();
+    }
+
+    public void addUserGroup(UserGroup userGroup) {
+        realm = Realm.getDefaultInstance();
+
+        UserGroupsRealmHelper.addUserGroupAsync(realm, userGroup);
     }
 
     @Override

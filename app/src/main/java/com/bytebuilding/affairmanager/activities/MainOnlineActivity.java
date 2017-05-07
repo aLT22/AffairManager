@@ -19,6 +19,7 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
+import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
 import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
@@ -28,6 +29,7 @@ import com.bytebuilding.affairmanager.fragments.drawer.UserProfileFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
+import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
@@ -50,7 +52,7 @@ import butterknife.Unbinder;
 import io.realm.Realm;
 
 public class MainOnlineActivity extends AppCompatActivity implements FirebaseHelper, AddingAffairDialogFragment.AddingUserAffairListener,
-        AddingAffairDialogFragment.AddingAffairListener{
+        AddingAffairDialogFragment.AddingAffairListener, AddingUserGroupDialogFragment.AddingUserGroupAffairListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -332,6 +334,16 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
     @Override
     public void onAffairAddingCancel() {
         Toast.makeText(getApplicationContext(), getString(R.string.affair_adding_cancel), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGroupAdded(UserGroup userGroup) {
+        userAffairsFragment.addUserGroup(userGroup);
+    }
+
+    @Override
+    public void onGroupAddingCancel() {
+        Toast.makeText(getApplicationContext(), getString(R.string.dialog_adding_group_cancel), Toast.LENGTH_SHORT).show();
     }
 }
 
