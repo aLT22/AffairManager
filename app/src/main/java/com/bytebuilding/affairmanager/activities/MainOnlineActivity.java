@@ -95,7 +95,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
         userAffairsFragment = new UserAffairsFragment();
 
-        OfflineNotificationHelper.getInstance().initializeAlarmManager(getApplicationContext());
+        OfflineNotificationHelper.getInstance().initializeAlarmManager(this);
 
         preferences = getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE);
 

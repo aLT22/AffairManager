@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.SplashScreen;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
@@ -485,6 +487,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
                 userAffair.setPlace(etPlace.getText().toString());
                 userAffair.setStatus(Affair.STATUS_CURRENT);
                 userAffair.setRepeatTimestamp(repeating);
+                userAffair.setUserId(getActivity().getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE).getLong("id", 0));
 
                 if (etDate.length() != 0 || etTime.length() != 0) {
                     affair.setDate(calendar.getTimeInMillis());

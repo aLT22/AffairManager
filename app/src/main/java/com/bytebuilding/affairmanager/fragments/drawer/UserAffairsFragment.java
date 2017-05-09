@@ -2,6 +2,8 @@ package com.bytebuilding.affairmanager.fragments.drawer;
 
 
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
+import com.bytebuilding.affairmanager.activities.MainOnlineActivity;
 import com.bytebuilding.affairmanager.activities.SignUpActivity;
 import com.bytebuilding.affairmanager.adapters.realm.RealmUserAffairsAdapter;
 import com.bytebuilding.affairmanager.database.realm.UserAffairsRealmHelper;
@@ -22,6 +26,7 @@ import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
+import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.database.DatabaseReference;
@@ -61,6 +66,8 @@ public class UserAffairsFragment extends Fragment {
 
     private DatabaseReference affairReference = rootReference.child("affairs");
 
+    private OfflineNotificationHelper offlineNotificationHelper;
+
     public UserAffairsFragment() {
     }
 
@@ -78,13 +85,15 @@ public class UserAffairsFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, rootView);
 
+        offlineNotificationHelper = OfflineNotificationHelper.getInstance();
+
         setUpRecyclerView();
 
         return rootView;
     }
 
     private void setUpRecyclerView() {
-        adapter = new RealmUserAffairsAdapter(realm.where(UserAffair.class).findAllAsync(), true);
+        adapter = new RealmUserAffairsAdapter(realm.where(UserAffair.class).findAllSorted("status"), true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(false);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
@@ -106,10 +115,6 @@ public class UserAffairsFragment extends Fragment {
         DialogFragment addingGroupDialogFragment = new AddingUserGroupDialogFragment();
 
         addingGroupDialogFragment.show(getFragmentManager(), "AddingGroupDialogFragment");
-        /*fabMenu.collapse();
-        DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
-
-        addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");*/
     }
 
     public void addUserAffair(UserAffair userAffair) {
@@ -126,6 +131,32 @@ public class UserAffairsFragment extends Fragment {
         realm = Realm.getDefaultInstance();
 
         UserGroupsRealmHelper.addUserGroupAsync(realm, userGroup);
+    }
+
+    public void seeDetails(UserAffair affair, Context context) {
+        Bundle innerBundle = new Bundle();
+
+        innerBundle.putString("title", affair.getTitle());
+        innerBundle.putString("description", affair.getDescription());
+        innerBundle.putLong("date", affair.getDate());
+        innerBundle.putLong("time", affair.getTime());
+        innerBundle.putString("object", affair.getObject());
+        innerBundle.putString("type", affair.getType());
+        innerBundle.putString("place", affair.getPlace());
+        innerBundle.putInt("status", affair.getStatus());
+
+        Intent startDetailActivity = new Intent(context, DetailAffairActivity.class);
+        startDetailActivity.putExtras(innerBundle);
+
+        context.startActivity(startDetailActivity, innerBundle);
+    }
+
+    public void doneUserAffair(UserAffair userAffair) {
+        offlineNotificationHelper.doneAlarm(userAffair.getTimestamp());
+    }
+
+    public void restoreUserAffair(UserAffair userAffair) {
+        offlineNotificationHelper.setReceiver(userAffair);
     }
 
     @Override

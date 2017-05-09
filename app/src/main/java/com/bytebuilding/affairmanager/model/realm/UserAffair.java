@@ -32,12 +32,14 @@ public class UserAffair extends RealmObject {
 
     private long userGroupId;
 
+    private long userId;
+
     public UserAffair() {
     }
 
     public UserAffair(long timestamp, String title, String description, long date,
                       long time, int priority, String object, String type,
-                      String place, long repeatTimestamp, int status, long userGroupId) {
+                      String place, long repeatTimestamp, int status, long userGroupId, long userId) {
         this.timestamp = timestamp;
         this.title = title;
         this.description = description;
@@ -50,6 +52,7 @@ public class UserAffair extends RealmObject {
         this.repeatTimestamp = repeatTimestamp;
         this.status = status;
         this.userGroupId = userGroupId;
+        this.userId = userId;
     }
 
     public static void create(Realm realm, UserAffair userAffair) {
@@ -62,6 +65,14 @@ public class UserAffair extends RealmObject {
         if (userAffair != null) {
             userAffair.deleteFromRealm();
         }
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {

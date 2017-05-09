@@ -53,8 +53,7 @@ public abstract class OfflineAffairFragment extends Fragment{
     public abstract void findAffairsByTitle(String title);
 
     public void deleteDialog(final int position) {
-        final AlertDialog.Builder deleteDialog = new AlertDialog
-                .Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
+        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.MyDialogTheme));
 
         deleteDialog.setMessage(R.string.delete_dialog_message);
         deleteDialog.setIcon(R.drawable.titlecalendar_icon);

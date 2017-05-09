@@ -47,8 +47,7 @@ public class OfflineNotification extends BroadcastReceiver{
         builder.setContentText(description);
         builder.setColor(context.getResources().getColor(color));
         builder.setSmallIcon(R.drawable.ic_offline_notification);
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap
-                .ic_launcher));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
@@ -60,8 +59,7 @@ public class OfflineNotification extends BroadcastReceiver{
         notification.vibrate = new long[]{1500, 1500, 500, 1500, 1500, 500, 1500, 1500, 500};
         notification.ledARGB = color;
 
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify((int) timestamp, notification);
     }
 }

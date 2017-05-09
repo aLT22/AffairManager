@@ -22,8 +22,7 @@ public class OfflineNotificationHelper {
 
     public void initializeAlarmManager(Context context) {
         this.context = context;
-        this.alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context
-                .ALARM_SERVICE);
+        this.alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
     }
 
     public void setReceiver(Affair affair) {
@@ -62,8 +61,7 @@ public class OfflineNotificationHelper {
     public void doneAlarm(long timestamp) {
         Intent intent = new Intent(context, OfflineNotification.class);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) timestamp, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) timestamp, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmManager.cancel(pendingIntent);
     }
