@@ -67,8 +67,6 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
     public void onBindViewHolder(final RealmUserAffairsAdapter.UserAffairsViewHolder holder, final int position) {
         final UserAffair userAffair = getItem(position);
 
-        realm = Realm.getDefaultInstance();
-
         holder.data = userAffair;
 
         final Resources resources = holder.itemView.getResources();
@@ -93,16 +91,26 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
             holder.userAffairContainer.setBackgroundColor(resources.getColor(R.color.color_primary_light));
         }
 
-        holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
-        holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+        if (userAffair.getStatus() == Affair.STATUS_CURRENT) {
+            holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
+            holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
 
-        holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_primary_text));
+            holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_primary_text));
 
-        holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
 
-        holder.userAffairDate.setTextColor(resources.getColor(R.color.color_primary_text));
+            holder.userAffairDate.setTextColor(resources.getColor(R.color.color_primary_text));
 
-        holder.userAffairTime.setTextColor(resources.getColor(R.color.color_primary_text));
+            holder.userAffairTime.setTextColor(resources.getColor(R.color.color_primary_text));
+        } else if (userAffair.getStatus() == Affair.STATUS_DONE){
+            holder.userAffairPriority.setImageResource(R.drawable.icon_done_affair);
+
+            holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
+        }
 
         holder.userAffairContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +151,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
                             realm.copyToRealmOrUpdate(results);
                         }
                     });
+                    realm.close();
 
                     holder.userAffairPriority.setEnabled(false);
 
@@ -193,6 +202,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
                             realm.copyToRealmOrUpdate(results);
                         }
                     });
+                    realm.close();
 
                     holder.userAffairPriority.setEnabled(false);
 
@@ -218,7 +228,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
                         public void onAnimationEnd(Animator animation) {
                             if (userAffair.getStatus() != Affair.STATUS_DONE) {
                                 holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
-                                //holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+                                holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
                             }
                         }
 
@@ -238,6 +248,43 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
 
             }
         });
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    @Override
+    public long getItemId(int index) {
+        return super.getItemId(index);
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
+
+    @Nullable
+    @Override
+    public UserAffair getItem(int index) {
+        return super.getItem(index);
+    }
+
+    @Nullable
+    @Override
+    public OrderedRealmCollection<UserAffair> getData() {
+        return super.getData();
+    }
+
+    @Override
+    public void updateData(@Nullable OrderedRealmCollection<UserAffair> data) {
+        super.updateData(data);
     }
 
     public void deleteDialog(final int position) {

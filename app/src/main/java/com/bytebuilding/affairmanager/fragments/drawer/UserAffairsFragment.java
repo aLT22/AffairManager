@@ -111,7 +111,7 @@ public class UserAffairsFragment extends Fragment {
     }
 
     private void setUpRecyclerView() {
-        adapter = new RealmUserAffairsAdapter(realm.where(UserAffair.class).findAllSorted("status"), true);
+        adapter = new RealmUserAffairsAdapter(realm.where(UserAffair.class).findAll().sort("priority").sort("status"), true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(false);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
