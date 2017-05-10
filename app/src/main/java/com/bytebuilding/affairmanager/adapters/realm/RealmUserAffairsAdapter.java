@@ -4,14 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
@@ -51,7 +56,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
     public RealmUserAffairsAdapter.UserAffairsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.affair_model, parent, false);
 
-        userAffairsFragment = new UserAffairsFragment();
+        userAffairsFragment = UserAffairsFragment.newInstance();
 
         context = parent.getContext();
 
@@ -63,7 +68,6 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
         final UserAffair userAffair = getItem(position);
 
         realm = Realm.getDefaultInstance();
-        final int lastPosition = realm.where(UserAffair.class).findAll().size();
 
         holder.data = userAffair;
 
@@ -114,7 +118,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //getOfflineAffairFragment().deleteDialog(affairViewHolder.getLayoutPosition());
+                        deleteDialog(position);
                     }
                 }, 1000);
 
@@ -214,7 +218,7 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
                         public void onAnimationEnd(Animator animation) {
                             if (userAffair.getStatus() != Affair.STATUS_DONE) {
                                 holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
-                                holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+                                //holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
                             }
                         }
 
@@ -234,6 +238,52 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
 
             }
         });
+    }
+
+    public void deleteDialog(final int position) {
+        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.MyDialogTheme));
+
+        deleteDialog.setMessage(R.string.delete_dialog_message);
+        deleteDialog.setIcon(R.drawable.titlecalendar_icon);
+
+        final UserAffair item = RealmUserAffairsAdapter.this.getItem(position);
+
+        final long timestamp = item.getTimestamp();
+
+        deleteDialog.setPositiveButton(R.string.button_accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        RealmResults<UserAffair> results = realm.where(UserAffair.class)
+                                .equalTo("timestamp", timestamp)
+                                .findAll();
+                        results.deleteAllFromRealm();
+                    }
+                });
+                RealmUserAffairsAdapter.this.notifyItemRemoved(position);
+                realm.close();
+
+                OfflineNotificationHelper.getInstance().doneAlarm(timestamp);
+
+                Toast.makeText(context.getApplicationContext(), R.string.toast_delete_dialog_accept, Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+            }
+        });
+
+        deleteDialog.setNegativeButton(R.string.button_decline, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                Toast.makeText(context.getApplicationContext(), R.string.toast_delete_dialog_cancel, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        deleteDialog.show();
     }
 
     public class UserAffairsViewHolder extends RecyclerView.ViewHolder {

@@ -93,7 +93,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
         dbHelper = new DBHelper(MainOnlineActivity.this);
 
-        userAffairsFragment = new UserAffairsFragment();
+        userAffairsFragment = UserAffairsFragment.newInstance();
 
         OfflineNotificationHelper.getInstance().initializeAlarmManager(this);
 
@@ -157,7 +157,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         Fragment currentFragment = null;
         switch (position) {
             case 1:
-                currentFragment = new UserAffairsFragment();
+                currentFragment = UserAffairsFragment.newInstance();
                 break;
 
             case 2:
@@ -346,6 +346,3 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         Toast.makeText(getApplicationContext(), getString(R.string.dialog_adding_group_cancel), Toast.LENGTH_SHORT).show();
     }
 }
-
-// TODO: 06.05.17 need to add group-id in UserAffair and in User and when users are standing at the same groups, both of users get affairs
-// TODO: 06.05.17 when user has the same job-name with another user, there is shows in user's colleague's list

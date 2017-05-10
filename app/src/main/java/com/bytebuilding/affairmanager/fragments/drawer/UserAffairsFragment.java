@@ -3,10 +3,13 @@ package com.bytebuilding.affairmanager.fragments.drawer;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,8 @@ import com.bytebuilding.affairmanager.database.realm.UserAffairsRealmHelper;
 import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
+import com.bytebuilding.affairmanager.model.Affair;
+import com.bytebuilding.affairmanager.model.Item;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
@@ -38,6 +43,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class UserAffairsFragment extends Fragment {
 
@@ -68,7 +74,18 @@ public class UserAffairsFragment extends Fragment {
 
     private OfflineNotificationHelper offlineNotificationHelper;
 
+    private Context context;
+
     public UserAffairsFragment() {
+    }
+
+    public static UserAffairsFragment newInstance() {
+        Bundle bundle = new Bundle();
+        UserAffairsFragment userAffairsFragment = new UserAffairsFragment();
+        userAffairsFragment.setArguments(bundle);
+
+
+        return userAffairsFragment;
     }
 
     @Override
@@ -79,11 +96,12 @@ public class UserAffairsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_affairs, container, false);
 
         unbinder = ButterKnife.bind(this, rootView);
+
+        context = rootView.getContext();
 
         offlineNotificationHelper = OfflineNotificationHelper.getInstance();
 
