@@ -198,4 +198,7 @@
         <item>Мой профиль</item>
         <item>О программе</item>
     </string-array>
+
+    <string name="dialog_change_password_tv">Автоматически сгенерированный пароль: </string>
+    <string name="dialog_change_password_title">Выбор пароля</string>
 </resources>

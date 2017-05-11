@@ -53,6 +53,9 @@ import io.realm.Realm;
 public class MainOnlineActivity extends AppCompatActivity implements FirebaseHelper, AddingAffairDialogFragment.AddingUserAffairListener,
         AddingAffairDialogFragment.AddingAffairListener, AddingUserGroupDialogFragment.AddingUserGroupAffairListener {
 
+    // TODO: 11.05.17 add suggestion to user to change password
+    // TODO: 11.05.17 add double entering (add in application firebase auth options)
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
