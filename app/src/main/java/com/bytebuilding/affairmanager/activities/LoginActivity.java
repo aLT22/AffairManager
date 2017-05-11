@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.dialogs.ChangePasswordDialogFragment;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
@@ -48,7 +49,10 @@ import io.realm.Realm;
 
 import static com.bytebuilding.affairmanager.activities.SignUpActivity.FIREBASE_DATABASE_URL;
 
-public class LoginActivity extends AppCompatActivity implements FirebaseHelper, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements FirebaseHelper, GoogleApiClient.OnConnectionFailedListener,
+        ChangePasswordDialogFragment.PasswordChangedListener {
+
+    public static boolean customRegistration;
 
     DatabaseReference rootReference = FirebaseDatabase.getInstance()
             .getReferenceFromUrl(FIREBASE_DATABASE_URL);
@@ -56,11 +60,16 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     public static final int RC_SIGN_IN = 007;
 
-    @BindView(R.id.btn_sign_up) Button btnSignUp;
-    @BindView(R.id.btn_sign_in) Button btnSignIn;
-    @BindView(R.id.btn_sign_in_vk) Button btnSignInVk;
-    @BindView(R.id.btn_sign_in_google) Button btnSignInGoogle;
-    @BindView(R.id.btn_sign_in_facebook) Button btnSignInFacebook;
+    @BindView(R.id.btn_sign_up)
+    Button btnSignUp;
+    @BindView(R.id.btn_sign_in)
+    Button btnSignIn;
+    @BindView(R.id.btn_sign_in_vk)
+    Button btnSignInVk;
+    @BindView(R.id.btn_sign_in_google)
+    Button btnSignInGoogle;
+    @BindView(R.id.btn_sign_in_facebook)
+    Button btnSignInFacebook;
 
     private LoginButton loginButton;
 
@@ -82,11 +91,21 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
     private GoogleSignInOptions gso;
     private GoogleApiClient googleApiClient;
 
+    private String password;
+
+    private boolean isSettedPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        customRegistration = false;
+
         unbinder = ButterKnife.bind(this);
+
+        password = "";
+        isSettedPassword = false;
 
         realm = Realm.getDefaultInstance();
 
@@ -175,39 +194,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                try {
-                                    final long id = System.currentTimeMillis();
-                                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils
-                                            .VECTOR, object.getString("email"));
-                                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY,
-                                            CryptoUtils.VECTOR, object.getString("id"));
-                                    final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
-
-                                    realm.executeTransaction(new Realm.Transaction() {
-                                        @Override
-                                        public void execute(Realm realm) {
-                                            User user = realm.createObject(User.class, id);
-                                            user.setUserLogin(login);
-                                            user.setUserPassword(password);
-                                            user.setUserOrganization("");
-                                        }
-                                    });
-
-                                    setUserPreferences(id, login, password, job);
-
-                                    saveUserToFirebase(realm.where(User.class).findAll().last());
-
-                                    isAccepted = true;
-
-                                    Intent intent = new Intent(getApplicationContext(),
-                                            MainOnlineActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } catch (JSONException e) {
-                                    Toast.makeText(getApplicationContext(), getResources()
-                                                    .getString(R.string.error_getting_data_from_firebase),
-                                            Toast.LENGTH_SHORT).show();
-                                }
+                                successfulSignedInFacebook(object);
                             }
                         });
                 Bundle parameters = new Bundle();
@@ -235,6 +222,46 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                         .toast_vk_autorization_decline), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void successfulSignedInFacebook(JSONObject object) {
+        try {
+            final long id = System.currentTimeMillis();
+            final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils
+                    .VECTOR, object.getString("email"));
+            final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
+
+            final User user = new User();
+            user.setUserId(id);
+            user.setUserLogin(login);
+            user.setUserPassword(password);
+            user.setUserOrganization("");
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealm(user);
+                }
+            });
+
+            setUserPreferences(id, login, password, job);
+
+            saveUserToFirebase(realm.where(User.class).findAll().last());
+
+            isAccepted = true;
+
+            goToMainOnlineActivity();
+        } catch (JSONException e) {
+            Toast.makeText(getApplicationContext(), getResources()
+                            .getString(R.string.error_getting_data_from_firebase),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void goToMainOnlineActivity() {
+        customRegistration = true;
+        Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setUserPreferences(long id, String login, String password, String job) {
@@ -265,34 +292,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 if (result.isSuccess()) {
                     // Signed in successfully, show authenticated UI.
-                    GoogleSignInAccount acct = result.getSignInAccount();
-
-                    final long id = System.currentTimeMillis();
-                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
-                            .getEmail());
-                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
-                            .getId());
-                    final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
-
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            User user = realm.createObject(User.class, id);
-                            user.setUserLogin(login);
-                            user.setUserPassword(password);
-                            user.setUserOrganization("");
-                        }
-                    });
-
-                    setUserPreferences(id, login, password, job);
-
-                    saveUserToFirebase(realm.where(User.class).findAll().last());
-
-                    isAccepted = true;
-
-                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
-                    startActivity(intent);
-                    finish();
+                    successfulSignedInGoogle(result);
                 }
             }
         } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
@@ -300,34 +300,9 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
             if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
                 @Override
                 public void onResult(VKAccessToken res) {
-                    // Пользователь успешно авторизовался
-                    final long id = System.currentTimeMillis();
-                    final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
-                            .email);
-                    final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
-                            res.userId);
-                    final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
-
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            User user = realm.createObject(User.class, id);
-                            user.setUserLogin(login);
-                            user.setUserPassword(password);
-                            user.setUserOrganization("");
-                        }
-                    });
-
-                    setUserPreferences(id, login, password, job);
-
-                    saveUserToFirebase(realm.where(User.class).findAll().last());
-
-                    isAccepted = true;
-
-                    Intent intent = new Intent(getApplicationContext(), MainOnlineActivity.class);
-                    startActivity(intent);
-                    finish();
+                    successfulSignedInVk(res);
                 }
+
                 @Override
                 public void onError(VKError error) {
                     // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
@@ -337,12 +312,70 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
                     preferences.edit().putString("type", "").apply();
                 }
-            })) {}
+            })) {
+            }
 
             if (!isCancelled) {
                 this.finish();
             }
         }
+    }
+
+    private void successfulSignedInVk(VKAccessToken res) {
+        // Пользователь успешно авторизовался
+        final long id = System.currentTimeMillis();
+        final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
+                .email);
+        final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
+
+        final User user = new User();
+        user.setUserId(id);
+        user.setUserLogin(login);
+        user.setUserPassword(password);
+        user.setUserOrganization("");
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(user);
+            }
+        });
+
+        setUserPreferences(id, login, password, job);
+
+        saveUserToFirebase(realm.where(User.class).findAll().last());
+
+        isAccepted = true;
+
+        goToMainOnlineActivity();
+    }
+
+    private void successfulSignedInGoogle(GoogleSignInResult result) {
+        GoogleSignInAccount acct = result.getSignInAccount();
+
+        final long id = System.currentTimeMillis();
+        final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
+                .getEmail());
+        final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
+
+        final User user = new User();
+        user.setUserId(id);
+        user.setUserLogin(login);
+        user.setUserPassword(password);
+        user.setUserOrganization("");
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(user);
+            }
+        });
+
+        setUserPreferences(id, login, password, job);
+
+        saveUserToFirebase(realm.where(User.class).findAll().last());
+
+        isAccepted = true;
+
+        goToMainOnlineActivity();
     }
 
     @Override
@@ -352,11 +385,22 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @Override
     public void saveAffairToFireBase(UserAffair userAffair) {
-        
+
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onPasswordChanged(String password, boolean flag) {
+        this.password = password;
+        this.isSettedPassword = flag;
+    }
+
+    @Override
+    public void onPasswordChangedCancel() {
 
     }
 }

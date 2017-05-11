@@ -20,6 +20,7 @@ import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
+import com.bytebuilding.affairmanager.dialogs.ChangePasswordDialogFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
@@ -51,7 +52,8 @@ import butterknife.Unbinder;
 import io.realm.Realm;
 
 public class MainOnlineActivity extends AppCompatActivity implements FirebaseHelper, AddingAffairDialogFragment.AddingUserAffairListener,
-        AddingAffairDialogFragment.AddingAffairListener, AddingUserGroupDialogFragment.AddingUserGroupAffairListener {
+        AddingAffairDialogFragment.AddingAffairListener, AddingUserGroupDialogFragment.AddingUserGroupAffairListener,
+        ChangePasswordDialogFragment.PasswordChangedListener {
 
     // TODO: 11.05.17 add suggestion to user to change password
     // TODO: 11.05.17 add double entering (add in application firebase auth options)
@@ -112,6 +114,11 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         startDefaultFragment();
 
         toolbar.setTitle(getResources().getStringArray(R.array.toolbar_titles)[0]);
+
+        if (LoginActivity.customRegistration) {
+            ChangePasswordDialogFragment changePasswordDialogFragment = new ChangePasswordDialogFragment();
+            changePasswordDialogFragment.show(getFragmentManager(), "ChangePasswordDialog");
+        }
     }
 
     private void startDefaultFragment() {
@@ -126,6 +133,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+
         realm.close();
 
         super.onDestroy();
@@ -361,5 +369,15 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
     @Override
     public void onGroupAddingCancel() {
         Toast.makeText(getApplicationContext(), getString(R.string.dialog_adding_group_cancel), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPasswordChanged(String password, boolean flag) {
+
+    }
+
+    @Override
+    public void onPasswordChangedCancel() {
+
     }
 }
