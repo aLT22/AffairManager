@@ -71,46 +71,9 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
 
         final Resources resources = holder.itemView.getResources();
 
-        holder.userAffairTitle.setText(holder.data.getTitle());
-        holder.userAffairDescription.setText(holder.data.getDescription());
-        if (holder.data.getDate() != 0) {
-            holder.userAffairDate.setText(DateUtils.getDate(holder.data.getTimestamp()));
-        } else {
-            holder.userAffairDate.setText("-");
-        }
+        fillAffairWidgets(holder, resources);
 
-        if (holder.data.getTime() != 0) {
-            holder.userAffairTime.setText(DateUtils.getTime(holder.data.getTimestamp()));
-        } else {
-            holder.userAffairTime.setText("-");
-        }
-
-        holder.userAffairPriority.setEnabled(true);
-
-        if (holder.data.getDate() != 0 && holder.data.getDate() < Calendar.getInstance().getTimeInMillis()) {
-            holder.userAffairContainer.setBackgroundColor(resources.getColor(R.color.color_primary_light));
-        }
-
-        if (userAffair.getStatus() == Affair.STATUS_CURRENT) {
-            holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
-            holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
-
-            holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_primary_text));
-
-            holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
-
-            holder.userAffairDate.setTextColor(resources.getColor(R.color.color_primary_text));
-
-            holder.userAffairTime.setTextColor(resources.getColor(R.color.color_primary_text));
-        } else if (userAffair.getStatus() == Affair.STATUS_DONE){
-            holder.userAffairPriority.setImageResource(R.drawable.icon_done_affair);
-
-            holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
-            holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
-            holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
-            holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
-            holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
-        }
+        setLayoutAffairByStatus(holder, userAffair, resources);
 
         holder.userAffairContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,114 +103,167 @@ public class RealmUserAffairsAdapter extends RealmRecyclerViewAdapter<UserAffair
             @Override
             public void onClick(View v) {
                 if (userAffair.getStatus() == Affair.STATUS_CURRENT) {
-                    realm = Realm.getDefaultInstance();
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            userAffair.setStatus(Affair.STATUS_DONE);
-                            realm.copyToRealmOrUpdate(userAffair);
-                            RealmResults<UserAffair> results = realm.where(UserAffair.class).findAll();
-                            results.sort("status", Sort.ASCENDING);
-                            realm.copyToRealmOrUpdate(results);
-                        }
-                    });
-                    realm.close();
-
-                    holder.userAffairPriority.setEnabled(false);
-
-                    holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
-
-                    ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(holder.userAffairPriority, "rotationY", -360f, 0f);
-
-                    OfflineNotificationHelper.getInstance().doneAlarm(userAffair.getTimestamp());
-
-                    flipAnimation.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (userAffair.getStatus() == Affair.STATUS_DONE) {
-                                holder.userAffairPriority.setImageResource(R.drawable.icon_done_affair);
-                            }
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
-
-                    flipAnimation.start();
+                    setDoneStatus(userAffair, holder, resources);
                 } else {
-                    realm = Realm.getDefaultInstance();
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            userAffair.setStatus(Affair.STATUS_CURRENT);
-                            realm.copyToRealmOrUpdate(userAffair);
-                            RealmResults<UserAffair> results = realm.where(UserAffair.class).findAll();
-                            results.sort("status", Sort.ASCENDING);
-                            realm.copyToRealmOrUpdate(results);
-                        }
-                    });
-                    realm.close();
-
-                    holder.userAffairPriority.setEnabled(false);
-
-                    holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
-                    holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
-
-                    ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(holder.userAffairPriority, "rotationY", -360f, 0f);
-
-                    if (userAffair.getDate() != 0 || userAffair.getTime() != 0) {
-                        OfflineNotificationHelper.getInstance().setReceiver(userAffair);
-                    }
-
-                    flipAnimation.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (userAffair.getStatus() != Affair.STATUS_DONE) {
-                                holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
-                                holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
-                            }
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
-
-                    flipAnimation.start();
+                    setCurrentStatus(userAffair, holder, resources);
                 }
 
             }
         });
+    }
+
+    private void setCurrentStatus(final UserAffair userAffair, final UserAffairsViewHolder holder, final Resources resources) {
+        realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                userAffair.setStatus(Affair.STATUS_CURRENT);
+                realm.copyToRealmOrUpdate(userAffair);
+                RealmResults<UserAffair> results = realm.where(UserAffair.class).findAll();
+                results.sort("status", Sort.ASCENDING);
+                realm.copyToRealmOrUpdate(results);
+            }
+        });
+        realm.close();
+
+        holder.userAffairPriority.setEnabled(false);
+
+        holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
+
+        ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(holder.userAffairPriority, "rotationY", -360f, 0f);
+
+        if (userAffair.getDate() != 0 || userAffair.getTime() != 0) {
+            OfflineNotificationHelper.getInstance().setReceiver(userAffair);
+        }
+
+        flipAnimation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (userAffair.getStatus() != Affair.STATUS_DONE) {
+                    holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
+                    holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        flipAnimation.start();
+    }
+
+    private void setDoneStatus(final UserAffair userAffair, final UserAffairsViewHolder holder, Resources resources) {
+        realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                userAffair.setStatus(Affair.STATUS_DONE);
+                realm.copyToRealmOrUpdate(userAffair);
+                RealmResults<UserAffair> results = realm.where(UserAffair.class).findAll();
+                results.sort("status", Sort.ASCENDING);
+                realm.copyToRealmOrUpdate(results);
+            }
+        });
+        realm.close();
+
+        holder.userAffairPriority.setEnabled(false);
+
+        holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
+        holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
+
+        ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(holder.userAffairPriority, "rotationY", -360f, 0f);
+
+        OfflineNotificationHelper.getInstance().doneAlarm(userAffair.getTimestamp());
+
+        flipAnimation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (userAffair.getStatus() == Affair.STATUS_DONE) {
+                    holder.userAffairPriority.setImageResource(R.drawable.icon_done_affair);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        flipAnimation.start();
+    }
+
+    private void fillAffairWidgets(UserAffairsViewHolder holder, Resources resources) {
+        holder.userAffairTitle.setText(holder.data.getTitle());
+        holder.userAffairDescription.setText(holder.data.getDescription());
+        if (holder.data.getDate() != 0) {
+            holder.userAffairDate.setText(DateUtils.getDate(holder.data.getTimestamp()));
+        } else {
+            holder.userAffairDate.setText("-");
+        }
+
+        if (holder.data.getTime() != 0) {
+            holder.userAffairTime.setText(DateUtils.getTime(holder.data.getTimestamp()));
+        } else {
+            holder.userAffairTime.setText("-");
+        }
+
+        holder.userAffairPriority.setEnabled(true);
+
+        if (holder.data.getDate() != 0 && holder.data.getDate() < Calendar.getInstance().getTimeInMillis()) {
+            holder.userAffairContainer.setBackgroundColor(resources.getColor(R.color.color_primary_light));
+        }
+    }
+
+    private void setLayoutAffairByStatus(UserAffairsViewHolder holder, UserAffair userAffair, Resources resources) {
+        if (userAffair.getStatus() == Affair.STATUS_CURRENT) {
+            holder.userAffairPriority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
+            holder.userAffairPriority.setColorFilter(resources.getColor(userAffair.getColor()));
+
+            holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_primary_text));
+
+            holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+
+            holder.userAffairDate.setTextColor(resources.getColor(R.color.color_primary_text));
+
+            holder.userAffairTime.setTextColor(resources.getColor(R.color.color_primary_text));
+        } else if (userAffair.getStatus() == Affair.STATUS_DONE){
+            holder.userAffairPriority.setImageResource(R.drawable.icon_done_affair);
+
+            holder.userAffairTitle.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairDescription.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairDate.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairTime.setTextColor(resources.getColor(R.color.color_secondary_text));
+            holder.userAffairPriority.setColorFilter(resources.getColor(android.R.color.darker_gray));
+        }
     }
 
     @Override

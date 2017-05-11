@@ -10,8 +10,13 @@ import com.bytebuilding.affairmanager.model.realm.UserAffair;
 
 public class OfflineNotificationHelper {
 
+    public static final int AFFAIR_TYPE_OFFLINE = 0;
+    public static final int AFFAIR_TYPE_ONLINE = 1;
+
     private static OfflineNotificationHelper instance;
+
     private Context context;
+
     private AlarmManager alarmManager;
 
     public static OfflineNotificationHelper getInstance() {
@@ -28,6 +33,7 @@ public class OfflineNotificationHelper {
     public void setReceiver(Affair affair) {
         Intent intent = new Intent(context, OfflineNotification.class);
 
+        intent.putExtra("type", AFFAIR_TYPE_OFFLINE);
         intent.putExtra("title", affair.getTitle());
         intent.putExtra("timestamp", affair.getTimestamp());
         intent.putExtra("color", affair.getColor());
@@ -45,6 +51,7 @@ public class OfflineNotificationHelper {
     public void setReceiver(UserAffair userAffair) {
         Intent intent = new Intent(context, OfflineNotification.class);
 
+        intent.putExtra("type", AFFAIR_TYPE_ONLINE);
         intent.putExtra("title", userAffair.getTitle());
         intent.putExtra("timestamp", userAffair.getTimestamp());
         intent.putExtra("color", userAffair.getColor());

@@ -16,11 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
-import com.bytebuilding.affairmanager.adapters.MainOfflineActivityPagerAdapter;
 import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
-import com.bytebuilding.affairmanager.fragments.CurrentOfflineAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.UserCoworkersFragment;
@@ -104,11 +102,16 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
         fragmentManager = getFragmentManager();
 
-        if (fragmentContainer != null) {
-            UserProfileFragment userProfileFragment = new UserProfileFragment();
+        startDefaultFragment();
 
-            fragmentManager.beginTransaction().add(R.id.fragment_container, userProfileFragment)
-                    .commit();
+        toolbar.setTitle(getResources().getStringArray(R.array.toolbar_titles)[0]);
+    }
+
+    private void startDefaultFragment() {
+        if (fragmentContainer != null) {
+            UserAffairsFragment userAffairsFragment = UserAffairsFragment.newInstance();
+
+            fragmentManager.beginTransaction().add(R.id.fragment_container, userAffairsFragment).commit();
         }
     }
 
@@ -128,7 +131,6 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
         drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
-                .withSelectedItem(3)
                 .withShowDrawerOnFirstLaunch(false)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggleAnimated(true)
@@ -154,30 +156,38 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     @NonNull
     private Fragment getFragmentForDrawer(int position) {
+        String[] toolbarTitles = getResources().getStringArray(R.array.toolbar_titles);
+
         Fragment currentFragment = null;
         switch (position) {
             case 1:
                 currentFragment = UserAffairsFragment.newInstance();
+                toolbar.setTitle(toolbarTitles[0]);
                 break;
 
             case 2:
                 currentFragment = new UserGroupsFragment();
+                toolbar.setTitle(toolbarTitles[1]);
                 break;
 
             case 3:
                 currentFragment = new UserCoworkersFragment();
+                toolbar.setTitle(toolbarTitles[2]);
                 break;
 
             case 5:
                 currentFragment = new UserProfileFragment();
+                toolbar.setTitle(toolbarTitles[3]);
                 break;
 
             case 7:
                 currentFragment = new AboutProgramFragment();
+                toolbar.setTitle(toolbarTitles[4]);
                 break;
 
             case 8:
                 currentFragment = new AboutProgramFragment();
+                toolbar.setTitle(toolbarTitles[4]);
                 showQuitDialog();
                 break;
         }
@@ -212,7 +222,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
                     goToMainOfflineActivity();
                 } else {
                     quitOptions = true;
-                    goToEnterActivity();
+                    goToLoginActivity();
                 }
 
             }
@@ -231,9 +241,9 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         dialog.show();
     }
 
-    private void goToEnterActivity() {
-        Intent enterActivityIntent = new Intent(getApplicationContext(), EnterActivity.class);
-        startActivity(enterActivityIntent);
+    private void goToLoginActivity() {
+        Intent loginActivityIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(loginActivityIntent);
         finish();
     }
 

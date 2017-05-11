@@ -9,7 +9,7 @@
         , обеспечивающий удобство работы и координирующий каждого пользователя приложения.
         Используйте комфортный менеджер, который, надеюсь, придется Вам по душе! Если хотите
         свяаться с создателем, чтобы поблагодарить, указать на уязвимость или посоветовать что-либо
-        для продвижения проекта, можете связаться с создателем по реквезитам, указанным ниже.
+        для продвижения проекта, можете воспользоваться реквизитами, указанным ниже.
         \n\nУдачного использования!\n\n
     </string>
     <string name="admin_email">altsworks@gmail.com</string>
@@ -180,7 +180,7 @@
         <item>Выйти из аккаунта</item>
     </string-array>
 
-    <string name="accept_changes"> Подтвердить изменения </string>
+    <string name="accept_changes"> Подтвердить изменения (двойной клик) </string>
 
     <string name="attention_dialog_title">Предупреждение</string>
     <string name="attention_dialog_message">Внимание, принятые настройки вступят в силу
@@ -190,4 +190,12 @@
     <string name="dialog_add_group_hint_description">Описание группы</string>
 
     <string name="dialog_adding_group_cancel">Группа не была добавлена!</string>
+
+    <string-array name="toolbar_titles">
+        <item>Мои встречи</item>
+        <item>Мои группы</item>
+        <item>Мои коллеги</item>
+        <item>Мой профиль</item>
+        <item>О программе</item>
+    </string-array>
 </resources>

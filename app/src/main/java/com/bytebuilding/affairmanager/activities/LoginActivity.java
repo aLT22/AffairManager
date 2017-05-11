@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
             .getReferenceFromUrl(FIREBASE_DATABASE_URL);
     DatabaseReference userReference = rootReference.child("users");
 
-    public static final String DEFAULT_VK_PASS = "vkpass";
     public static final int RC_SIGN_IN = 007;
 
     @BindView(R.id.btn_sign_up) Button btnSignUp;
@@ -171,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
     private void registrationCallback() {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
@@ -182,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                                             .VECTOR, object.getString("email"));
                                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY,
                                             CryptoUtils.VECTOR, object.getString("id"));
+                                    final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override
@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                                         }
                                     });
 
-                                    setUserPreferences(id, login, password);
+                                    setUserPreferences(id, login, password, job);
 
                                     saveUserToFirebase(realm.where(User.class).findAll().last());
 
@@ -237,10 +237,11 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
         });
     }
 
-    private void setUserPreferences(long id, String login, String password) {
+    private void setUserPreferences(long id, String login, String password, String job) {
         preferences.edit().putLong("id", id).apply();
         preferences.edit().putString("login", login).apply();
         preferences.edit().putString("password", password).apply();
+        preferences.edit().putString("job", job).apply();
     }
 
     @Override
@@ -271,6 +272,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                             .getEmail());
                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
                             .getId());
+                    final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
@@ -282,7 +284,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                         }
                     });
 
-                    setUserPreferences(id, login, password);
+                    setUserPreferences(id, login, password, job);
 
                     saveUserToFirebase(realm.where(User.class).findAll().last());
 
@@ -304,6 +306,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                             .email);
                     final String password = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
                             res.userId);
+                    final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
                     realm.executeTransaction(new Realm.Transaction() {
                         @Override
@@ -315,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                         }
                     });
 
-                    setUserPreferences(id, login, password);
+                    setUserPreferences(id, login, password, job);
 
                     saveUserToFirebase(realm.where(User.class).findAll().last());
 

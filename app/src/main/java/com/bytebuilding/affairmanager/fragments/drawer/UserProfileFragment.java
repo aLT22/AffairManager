@@ -95,6 +95,28 @@ public class UserProfileFragment extends Fragment {
 
         userProfileAcceptChanges.setClickable(false);
 
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                for (Map.Entry<String, Object> entry : users.entrySet()) {
+                    Map singleUser = (Map) entry.getValue();
+
+                    String temporaryLogin = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin"));
+
+                    if (temporaryLogin.equals(userProfileLogin.getText().toString())) {
+                        userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         setUserProfileInformation();
 
         return rootView;
@@ -102,7 +124,7 @@ public class UserProfileFragment extends Fragment {
 
     private void setUserProfileInformation() {
         userProfileLogin.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, preferences.getString("login", "Default user")));
-        userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, preferences.getString("job", "")));
+        //userProfileJob.setText(job);
         userProfileCoworkers.setText("0");
     }
 
@@ -113,6 +135,7 @@ public class UserProfileFragment extends Fragment {
         userProfileJob.setFocusableInTouchMode(true);
         userProfileLogin.setFocusable(true);
         userProfileLogin.setActivated(true);
+        userProfileLogin.requestFocus();
 
         userProfileAcceptChanges.setClickable(true);
         userProfileAcceptChanges.setFocusableInTouchMode(true);
@@ -131,8 +154,8 @@ public class UserProfileFragment extends Fragment {
                 userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), newLogin)) {
-                            Toast.makeText(getContext().getApplicationContext(), getResources().getString(R.string
+                        if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), newLogin, newJob)) {
+                            Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string
                                     .user_exists), Toast.LENGTH_SHORT).show();
                         } else {
                             userReference.child(String.valueOf(preferences.getLong("id", 0))).child("userLogin")
@@ -175,23 +198,29 @@ public class UserProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private boolean checkRegisteredUser(Map<String, Object> users, String login) {
+    private boolean checkRegisteredUser(Map<String, Object> users, String login, String job) {
         List<String> logins = new ArrayList<>();
+        List<String> jobs = new ArrayList<>();
 
         for (Map.Entry<String, Object> entry : users.entrySet()){
             Map singleUser = (Map) entry.getValue();
 
-            String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR,
-                    (String) singleUser.get("userLogin"));
+            String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin"));
+            String organization = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
 
             logins.add(log);
+            jobs.add(organization);
         }
 
-        if (logins.contains(login)) {
+        if (logins.contains(login) && jobs.contains(job)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    private void getJobByLogin(final String login) {
+
     }
 
     @Override

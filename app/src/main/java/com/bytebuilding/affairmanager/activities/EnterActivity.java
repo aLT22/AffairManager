@@ -67,17 +67,27 @@ public class EnterActivity extends AppCompatActivity {
 
                 if (isNetworkAvailable()) {
                     if (etEmail.getText().length() == 0 || etPassword.getText().length() == 0) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                        .dialog_error_edit_texts), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         if (rootReference.child("users").toString() != "users") {
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.getValue() == null) {
-                                        Toast.makeText(getApplicationContext(), getResources().getString(R
-                                                .string.error_entering_into_application), Toast.LENGTH_SHORT)
-                                                .show();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getApplicationContext(), getResources().getString(R
+                                                        .string.error_entering_into_application), Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        });
                                     } else {
                                         if (checkUser((Map<String, Object>) dataSnapshot.getValue(), etEmail.getText()
                                                 .toString(), etPassword.getText().toString())) {
@@ -108,26 +118,46 @@ public class EnterActivity extends AppCompatActivity {
 
                                             goToMainOnlineActivity();
                                         } else {
-                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                                    .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                                            .error_entering_into_application), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         }
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                                    .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
                                     Toast.makeText(getApplicationContext(), getResources().getString(R.string
                                             .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        } else {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                                    .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string
-                            .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string
+                                    .error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
                 runOnUiThread(new Runnable() {
@@ -219,6 +249,7 @@ public class EnterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+        progressDialog.dismiss();
 
         super.onDestroy();
     }

@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.notifications;
 
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,9 +20,10 @@ import android.support.v4.app.NotificationCompat;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
+import com.bytebuilding.affairmanager.activities.MainOnlineActivity;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 
-public class OfflineNotification extends BroadcastReceiver{
+public class OfflineNotification extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -54,7 +56,7 @@ public class OfflineNotification extends BroadcastReceiver{
         builder.setContentIntent(pendingIntent);
 
         Notification notification = builder.build();
-        notification.flags |= Notification.FLAG_INSISTENT;
+        notification.flags |= Notification.FLAG_INSISTENT | Notification.FLAG_AUTO_CANCEL;
         notification.sound = soundUri;
         notification.vibrate = new long[]{1500, 1500, 500, 1500, 1500, 500, 1500, 1500, 500};
         notification.ledARGB = color;
