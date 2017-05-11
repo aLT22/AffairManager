@@ -57,6 +57,8 @@ public class AddingUserGroupDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        final Calendar calendar = Calendar.getInstance();
+
         preferences = getActivity().getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -84,10 +86,11 @@ public class AddingUserGroupDialogFragment extends DialogFragment {
                 currentUser.setUserPassword(preferences.getString("password", "null"));
                 currentUser.setUserOrganization(preferences.getString("job", "job"));
 
-                userGroup.setUserGroupId(Calendar.getInstance().getTimeInMillis());
+                userGroup.setUserGroupId(calendar.getTimeInMillis());
                 userGroup.addUser(currentUser);
                 userGroup.setUserGroupName(etTitle.getText().toString());
                 userGroup.setUserGroupDescription(etDescription.getText().toString());
+                userGroup.setIdCreator(currentUser.getUserId());
 
                 currentUser.addUserGroup(userGroup);
 

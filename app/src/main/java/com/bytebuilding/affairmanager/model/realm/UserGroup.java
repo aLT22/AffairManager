@@ -21,6 +21,8 @@ public class UserGroup extends RealmObject {
     private String userGroupName;
     private String userGroupDescription;
 
+    private long idCreator;
+
     private RealmList<User> users;
     private RealmList<UserAffair> affairs;
 
@@ -39,6 +41,7 @@ public class UserGroup extends RealmObject {
         this.userGroupDescription = userGroupDescription;
         this.users = new RealmList<>();
         this.affairs = new RealmList<>();
+        this.idCreator = 0;
     }
 
     public static void delete(Realm realm, long id) {
@@ -47,6 +50,14 @@ public class UserGroup extends RealmObject {
         if (userGroup != null) {
             userGroup.deleteFromRealm();
         }
+    }
+
+    public long getIdCreator() {
+        return idCreator;
+    }
+
+    public void setIdCreator(long idCreator) {
+        this.idCreator = idCreator;
     }
 
     public long getUserGroupId() {

@@ -14,7 +14,6 @@ import io.realm.annotations.Required;
 
 public class User extends RealmObject {
 
-    @PrimaryKey
     private long userId;
     @Required
     private String userLogin;

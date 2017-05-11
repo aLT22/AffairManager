@@ -152,9 +152,7 @@ public class UserAffairsFragment extends Fragment {
     }
 
     public void addUserGroup(UserGroup userGroup) {
-        realm = Realm.getDefaultInstance();
 
-        UserGroupsRealmHelper.addUserGroupAsync(realm, userGroup);
     }
 
     public void seeDetails(UserAffair affair, Context context) {

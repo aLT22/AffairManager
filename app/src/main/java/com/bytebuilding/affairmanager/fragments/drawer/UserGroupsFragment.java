@@ -1,14 +1,22 @@
 package com.bytebuilding.affairmanager.fragments.drawer;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.activities.SplashScreen;
+import com.bytebuilding.affairmanager.adapters.realm.RealmUserGroupsAdapter;
+import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
+import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -16,6 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.realm.Realm;
+import io.realm.Sort;
 
 public class UserGroupsFragment extends Fragment {
 
@@ -28,11 +38,26 @@ public class UserGroupsFragment extends Fragment {
     @BindView(R.id.fragment_user_groups_fab_menu)
     FloatingActionsMenu fabMenu;
 
+    @BindView(R.id.groups_recyclerview)
+    RecyclerView recyclerView;
+
     private Unbinder unbinder;
+
+    private RealmUserGroupsAdapter adapter;
+
+    private Realm realm;
 
     public UserGroupsFragment() {
     }
 
+    public static UserGroupsFragment newInstance() {
+        UserGroupsFragment userGroupsFragment = new UserGroupsFragment();
+        Bundle bundle = new Bundle();
+
+        userGroupsFragment.setArguments(bundle);
+
+        return userGroupsFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +66,24 @@ public class UserGroupsFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, rootView);
 
+        realm = Realm.getDefaultInstance();
+
+        adapter = new RealmUserGroupsAdapter(realm.where(UserGroup.class).equalTo("idCreator", getActivity()
+                .getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE).getLong("id", 0)).findAll()
+                .sort("userGroupId", Sort.DESCENDING), true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(false);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+        recyclerView.setAdapter(adapter);
+
         return rootView;
+    }
+
+    public void addGroup(UserGroup userGroup) {
+        realm = Realm.getDefaultInstance();
+
+        UserGroupsRealmHelper.addUserGroupAsync(realm, userGroup);
     }
 
     @OnClick(R.id.fragment_user_groups_fab_add_group)

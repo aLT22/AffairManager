@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.database.DBHelper;
+import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
 import com.bytebuilding.affairmanager.fragments.drawer.AboutProgramFragment;
@@ -76,6 +77,8 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     private UserAffairsFragment userAffairsFragment;
 
+    private UserGroupsFragment userGroupsFragment;
+
     private Realm realm;
 
     private DBHelper dbHelper;
@@ -92,6 +95,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         dbHelper = new DBHelper(MainOnlineActivity.this);
 
         userAffairsFragment = UserAffairsFragment.newInstance();
+        userGroupsFragment = UserGroupsFragment.newInstance();
 
         OfflineNotificationHelper.getInstance().initializeAlarmManager(this);
 
@@ -166,7 +170,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
                 break;
 
             case 2:
-                currentFragment = new UserGroupsFragment();
+                currentFragment = UserGroupsFragment.newInstance();
                 toolbar.setTitle(toolbarTitles[1]);
                 break;
 
@@ -348,7 +352,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     @Override
     public void onGroupAdded(UserGroup userGroup) {
-        userAffairsFragment.addUserGroup(userGroup);
+        userGroupsFragment.addGroup(userGroup);
     }
 
     @Override

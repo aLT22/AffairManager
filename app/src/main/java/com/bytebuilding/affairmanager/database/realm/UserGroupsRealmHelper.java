@@ -14,7 +14,7 @@ import io.realm.Realm;
 public class UserGroupsRealmHelper {
 
     public static void addUserGroupAsync(Realm realm, final UserGroup userGroup) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealm(userGroup);
