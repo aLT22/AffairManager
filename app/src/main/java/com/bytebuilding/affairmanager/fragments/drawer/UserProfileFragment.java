@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,8 @@ public class UserProfileFragment extends Fragment {
     @BindView(R.id.btn_accept_changes)
     Button userProfileAcceptChanges;
 
-    private ProgressDialog progressDialog;
+    @BindView(R.id.pb_userProfile)
+    ProgressBar progressBar;
 
     private Unbinder unbinder;
 
@@ -73,8 +76,7 @@ public class UserProfileFragment extends Fragment {
         preferences = getActivity()
                 .getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE);
 
-        rootReference = FirebaseDatabase.getInstance()
-                .getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
+        rootReference = FirebaseDatabase.getInstance().getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
         userReference = rootReference.child("users");
 
         super.onCreate(savedInstanceState);
@@ -88,13 +90,14 @@ public class UserProfileFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, rootView);
 
-        progressDialog = new ProgressDialog(getActivity());
+        progressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(rootView.getContext()).build());
 
         userProfileLogin.setFocusable(false);
         userProfileJob.setFocusable(false);
 
         userProfileAcceptChanges.setClickable(false);
 
+        progressBar.setVisibility(View.VISIBLE);
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,6 +109,7 @@ public class UserProfileFragment extends Fragment {
 
                     if (temporaryLogin.equals(userProfileLogin.getText().toString())) {
                         userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
+                        progressBar.setVisibility(View.GONE);
                         break;
                     }
                 }
@@ -124,7 +128,6 @@ public class UserProfileFragment extends Fragment {
 
     private void setUserProfileInformation() {
         userProfileLogin.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, preferences.getString("login", "Default user")));
-        //userProfileJob.setText(job);
         userProfileCoworkers.setText("0");
     }
 

@@ -126,5 +126,14 @@
             android:text="@string/accept_changes"
             android:theme="@style/SignButtons"/>
 
+
+        <ProgressBar
+            android:id="@+id/pb_userProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:padding="@dimen/padding_sign_buttons"/>
+
     </LinearLayout>
 </ScrollView>
