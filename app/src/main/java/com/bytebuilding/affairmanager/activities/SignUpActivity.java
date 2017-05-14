@@ -99,8 +99,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         if (etUserJob.getText().length() == 0) {
             job = "";
         } else {
-            job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, etUserJob.getText()
-                    .toString());
+            job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, etUserJob.getText().toString());
         }
 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -138,19 +137,25 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
                 .registration_type_in_preferences)[3]).apply();
         preferences.edit().putString("job", job).apply();
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                User user = realm.createObject(User.class, id);
-                user.setUserLogin(login);
-                user.setUserPassword(password);
-                user.setUserOrganization(job);
-            }
-        });
+        saveToRealm(id);
 
         saveUserToFirebase(realm.where(User.class).findAll().last());
 
         goToMainOnlineActivity();
+    }
+
+    private void saveToRealm(long id) {
+        final User user = new User();
+        user.setUserId(id);
+        user.setUserLogin(login);
+        user.setUserPassword(password);
+        user.setUserOrganization(job);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(user);
+            }
+        });
     }
 
     private void goToMainOnlineActivity() {

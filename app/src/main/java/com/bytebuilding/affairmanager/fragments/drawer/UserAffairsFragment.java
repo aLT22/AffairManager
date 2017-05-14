@@ -2,16 +2,11 @@ package com.bytebuilding.affairmanager.fragments.drawer;
 
 
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,19 +17,12 @@ import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
-import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.activities.MainOnlineActivity;
 import com.bytebuilding.affairmanager.activities.SignUpActivity;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
-import com.bytebuilding.affairmanager.adapters.realm.RealmUserAffairsAdapter;
-import com.bytebuilding.affairmanager.adapters.realm.UserAffairsRecyclerAdapter;
-import com.bytebuilding.affairmanager.database.realm.UserAffairsRealmHelper;
-import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
+import com.bytebuilding.affairmanager.adapters.online.UserAffairsRecyclerAdapter;
 import com.bytebuilding.affairmanager.dialogs.AddingAffairDialogFragment;
 import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
-import com.bytebuilding.affairmanager.model.Affair;
-import com.bytebuilding.affairmanager.model.Item;
-import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
@@ -55,13 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.realm.OrderedRealmCollection;
-import io.realm.OrderedRealmCollectionSnapshot;
 import io.realm.Realm;
-import io.realm.RealmCollection;
-import io.realm.RealmList;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 public class UserAffairsFragment extends Fragment {
 
@@ -195,7 +177,7 @@ public class UserAffairsFragment extends Fragment {
         return rootView;
     }
 
-    public void setUpRecyclerView() {
+    private void setUpRecyclerView() {
         recyclerView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         adapter = new UserAffairsRecyclerAdapter(this);

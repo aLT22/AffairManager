@@ -1,4 +1,4 @@
-package com.bytebuilding.affairmanager.adapters.realm;
+package com.bytebuilding.affairmanager.adapters.online;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -16,27 +16,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
-import com.bytebuilding.affairmanager.activities.MainOnlineActivity;
 import com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.DateUtils;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 /**
  * Created by Turkin A. on 13.05.17.
@@ -49,8 +41,6 @@ public class UserAffairsRecyclerAdapter extends RecyclerView.Adapter<UserAffairs
     private List<UserAffair> mList;
 
     private UserAffairsFragment userAffairsFragment;
-
-    //private Realm realm;
 
     private Context context;
 
