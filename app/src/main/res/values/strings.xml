@@ -192,7 +192,7 @@
     <string name="dialog_adding_group_cancel">Группа не была добавлена!</string>
 
     <string-array name="toolbar_titles">
-        <item>Мои встречи</item>
+        <item>Мои задачи</item>
         <item>Мои группы</item>
         <item>Мои коллеги</item>
         <item>Мой профиль</item>

@@ -231,17 +231,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                     .VECTOR, object.getString("email"));
             final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
-            final User user = new User();
-            user.setUserId(id);
-            user.setUserLogin(login);
-            user.setUserPassword(password);
-            user.setUserOrganization("");
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    realm.copyToRealm(user);
-                }
-            });
+            saveToRealm(id, login);
 
             setUserPreferences(id, login, password, job);
 
@@ -324,21 +314,10 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
     private void successfulSignedInVk(VKAccessToken res) {
         // Пользователь успешно авторизовался
         final long id = System.currentTimeMillis();
-        final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res
-                .email);
+        final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res.email);
         final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
-        final User user = new User();
-        user.setUserId(id);
-        user.setUserLogin(login);
-        user.setUserPassword(password);
-        user.setUserOrganization("");
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealm(user);
-            }
-        });
+        saveToRealm(id, login);
 
         setUserPreferences(id, login, password, job);
 
@@ -357,6 +336,18 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                 .getEmail());
         final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
+        saveToRealm(id, login);
+
+        setUserPreferences(id, login, password, job);
+
+        saveUserToFirebase(realm.where(User.class).findAll().last());
+
+        isAccepted = true;
+
+        goToMainOnlineActivity();
+    }
+
+    private void saveToRealm(long id, String login) {
         final User user = new User();
         user.setUserId(id);
         user.setUserLogin(login);
@@ -368,14 +359,6 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                 realm.copyToRealm(user);
             }
         });
-
-        setUserPreferences(id, login, password, job);
-
-        saveUserToFirebase(realm.where(User.class).findAll().last());
-
-        isAccepted = true;
-
-        goToMainOnlineActivity();
     }
 
     @Override

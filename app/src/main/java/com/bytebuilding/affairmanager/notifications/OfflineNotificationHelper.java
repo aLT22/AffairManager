@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
@@ -43,8 +45,12 @@ public class OfflineNotificationHelper {
                 (int) affair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (affair.getStatus() != Affair.STATUS_DONE) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair
-                    .getRepeatTimestamp(), pendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, affair.getDate(), pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair.getRepeatTimestamp(), pendingIntent);
+            } else {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, affair.getDate(), affair.getRepeatTimestamp(), pendingIntent);
+            }
         }
     }
 
@@ -61,7 +67,12 @@ public class OfflineNotificationHelper {
                 (int) userAffair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (userAffair.getStatus() != Affair.STATUS_DONE) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userAffair.getDate(), userAffair.getRepeatTimestamp(), pendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, userAffair.getDate(), pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userAffair.getDate(), userAffair.getRepeatTimestamp(), pendingIntent);
+            } else {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userAffair.getDate(), userAffair.getRepeatTimestamp(), pendingIntent);
+            }
         }
     }
 

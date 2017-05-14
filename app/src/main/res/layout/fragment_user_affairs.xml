@@ -40,6 +40,13 @@
             fab:fab_icon="@drawable/add_affair_icon"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <ProgressBar
+        android:id="@+id/pb_userAffair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_online_user_affairs"
         android:layout_width="match_parent"

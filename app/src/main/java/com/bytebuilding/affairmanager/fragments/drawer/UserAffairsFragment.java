@@ -45,6 +45,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,9 @@ public class UserAffairsFragment extends Fragment {
 
     @BindView(R.id.rv_online_user_affairs)
     RecyclerView recyclerView;
+
+    @BindView(R.id.pb_userAffair)
+    ProgressBar progressBar;
 
     private UserAffairsRecyclerAdapter adapter;
 
@@ -130,6 +134,9 @@ public class UserAffairsFragment extends Fragment {
         for (int i = 0; i < userAffairList.size(); i++) {
             addUserAffair(userAffairList.get(i));
         }
+
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     public void addUserAffair(UserAffair userAffair) {
@@ -165,6 +172,8 @@ public class UserAffairsFragment extends Fragment {
 
         mainOnlineActivity = (MainOnlineActivity) getActivity();
 
+        progressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(rootView.getContext()).build());
+
         setUpRecyclerView();
         affairReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -187,6 +196,8 @@ public class UserAffairsFragment extends Fragment {
     }
 
     public void setUpRecyclerView() {
+        recyclerView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         adapter = new UserAffairsRecyclerAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
