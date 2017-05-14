@@ -39,4 +39,17 @@
             fab:fab_icon="@drawable/add_affair_icon"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <ProgressBar
+        android:id="@+id/pb_userProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/padding_sign_buttons"
+        android:padding="@dimen/padding_sign_buttons"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_coworkers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </FrameLayout>

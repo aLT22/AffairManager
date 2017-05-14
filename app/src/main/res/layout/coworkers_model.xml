@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/coworkers_container"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/coworkers_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_sign_buttons"
+        android:padding="@dimen/padding_sign_buttons"
+        android:textColor="@color/color_primary_text"
+        android:textSize="@dimen/material_text_headline"
+        tools:text="COWORKERS USERNAME"/>
+
+    <TextView
+        android:id="@+id/coworkers_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_sign_buttons"
+        android:padding="@dimen/padding_sign_buttons"
+        android:textColor="@color/color_secondary_text"
+        android:textSize="@dimen/material_text_caption"
+        tools:text="COWORKERS JOB"/>
+
+</LinearLayout>
