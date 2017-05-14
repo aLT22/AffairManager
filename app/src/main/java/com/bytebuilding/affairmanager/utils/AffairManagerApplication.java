@@ -35,7 +35,7 @@ public class AffairManagerApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(configuration);
 
-        SplashScreen.preferences = getSharedPreferences("AffairManagerPreferences", MODE_PRIVATE);
+        SplashScreen.preferences = getSharedPreferences(SplashScreen.PREFERENCES_NAME, MODE_PRIVATE);
     }
 
     public static boolean isVisible() {
@@ -55,9 +55,9 @@ public class AffairManagerApplication extends Application {
         public void onVKAccessTokenChanged(VKAccessToken oldToken, VKAccessToken newToken) {
             if (newToken == null) {
                 // VKAccessToken is invalid
-                /*Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         }
     };

@@ -118,14 +118,14 @@
     <string name="toast_delete_dialog_cancel">Задача не была удалена</string>
     <string name="toast_delete_dialog_accept">Задача была успешно удалена</string>
 
-    <string name="detailActivity_title">Название</string>
-    <string name="detailActivity_description">Описание</string>
-    <string name="detailActivity_date">Дата</string>
-    <string name="detailActivity_time">Время</string>
-    <string name="detailActivity_object">Объект встречи</string>
-    <string name="detailActivity_type">Тип встречи</string>
-    <string name="detailActivity_place">Место встречи</string>
-    <string name="detailActivity_status">Статус встречи</string>
+    <string name="detailActivity_title">Название задачи</string>
+    <string name="detailActivity_description">Описание задачи</string>
+    <string name="detailActivity_date">Дата задачи</string>
+    <string name="detailActivity_time">Время задачи</string>
+    <string name="detailActivity_object">Объект задачи</string>
+    <string name="detailActivity_type">Тип задачи</string>
+    <string name="detailActivity_place">Место </string>
+    <string name="detailActivity_status">Статус задачи</string>
 
     <string name="detailActivity_status_done">Завершено</string>
     <string name="detailActivity_status_current">В процессе</string>
@@ -161,7 +161,7 @@
 
     <string name="user_exists">Данный пользователь уже зарегестрирован!</string>
 
-    <string name="navigation_item_all_affairs">Мои встречи</string>
+    <string name="navigation_item_all_affairs">Мои задачи</string>
     <string name="navigation_item_all_groups">Мои группы</string>
     <string name="navigation_item_all_coworkers">Мои коллеги</string>
     <string name="navigation_item_account_info">Профиль</string>

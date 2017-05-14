@@ -509,7 +509,7 @@ public class AddingAffairDialogFragment extends DialogFragment {
 
                 addingAffairListener.onAffairAdded(affair);
                 addingUserAffairListener.onUserAffairAdded(userAffair);
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
 

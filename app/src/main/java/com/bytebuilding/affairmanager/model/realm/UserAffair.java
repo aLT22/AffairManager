@@ -5,9 +5,7 @@ import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -28,7 +26,7 @@ public class UserAffair extends RealmObject {
     private String type;
     private String place;
     private long repeatTimestamp;
-    private int status;
+    private long status;
 
     private long userGroupId;
 
@@ -155,11 +153,11 @@ public class UserAffair extends RealmObject {
         this.timestamp = timestamp;
     }
 
-    public int getStatus() {
+    public long getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(long status) {
         this.status = status;
     }
 

@@ -1,5 +1,6 @@
 package com.bytebuilding.affairmanager.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,8 +34,11 @@ import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -45,6 +49,10 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,15 +80,15 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     private FragmentManager fragmentManager;
 
-    private DatabaseReference rootReference = FirebaseDatabase.getInstance().getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
+    private static DatabaseReference rootReference = FirebaseDatabase.getInstance().getReferenceFromUrl(SignUpActivity.FIREBASE_DATABASE_URL);
 
     private DatabaseReference userReference = rootReference.child("users");
 
-    private DatabaseReference affairReference = rootReference.child("affairs");
+    public static DatabaseReference affairReference = rootReference.child("affairs");
 
     private boolean quitOptions = true;
 
-    private UserAffairsFragment userAffairsFragment;
+    UserAffairsFragment userAffairsFragment;
 
     private UserGroupsFragment userGroupsFragment;
 
@@ -88,12 +96,16 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     private DBHelper dbHelper;
 
+    private List<UserAffair> userAffairs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_online);
 
         unbinder = ButterKnife.bind(this);
+
+        userAffairs = new ArrayList<>();
 
         realm = Realm.getDefaultInstance();
 
@@ -123,9 +135,9 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     private void startDefaultFragment() {
         if (fragmentContainer != null) {
-            UserAffairsFragment userAffairsFragment = UserAffairsFragment.newInstance();
+            UserProfileFragment userProfileFragment = new UserProfileFragment();
 
-            fragmentManager.beginTransaction().add(R.id.fragment_container, userAffairsFragment).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, userProfileFragment).commit();
         }
     }
 
@@ -146,6 +158,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
         drawerBuilder = new DrawerBuilder()
                 .withActivity(this)
+                .withSelectedItem(3)
                 .withShowDrawerOnFirstLaunch(false)
                 .withToolbar(toolbar)
                 .withActionBarDrawerToggleAnimated(true)
@@ -159,8 +172,8 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
                         currentFragment = getFragmentForDrawer(position);
 
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_container, currentFragment);
-                        transaction.addToBackStack(null);
+                        transaction.replace(R.id.fragment_container, currentFragment, currentFragment.toString());
+                        //transaction.addToBackStack(null);
                         transaction.commit();
 
                         return false;
@@ -306,6 +319,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
                         .withName(R.string.navigation_item_account_info)
                         .withIdentifier(3)
                         .withIcon(R.drawable.ic_profile_drawer_18dp)
+                        .withSetSelected(true)
                         .withTextColorRes(R.color.color_icons)
                         .withSelectedColorRes(R.color.primary),
                 new DividerDrawerItem(),
@@ -322,6 +336,36 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
                         .withTextColorRes(R.color.color_icons)
                         .withSelectedColorRes(R.color.primary)};
     }
+
+    public List<UserAffair> getAffairsFromFirebase(Map<String, Object> affairs, long userId) {
+        List<UserAffair> userAffairs = new ArrayList<>();
+
+        for (Map.Entry<String, Object> entry : affairs.entrySet()) {
+            Map singleAffair = (Map) entry.getValue();
+
+            if (singleAffair.get("userId").equals(userId)) {
+                UserAffair userAffair = new UserAffair();
+
+                userAffair.setUserId(Long.valueOf(String.valueOf(singleAffair.get("userId"))));
+                userAffair.setUserGroupId(Long.valueOf(String.valueOf(singleAffair.get("userGroupId"))));
+                userAffair.setType((String) singleAffair.get("type"));
+                userAffair.setTitle((String) singleAffair.get("title"));
+                userAffair.setTimestamp(Long.valueOf(String.valueOf(singleAffair.get("timestamp"))));
+                userAffair.setTime(Long.valueOf(String.valueOf(singleAffair.get("time"))));
+                userAffair.setStatus(Long.valueOf(String.valueOf(singleAffair.get("status"))));
+                userAffair.setRepeatTimestamp(Long.valueOf(String.valueOf(singleAffair.get("repeatTimestamp"))));
+                userAffair.setPriority(Integer.valueOf(String.valueOf(singleAffair.get("priority"))));
+                userAffair.setPlace((String) singleAffair.get("place"));
+                userAffair.setObject((String) singleAffair.get("object"));
+                userAffair.setDate(Long.valueOf(String.valueOf(singleAffair.get("date"))));
+
+                userAffairs.add(userAffair);
+            }
+        }
+
+        return userAffairs;
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -342,8 +386,14 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     @Override
     public void onUserAffairAdded(UserAffair userAffair) {
-        userAffairsFragment.addUserAffair(userAffair);
         saveAffairToFireBase(userAffair);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        UserAffairsFragment fragment = (UserAffairsFragment) fragmentManager.findFragmentByTag(UserAffairsFragment.TAG);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack("UserAffairsFragment");
+        fragmentTransaction.commit();
+        fragment.addAffairFromFirebase();
     }
 
     @Override
