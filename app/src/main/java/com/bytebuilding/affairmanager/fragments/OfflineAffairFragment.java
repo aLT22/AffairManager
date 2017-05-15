@@ -100,6 +100,7 @@ public abstract class OfflineAffairFragment extends Fragment{
 
     public void seeDetails(Affair affair) {
         Bundle innerBundle = new Bundle();
+
         innerBundle.putString("title", affair.getTitle());
         innerBundle.putString("description", affair.getDescription());
         innerBundle.putLong("date", affair.getDate());
@@ -107,7 +108,9 @@ public abstract class OfflineAffairFragment extends Fragment{
         innerBundle.putString("object", affair.getObject());
         innerBundle.putString("type", affair.getType());
         innerBundle.putString("place", affair.getPlace());
-        innerBundle.putInt("status", affair.getStatus());
+        innerBundle.putLong("status", affair.getStatus());
+        innerBundle.putLong("repeating", affair.getRepeatTimestamp());
+
         Intent startDetailActivity = new Intent(this
                 .getContext().getApplicationContext(), DetailAffairActivity.class);
         startDetailActivity.putExtras(innerBundle);
