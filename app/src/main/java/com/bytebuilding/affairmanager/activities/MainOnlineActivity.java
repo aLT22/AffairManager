@@ -34,6 +34,7 @@ import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -388,13 +389,17 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
     @Override
     public void onUserAffairAdded(UserAffair userAffair) {
         saveAffairToFireBase(userAffair);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        UserAffairsFragment fragment = (UserAffairsFragment) fragmentManager.findFragmentByTag(UserAffairsFragment.TAG);
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.addToBackStack("UserAffairsFragment");
-        fragmentTransaction.commit();
-        fragment.addAffairFromFirebase();
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            UserAffairsFragment fragment = (UserAffairsFragment) fragmentManager.findFragmentByTag(UserAffairsFragment.TAG);
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack("UserAffairsFragment");
+            fragmentTransaction.commit();
+            fragment.addAffairFromFirebase();
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

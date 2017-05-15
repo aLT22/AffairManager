@@ -23,6 +23,7 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.SignUpActivity;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -99,30 +100,37 @@ public class UserProfileFragment extends Fragment {
         userProfileAcceptChanges.setClickable(false);
 
         progressBar.setVisibility(View.VISIBLE);
-        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
-                for (Map.Entry<String, Object> entry : users.entrySet()) {
-                    Map singleUser = (Map) entry.getValue();
 
-                    String temporaryLogin = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin"));
+        if (NetworkUtils.isNetworkAvailable(rootView.getContext())) {
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null && NetworkUtils.isNetworkAvailable(getActivity())) {
+                        Map<String, Object> users = (Map<String, Object>) dataSnapshot.getValue();
+                        for (Map.Entry<String, Object> entry : users.entrySet()) {
+                            Map singleUser = (Map) entry.getValue();
 
-                    if (temporaryLogin.equals(userProfileLogin.getText().toString())) {
-                        userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
-                        userProfileCoworkers.setText(String.valueOf(getCoworkersCount((Map<String, Object>) dataSnapshot.getValue(),
-                                CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")))));
-                        progressBar.setVisibility(View.GONE);
-                        break;
+                            String temporaryLogin = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin"));
+
+                            if (temporaryLogin.equals(userProfileLogin.getText().toString())) {
+                                userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
+                                userProfileCoworkers.setText(String.valueOf(getCoworkersCount((Map<String, Object>) dataSnapshot.getValue(),
+                                        CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")))));
+                                progressBar.setVisibility(View.GONE);
+                                break;
+                            }
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(rootView.getContext().getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+        }
 
         setUserProfileInformation();
 
@@ -156,32 +164,36 @@ public class UserProfileFragment extends Fragment {
                 userProfileJob.setSelected(false);
                 userProfileJob.setFocusable(false);
 
-                userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), newLogin, newJob)) {
-                            Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string
-                                    .user_exists), Toast.LENGTH_SHORT).show();
-                        } else {
-                            userReference.child(String.valueOf(preferences.getLong("id", 0))).child("userLogin")
-                                    .setValue(CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newLogin));
-                            userReference.child(String.valueOf(preferences.getLong("id", 0))).child("userOrganization")
-                                    .setValue(CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newJob));
+                if (NetworkUtils.isNetworkAvailable(getActivity())) {
+                    userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null && NetworkUtils.isNetworkAvailable(getActivity())) {
+                                if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), newLogin, newJob)) {
+                                    Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string
+                                            .user_exists), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    userReference.child(String.valueOf(preferences.getLong("id", 0))).child("userLogin")
+                                            .setValue(CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newLogin));
+                                    userReference.child(String.valueOf(preferences.getLong("id", 0))).child("userOrganization")
+                                            .setValue(CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newJob));
 
-                            preferences.edit().putString("login", CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newLogin))
-                                    .apply();
-                            preferences.edit().putString("job", CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newJob))
-                                    .apply();
+                                    preferences.edit().putString("login", CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newLogin))
+                                            .apply();
+                                    preferences.edit().putString("job", CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, newJob))
+                                            .apply();
 
-                            showAttentionDialog();
+                                    showAttentionDialog();
+                                }
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
     }

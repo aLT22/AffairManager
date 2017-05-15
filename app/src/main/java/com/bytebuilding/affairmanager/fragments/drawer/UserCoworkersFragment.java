@@ -21,6 +21,7 @@ import com.bytebuilding.affairmanager.adapters.online.CoworkersRecyclerAdapter;
 import com.bytebuilding.affairmanager.adapters.online.UserAffairsRecyclerAdapter;
 import com.bytebuilding.affairmanager.model.online.Coworker;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.database.DataSnapshot;
@@ -83,20 +84,25 @@ public class UserCoworkersFragment extends Fragment {
         progressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(rootView.getContext()).build());
 
         progressBar.setVisibility(View.VISIBLE);
-        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    setUpRecyclerView(getCoworkers((Map<String, Object>) dataSnapshot.getValue(), CryptoUtils.decrypt(CryptoUtils.KEY,
-                            CryptoUtils.VECTOR, preferences.getString("job", ""))));
+
+        if (NetworkUtils.isNetworkAvailable(rootView.getContext())) {
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        setUpRecyclerView(getCoworkers((Map<String, Object>) dataSnapshot.getValue(), CryptoUtils.decrypt(CryptoUtils.KEY,
+                                CryptoUtils.VECTOR, preferences.getString("job", ""))));
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(rootView.getContext().getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+        }
 
         return rootView;
     }

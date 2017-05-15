@@ -17,6 +17,7 @@ import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -105,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
+                if (dataSnapshot.getValue() == null && NetworkUtils.isNetworkAvailable(getApplicationContext())) {
                     successfulRegistration();
                 } else {
                     if (checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(),

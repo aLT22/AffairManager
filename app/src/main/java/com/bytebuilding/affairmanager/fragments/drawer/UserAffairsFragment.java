@@ -4,6 +4,8 @@ package com.bytebuilding.affairmanager.fragments.drawer;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -26,6 +28,7 @@ import com.bytebuilding.affairmanager.dialogs.AddingUserGroupDialogFragment;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.database.DataSnapshot;
@@ -109,16 +112,20 @@ public class UserAffairsFragment extends Fragment {
     }
 
     public void addAffairFromFirebase() {
-        adapter.removeAllItems();
+        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+            adapter.removeAllItems();
 
-        List<UserAffair> userAffairList = new ArrayList<>();
-        userAffairList.addAll(userAffairs);
-        for (int i = 0; i < userAffairList.size(); i++) {
-            addUserAffair(userAffairList.get(i));
+            List<UserAffair> userAffairList = new ArrayList<>();
+            userAffairList.addAll(userAffairs);
+            for (int i = 0; i < userAffairList.size(); i++) {
+                addUserAffair(userAffairList.get(i));
+            }
+
+            recyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
         }
-
-        recyclerView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
 
     public void addUserAffair(UserAffair userAffair) {
@@ -157,34 +164,41 @@ public class UserAffairsFragment extends Fragment {
         progressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(rootView.getContext()).build());
 
         //setUpRecyclerView();
-        affairReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    userAffairs = mainOnlineActivity.getAffairsFromFirebase((Map<String, Object>) dataSnapshot.getValue(),
-                            mainOnlineActivity.getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE).getLong("id", 0));
-                    setUpRecyclerView();
-                    addAffairFromFirebase();
+        if (NetworkUtils.isNetworkAvailable(rootView.getContext())) {
+            affairReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        userAffairs = mainOnlineActivity.getAffairsFromFirebase((Map<String, Object>) dataSnapshot.getValue(),
+                                mainOnlineActivity.getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE).getLong("id", 0));
+                        setUpRecyclerView();
+                        addAffairFromFirebase();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(rootView.getContext().getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+        }
 
         return rootView;
     }
 
     private void setUpRecyclerView() {
-        //recyclerView.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-        adapter = new UserAffairsRecyclerAdapter(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
+        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+            progressBar.setVisibility(View.VISIBLE);
+            adapter = new UserAffairsRecyclerAdapter(this);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void updateStatusAffair(long id, long status) {

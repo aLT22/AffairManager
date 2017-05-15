@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +80,7 @@ public class EnterActivity extends AppCompatActivity {
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.getValue() == null) {
+                                    if (dataSnapshot.getValue() == null && NetworkUtils.isNetworkAvailable(getApplicationContext())) {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {

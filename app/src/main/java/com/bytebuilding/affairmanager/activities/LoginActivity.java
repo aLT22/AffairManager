@@ -62,12 +62,16 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @BindView(R.id.btn_sign_up)
     Button btnSignUp;
+
     @BindView(R.id.btn_sign_in)
     Button btnSignIn;
+
     @BindView(R.id.btn_sign_in_vk)
     Button btnSignInVk;
+
     @BindView(R.id.btn_sign_in_google)
     Button btnSignInGoogle;
+
     @BindView(R.id.btn_sign_in_facebook)
     Button btnSignInFacebook;
 
