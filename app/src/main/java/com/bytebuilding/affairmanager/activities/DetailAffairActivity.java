@@ -64,6 +64,12 @@ public class DetailAffairActivity extends AppCompatActivity {
     @BindView(R.id.detailActivity_status_dynamic)
     TextView statusDynamic;
 
+    @BindView(R.id.detailActivity_repeating)
+    TextView repeating;
+
+    @BindView(R.id.detailActivity_repeating_dynamic)
+    TextView repeatingDynamic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +99,11 @@ public class DetailAffairActivity extends AppCompatActivity {
             statusDynamic.setText(R.string.detailActivity_status_done);
         } else {
             statusDynamic.setText(R.string.detailActivity_status_current);
+        }
+        if (outerBundle.getLong("repeating") != 0) {
+            repeatingDynamic.setText(getString(R.string.detailActivity_repeating_on) + " " + DateUtils.getHHmm(outerBundle.getLong("repeating")));
+        } else {
+            repeatingDynamic.setText(R.string.detailActivity_repeating_off);
         }
     }
 }

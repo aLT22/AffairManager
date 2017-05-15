@@ -245,5 +245,28 @@
             android:textColor="@color/color_primary_text"
             app:layout_constraintTop_toBottomOf="@+id/detailActivity_status"
             tools:layout_editor_absoluteX="16dp"/>
+
+        <TextView
+            android:id="@+id/detailActivity_repeating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:padding="@dimen/padding_sign_buttons"
+            android:text="@string/detailActivity_repeating"
+            android:textColor="@color/color_accent"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="328dp"/>
+
+        <TextView
+            android:id="@+id/detailActivity_repeating_dynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_sign_buttons"
+            android:layout_marginTop="0dp"
+            android:padding="@dimen/padding_sign_buttons"
+            android:text="TextView"
+            android:textColor="@color/color_primary_text"
+            app:layout_constraintTop_toBottomOf="@+id/detailActivity_repeating"
+            tools:layout_editor_absoluteX="16dp"/>
     </LinearLayout>
 </ScrollView>

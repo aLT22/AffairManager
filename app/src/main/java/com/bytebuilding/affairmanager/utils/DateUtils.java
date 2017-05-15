@@ -25,4 +25,22 @@ public class DateUtils {
         return simpleDateFormat.format(date);
     }
 
+    public static int getMinutePart(long time) {
+        return (int) (time % (60 * 60 * 1000)) /(60 * 1000);
+    }
+
+    public static int getHours(long time) {
+        return (int) time / (60 * 60 * 1000);
+    }
+
+    public static String getHHmm(long time){
+        String HHmm = "";
+        String HH = Integer.toString(getHours(time));
+        String mm = Integer.toString(getMinutePart(time));
+
+        HHmm = HH+"ч. "+mm+"м.";
+
+        return HHmm;
+    }
+
 }

@@ -156,7 +156,7 @@ public class UserAffairsFragment extends Fragment {
 
         progressBar.setIndeterminateDrawable(new ChromeFloatingCirclesDrawable.Builder(rootView.getContext()).build());
 
-        setUpRecyclerView();
+        //setUpRecyclerView();
         affairReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -178,7 +178,7 @@ public class UserAffairsFragment extends Fragment {
     }
 
     private void setUpRecyclerView() {
-        recyclerView.setVisibility(View.INVISIBLE);
+        //recyclerView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         adapter = new UserAffairsRecyclerAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -230,6 +230,7 @@ public class UserAffairsFragment extends Fragment {
         innerBundle.putString("type", affair.getType());
         innerBundle.putString("place", affair.getPlace());
         innerBundle.putLong("status", affair.getStatus());
+        innerBundle.putLong("repeating", affair.getRepeatTimestamp());
 
         Intent startDetailActivity = new Intent(context, DetailAffairActivity.class);
         startDetailActivity.putExtras(innerBundle);

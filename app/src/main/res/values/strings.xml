@@ -126,6 +126,7 @@
     <string name="detailActivity_type">Тип задачи</string>
     <string name="detailActivity_place">Место </string>
     <string name="detailActivity_status">Статус задачи</string>
+    <string name="detailActivity_repeating">Время повторения</string>
 
     <string name="detailActivity_status_done">Завершено</string>
     <string name="detailActivity_status_current">В процессе</string>
@@ -201,4 +202,7 @@
 
     <string name="dialog_change_password_tv">Автоматически сгенерированный пароль: </string>
     <string name="dialog_change_password_title">Выбор пароля</string>
+
+    <string name="detailActivity_repeating_off">Задача не повторяется</string>
+    <string name="detailActivity_repeating_on">Задача повторяется: </string>
 </resources>

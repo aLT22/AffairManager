@@ -350,10 +350,11 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
                 userAffair.setUserGroupId(Long.valueOf(String.valueOf(singleAffair.get("userGroupId"))));
                 userAffair.setType((String) singleAffair.get("type"));
                 userAffair.setTitle((String) singleAffair.get("title"));
+                userAffair.setDescription((String) singleAffair.get("description"));
                 userAffair.setTimestamp(Long.valueOf(String.valueOf(singleAffair.get("timestamp"))));
                 userAffair.setTime(Long.valueOf(String.valueOf(singleAffair.get("time"))));
                 userAffair.setStatus(Long.valueOf(String.valueOf(singleAffair.get("status"))));
-                userAffair.setRepeatTimestamp(Long.valueOf(String.valueOf(singleAffair.get("repeatTimestamp"))));
+                userAffair.setRepeatTimestamp((Long) singleAffair.get("repeatTimestamp"));
                 userAffair.setPriority(Integer.valueOf(String.valueOf(singleAffair.get("priority"))));
                 userAffair.setPlace((String) singleAffair.get("place"));
                 userAffair.setObject((String) singleAffair.get("object"));
