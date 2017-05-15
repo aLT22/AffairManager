@@ -87,7 +87,8 @@ public class UserCoworkersFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    setUpRecyclerView(getCoworkers((Map<String, Object>) dataSnapshot.getValue(), preferences.getString("job", "")));
+                    setUpRecyclerView(getCoworkers((Map<String, Object>) dataSnapshot.getValue(), CryptoUtils.decrypt(CryptoUtils.KEY,
+                            CryptoUtils.VECTOR, preferences.getString("job", ""))));
                 }
             }
 
@@ -108,7 +109,9 @@ public class UserCoworkersFragment extends Fragment {
                     users.entrySet()){
                 Map singleUser = (Map) entry.getValue();
 
-                if (singleUser.get("userOrganization").equals(job)) {
+                String userJob = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
+
+                if (userJob.equals(job)) {
                     Coworker coworker = new Coworker();
 
                     coworker.setUsername(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin")));

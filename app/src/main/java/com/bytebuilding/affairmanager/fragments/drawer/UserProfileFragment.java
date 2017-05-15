@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +110,8 @@ public class UserProfileFragment extends Fragment {
 
                     if (temporaryLogin.equals(userProfileLogin.getText().toString())) {
                         userProfileJob.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
+                        userProfileCoworkers.setText(String.valueOf(getCoworkersCount((Map<String, Object>) dataSnapshot.getValue(),
+                                CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")))));
                         progressBar.setVisibility(View.GONE);
                         break;
                     }
@@ -128,7 +131,6 @@ public class UserProfileFragment extends Fragment {
 
     private void setUserProfileInformation() {
         userProfileLogin.setText(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, preferences.getString("login", "Default user")));
-        userProfileCoworkers.setText("0");
     }
 
     @OnClick(R.id.ib_user_profile_edit)
@@ -202,8 +204,8 @@ public class UserProfileFragment extends Fragment {
     }
 
     private boolean checkRegisteredUser(Map<String, Object> users, String login, String job) {
-        List<String> logins = new ArrayList<>();
-        List<String> jobs = new ArrayList<>();
+        Map<String, String> logins = new HashMap<>();
+        Map<String, String> jobs = new HashMap<>();
 
         for (Map.Entry<String, Object> entry : users.entrySet()){
             Map singleUser = (Map) entry.getValue();
@@ -211,15 +213,32 @@ public class UserProfileFragment extends Fragment {
             String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin"));
             String organization = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
 
-            logins.add(log);
-            jobs.add(organization);
+            logins.put(log, organization);
+            jobs.put(organization, log);
         }
 
-        if (logins.contains(login) && jobs.contains(job)) {
-            return true;
-        } else {
+        if (logins.get(login) != job || jobs.get(job) != login) {
             return false;
+        } else {
+            return true;
         }
+    }
+
+    private int getCoworkersCount(Map<String, Object> users, String job) {
+        int count = 0;
+
+        if (!job.equals("")) {
+            for (Map.Entry<String, Object> entry :
+                    users.entrySet()){
+                Map singleUser = (Map) entry.getValue();
+
+                if (CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")).equals(job)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     private void getJobByLogin(final String login) {
