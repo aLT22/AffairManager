@@ -32,6 +32,7 @@ import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
+import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.bytebuilding.affairmanager.utils.NetworkUtils;
@@ -105,6 +106,8 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         setContentView(R.layout.activity_main_online);
 
         unbinder = ButterKnife.bind(this);
+
+        Advertisement.showBannerMainOnlineActivity(this);
 
         userAffairs = new ArrayList<>();
 

@@ -12,6 +12,7 @@ import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.dialogs.ChangePasswordDialogFragment;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
+import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.facebook.CallbackManager;
@@ -107,6 +108,8 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
         customRegistration = false;
 
         unbinder = ButterKnife.bind(this);
+
+        Advertisement.showBannerLoginActivity(this);
 
         password = "";
         isSettedPassword = false;

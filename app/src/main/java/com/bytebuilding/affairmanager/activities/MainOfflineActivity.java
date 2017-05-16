@@ -25,6 +25,7 @@ import com.bytebuilding.affairmanager.fragments.OfflineAffairFragment;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
+import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
 
 import butterknife.BindView;
@@ -72,6 +73,8 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         setContentView(R.layout.activity_main_offline);
 
         ButterKnife.bind(this);
+
+        Advertisement.showBannerMainOfflineActivity(this);
 
         dbHelper = new DBHelper(getApplicationContext());
 

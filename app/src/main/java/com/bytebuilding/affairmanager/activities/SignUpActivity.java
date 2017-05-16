@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.model.realm.User;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;
+import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.bytebuilding.affairmanager.utils.NetworkUtils;
@@ -66,6 +67,8 @@ public class SignUpActivity extends AppCompatActivity implements FirebaseHelper 
         setContentView(R.layout.activity_sign_up);
 
         unbinder = ButterKnife.bind(this);
+
+        Advertisement.showBannerSignUpActivity(this);
 
         btnUserRegistrate.setEnabled(false);
 
