@@ -1,133 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.bytebuilding.affairmanager.activities.DetailAffairActivity">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/detailActivity_title"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/detailActivity_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginTop="8dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_title"
-            android:textColor="@color/color_accent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_title_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintBottom_toTopOf="@+id/detailActivity_description"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_title"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_description"
-            android:textColor="@color/color_accent"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="58dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_description_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintBottom_toTopOf="@+id/detailActivity_date"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_description"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="bottom">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_sign_buttons"
-                android:orientation="vertical">
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="com.bytebuilding.affairmanager.activities.DetailAffairActivity">
 
                 <TextView
-                    android:id="@+id/detailActivity_date"
+                    android:id="@+id/detailActivity_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginTop="8dp"
                     android:padding="@dimen/padding_sign_buttons"
-                    android:text="@string/detailActivity_date"
+                    android:text="@string/detailActivity_title"
                     android:textColor="@color/color_accent"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="112dp"/>
-
-                <TextView
-                    android:id="@+id/detailActivity_date_dynamic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/padding_sign_buttons"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="4dp"
-                    android:padding="@dimen/padding_sign_buttons"
-                    android:text="TextView"
-                    android:textColor="@color/color_primary_text"
-                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_object"
-                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_date"
-                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="16dp"/>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_sign_buttons"
-                android:orientation="vertical">
-
                 <TextView
-                    android:id="@+id/detailActivity_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/padding_sign_buttons"
-                    android:layout_marginTop="0dp"
-                    android:padding="@dimen/padding_sign_buttons"
-                    android:text="@string/detailActivity_time"
-                    android:textColor="@color/color_accent"
-                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_description_dynamic"
-                    tools:layout_editor_absoluteX="318dp"/>
-
-
-                <TextView
-                    android:id="@+id/detailActivity_time_dynamic"
+                    android:id="@+id/detailActivity_title_dynamic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_sign_buttons"
@@ -136,137 +50,249 @@
                     android:padding="@dimen/padding_sign_buttons"
                     android:text="TextView"
                     android:textColor="@color/color_primary_text"
-                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_object"
-                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_time"
+                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_description"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_title"
                     app:layout_constraintVertical_bias="0.0"
-                    tools:layout_editor_absoluteX="302dp"/>
+                    tools:layout_editor_absoluteX="16dp"/>
 
+                <TextView
+                    android:id="@+id/detailActivity_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="@string/detailActivity_description"
+                    android:textColor="@color/color_accent"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="58dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_description_dynamic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="TextView"
+                    android:textColor="@color/color_primary_text"
+                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_date"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_description"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/padding_sign_buttons"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/detailActivity_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/padding_sign_buttons"
+                            android:padding="@dimen/padding_sign_buttons"
+                            android:text="@string/detailActivity_date"
+                            android:textColor="@color/color_accent"
+                            tools:layout_editor_absoluteX="16dp"
+                            tools:layout_editor_absoluteY="112dp"/>
+
+                        <TextView
+                            android:id="@+id/detailActivity_date_dynamic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/padding_sign_buttons"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="4dp"
+                            android:padding="@dimen/padding_sign_buttons"
+                            android:text="TextView"
+                            android:textColor="@color/color_primary_text"
+                            app:layout_constraintBottom_toTopOf="@+id/detailActivity_object"
+                            app:layout_constraintTop_toBottomOf="@+id/detailActivity_date"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:layout_editor_absoluteX="16dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/padding_sign_buttons"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/detailActivity_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/padding_sign_buttons"
+                            android:layout_marginTop="0dp"
+                            android:padding="@dimen/padding_sign_buttons"
+                            android:text="@string/detailActivity_time"
+                            android:textColor="@color/color_accent"
+                            app:layout_constraintTop_toBottomOf="@+id/detailActivity_description_dynamic"
+                            tools:layout_editor_absoluteX="318dp"/>
+
+
+                        <TextView
+                            android:id="@+id/detailActivity_time_dynamic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/padding_sign_buttons"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="8dp"
+                            android:padding="@dimen/padding_sign_buttons"
+                            android:text="TextView"
+                            android:textColor="@color/color_primary_text"
+                            app:layout_constraintBottom_toTopOf="@+id/detailActivity_object"
+                            app:layout_constraintTop_toBottomOf="@+id/detailActivity_time"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:layout_editor_absoluteX="302dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/detailActivity_object"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="@string/detailActivity_object"
+                    android:textColor="@color/color_primary_dark"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="166dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_object_dynamic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="TextView"
+                    android:textColor="@color/color_primary_text"
+                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_type"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_object"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="16dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="@string/detailActivity_type"
+                    android:textColor="@color/color_accent"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="220dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_type_dynamic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="TextView"
+                    android:textColor="@color/color_primary_text"
+                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_place"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_type"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="16dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="@string/detailActivity_place"
+                    android:textColor="@color/color_accent"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="274dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_place_dynamic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="TextView"
+                    android:textColor="@color/color_primary_text"
+                    app:layout_constraintBottom_toTopOf="@+id/detailActivity_status"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_place"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:layout_editor_absoluteX="16dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="@string/detailActivity_status"
+                    android:textColor="@color/color_accent"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="328dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_status_dynamic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginTop="0dp"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="TextView"
+                    android:textColor="@color/color_primary_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_status"
+                    tools:layout_editor_absoluteX="16dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_repeating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="@string/detailActivity_repeating"
+                    android:textColor="@color/color_accent"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="328dp"/>
+
+                <TextView
+                    android:id="@+id/detailActivity_repeating_dynamic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_sign_buttons"
+                    android:layout_marginTop="0dp"
+                    android:padding="@dimen/padding_sign_buttons"
+                    android:text="TextView"
+                    android:textColor="@color/color_primary_text"
+                    app:layout_constraintTop_toBottomOf="@+id/detailActivity_repeating"
+                    tools:layout_editor_absoluteX="16dp"/>
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/detailActivity_object"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_object"
-            android:textColor="@color/color_primary_dark"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="166dp"/>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/detailActivity_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/activityDetail_banner_id"/>
 
-        <TextView
-            android:id="@+id/detailActivity_object_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintBottom_toTopOf="@+id/detailActivity_type"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_object"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_type"
-            android:textColor="@color/color_accent"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="220dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_type_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintBottom_toTopOf="@+id/detailActivity_place"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_type"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_place"
-            android:textColor="@color/color_accent"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="274dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_place_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="4dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintBottom_toTopOf="@+id/detailActivity_status"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_place"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_status"
-            android:textColor="@color/color_accent"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="328dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_status_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginTop="0dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_status"
-            tools:layout_editor_absoluteX="16dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_repeating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="@string/detailActivity_repeating"
-            android:textColor="@color/color_accent"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="328dp"/>
-
-        <TextView
-            android:id="@+id/detailActivity_repeating_dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_sign_buttons"
-            android:layout_marginTop="0dp"
-            android:padding="@dimen/padding_sign_buttons"
-            android:text="TextView"
-            android:textColor="@color/color_primary_text"
-            app:layout_constraintTop_toBottomOf="@+id/detailActivity_repeating"
-            tools:layout_editor_absoluteX="16dp"/>
-    </LinearLayout>
-</ScrollView>
+</RelativeLayout>

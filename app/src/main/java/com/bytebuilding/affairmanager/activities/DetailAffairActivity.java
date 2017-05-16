@@ -1,12 +1,14 @@
 package com.bytebuilding.affairmanager.activities;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.DateUtils;
 
 import butterknife.BindView;
@@ -75,8 +77,15 @@ public class DetailAffairActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_affair);
 
+        Advertisement.showBannerDetailActivity(this);
+
         ButterKnife.bind(this);
         getExtras();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+
     }
 
     private void getExtras() {

@@ -9,6 +9,7 @@ android {
         applicationId "com.bytebuilding.affairmanager"
         minSdkVersion 16
         targetSdkVersion 21
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -47,6 +48,7 @@ dependencies {
     compile 'com.vk:androidsdk:1.6.8'
     compile 'com.facebook.android:facebook-android-sdk:4.21.1'
     compile 'io.realm:android-adapters:2.0.0'
+    compile 'com.google.android.gms:play-services-ads:10.2.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
 }

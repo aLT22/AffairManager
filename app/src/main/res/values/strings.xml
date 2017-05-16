@@ -205,4 +205,8 @@
 
     <string name="detailActivity_repeating_off">Задача не повторяется</string>
     <string name="detailActivity_repeating_on">Задача повторяется: </string>
+    
+    <string name="application_ads_id">ca-app-pub-9287802321216969~8438626335</string>
+    <!--<string name="activityDetail_banner_id">ca-app-pub-9287802321216969/</string>-->
+    <string name="activityDetail_banner_id">ca-app-pub-9287802321216969/5345559134</string>
 </resources>

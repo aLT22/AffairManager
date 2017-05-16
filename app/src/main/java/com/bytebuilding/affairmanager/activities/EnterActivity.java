@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
+import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.NetworkUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -55,6 +56,8 @@ public class EnterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_enter);
 
         unbinder = ButterKnife.bind(this);
+
+        Advertisement.showBannerEnterActivity(this);
 
         progressDialog = new ProgressDialog(EnterActivity.this);
     }
