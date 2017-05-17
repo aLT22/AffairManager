@@ -113,18 +113,22 @@ public class UserCoworkersFragment extends Fragment {
         if (job != null) {
             if (!job.equals("")) {
                 for (Map.Entry<String, Object> entry :
-                        users.entrySet()){
+                        users.entrySet()) {
                     Map singleUser = (Map) entry.getValue();
 
-                    String userJob = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
+                    if (singleUser.get("userOrganization") != null) {
+                        String userJob = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
 
-                    if (userJob.equals(job)) {
-                        Coworker coworker = new Coworker();
+                        if (userJob != null) {
+                            if (userJob.equals(job)) {
+                                Coworker coworker = new Coworker();
 
-                        coworker.setUsername(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin")));
-                        coworker.setJob(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
+                                coworker.setUsername(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin")));
+                                coworker.setJob(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
 
-                        coworkers.add(coworker);
+                                coworkers.add(coworker);
+                            }
+                        }
                     }
                 }
             }

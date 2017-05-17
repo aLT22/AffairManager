@@ -245,8 +245,13 @@ public class UserProfileFragment extends Fragment {
                         users.entrySet()){
                     Map singleUser = (Map) entry.getValue();
 
-                    if (CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")).equals(job)) {
-                        count++;
+                    if (singleUser.get("userOrganization") != null) {
+                        String organization = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
+                        if (organization != null) {
+                            if (organization.equals(job)) {
+                                count++;
+                            }
+                        }
                     }
                 }
             }
