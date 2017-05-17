@@ -10,8 +10,6 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
 
-import java.security.SecureRandom;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 

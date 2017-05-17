@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.bumptech.glide.load.engine.executor.FifoPriorityThreadPoolExecutor;
 import com.bytebuilding.affairmanager.database.DBHelper;
 import com.bytebuilding.affairmanager.model.Affair;
 import com.bytebuilding.affairmanager.model.realm.UserAffair;

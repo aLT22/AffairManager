@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
-import com.bytebuilding.affairmanager.adapters.realm.RealmUserGroupsAdapter;
 import com.bytebuilding.affairmanager.database.realm.UserGroupsRealmHelper;
 import com.bytebuilding.affairmanager.model.realm.UserGroup;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -43,8 +42,6 @@ public class UserGroupsFragment extends Fragment {
 
     private Unbinder unbinder;
 
-    private RealmUserGroupsAdapter adapter;
-
     private Realm realm;
 
     public UserGroupsFragment() {
@@ -67,15 +64,6 @@ public class UserGroupsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
 
         realm = Realm.getDefaultInstance();
-
-        adapter = new RealmUserGroupsAdapter(realm.where(UserGroup.class).equalTo("idCreator", getActivity()
-                .getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE).getLong("id", 0)).findAll()
-                .sort("userGroupId", Sort.DESCENDING), true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(false);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-
-        recyclerView.setAdapter(adapter);
 
         return rootView;
     }

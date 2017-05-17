@@ -239,15 +239,19 @@ public class UserProfileFragment extends Fragment {
     private int getCoworkersCount(Map<String, Object> users, String job) {
         int count = 0;
 
-        if (!job.equals("")) {
-            for (Map.Entry<String, Object> entry :
-                    users.entrySet()){
-                Map singleUser = (Map) entry.getValue();
+        if (job != null) {
+            if (!job.equals("")) {
+                for (Map.Entry<String, Object> entry :
+                        users.entrySet()){
+                    Map singleUser = (Map) entry.getValue();
 
-                if (CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")).equals(job)) {
-                    count++;
+                    if (CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")).equals(job)) {
+                        count++;
+                    }
                 }
             }
+        } else {
+            count = 0;
         }
 
         return count;

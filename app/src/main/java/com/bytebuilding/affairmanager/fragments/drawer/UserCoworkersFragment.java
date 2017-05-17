@@ -110,20 +110,22 @@ public class UserCoworkersFragment extends Fragment {
     private List<Coworker> getCoworkers(Map<String, Object> users, String job) {
         List<Coworker> coworkers = new ArrayList<>();
 
-        if (!job.equals("")) {
-            for (Map.Entry<String, Object> entry :
-                    users.entrySet()){
-                Map singleUser = (Map) entry.getValue();
+        if (job != null) {
+            if (!job.equals("")) {
+                for (Map.Entry<String, Object> entry :
+                        users.entrySet()){
+                    Map singleUser = (Map) entry.getValue();
 
-                String userJob = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
+                    String userJob = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization"));
 
-                if (userJob.equals(job)) {
-                    Coworker coworker = new Coworker();
+                    if (userJob.equals(job)) {
+                        Coworker coworker = new Coworker();
 
-                    coworker.setUsername(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin")));
-                    coworker.setJob(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
+                        coworker.setUsername(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin")));
+                        coworker.setJob(CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userOrganization")));
 
-                    coworkers.add(coworker);
+                        coworkers.add(coworker);
+                    }
                 }
             }
         }
