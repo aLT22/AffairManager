@@ -111,8 +111,8 @@ public class UserAffairsFragment extends Fragment {
         offlineNotificationHelper = OfflineNotificationHelper.getInstance();
     }
 
-    public void addAffairFromFirebase() {
-        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+    public void addAffairFromFirebase(Context context) {
+        if (NetworkUtils.isNetworkAvailable(context)) {
             adapter.removeAllItems();
 
             List<UserAffair> userAffairList = new ArrayList<>();
@@ -155,7 +155,7 @@ public class UserAffairsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_user_affairs, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_user_affairs, container, false);
 
         unbinder = ButterKnife.bind(this, rootView);
 
@@ -171,8 +171,8 @@ public class UserAffairsFragment extends Fragment {
                     if (dataSnapshot.getValue() != null) {
                         userAffairs = mainOnlineActivity.getAffairsFromFirebase((Map<String, Object>) dataSnapshot.getValue(),
                                 mainOnlineActivity.getSharedPreferences(SplashScreen.PREFERENCES_NAME, Context.MODE_PRIVATE).getLong("id", 0));
-                        setUpRecyclerView();
-                        addAffairFromFirebase();
+                        setUpRecyclerView(rootView);
+                        addAffairFromFirebase(rootView.getContext());
                     }
                 }
 
@@ -188,8 +188,9 @@ public class UserAffairsFragment extends Fragment {
         return rootView;
     }
 
-    private void setUpRecyclerView() {
-        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+    private void setUpRecyclerView(View rootView) {
+        unbinder = ButterKnife.bind(this, rootView);
+        if (NetworkUtils.isNetworkAvailable(rootView.getContext())) {
             progressBar.setVisibility(View.VISIBLE);
             adapter = new UserAffairsRecyclerAdapter(this);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

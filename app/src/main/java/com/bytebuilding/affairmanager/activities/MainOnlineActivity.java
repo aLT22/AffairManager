@@ -399,7 +399,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.addToBackStack("UserAffairsFragment");
             fragmentTransaction.commit();
-            fragment.addAffairFromFirebase();
+            fragment.addAffairFromFirebase(this);
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
         }
