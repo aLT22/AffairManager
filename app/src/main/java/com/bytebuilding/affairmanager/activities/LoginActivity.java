@@ -29,8 +29,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
@@ -40,7 +43,10 @@ import com.vk.sdk.api.VKError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +61,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     public static boolean customRegistration;
 
-    DatabaseReference rootReference = FirebaseDatabase.getInstance()
-            .getReferenceFromUrl(FIREBASE_DATABASE_URL);
+    DatabaseReference rootReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FIREBASE_DATABASE_URL);
     DatabaseReference userReference = rootReference.child("users");
 
     public static final int RC_SIGN_IN = 007;
@@ -141,8 +146,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
     public void onSignInVkClick() {
         VKSdk.login(this, scopes);
 
-        preferences.edit().putString("type", getResources().getStringArray(R.array
-                .registration_type_in_preferences)[2]).apply();
+        preferences.edit().putString("type", getResources().getStringArray(R.array.registration_type_in_preferences)[2]).apply();
     }
 
     @OnClick(R.id.btn_sign_in)
@@ -177,8 +181,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @OnClick(R.id.btn_sign_in_facebook)
     public void onSignInFacebookClick() {
-        preferences.edit().putString("type", getResources().getStringArray(R.array
-                .registration_type_in_preferences)[0]).apply();
+        preferences.edit().putString("type", getResources().getStringArray(R.array.registration_type_in_preferences)[0]).apply();
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile",
                 "email"));
@@ -186,8 +189,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
 
     @OnClick(R.id.btn_sign_in_google)
     public void onSignInGoogleClick() {
-        preferences.edit().putString("type", getResources().getStringArray(R.array
-                .registration_type_in_preferences)[1]).apply();
+        preferences.edit().putString("type", getResources().getStringArray(R.array.registration_type_in_preferences)[1]).apply();
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -238,19 +240,34 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                     .VECTOR, object.getString("email"));
             final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
-            saveToRealm(id, login);
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), login)) {
+                        saveToRealm(id, login);
 
-            setUserPreferences(id, login, password, job);
+                        setUserPreferences(id, login, password, job);
 
-            saveUserToFirebase(realm.where(User.class).findAll().last());
+                        saveUserToFirebase(realm.where(User.class).findAll().last());
 
-            isAccepted = true;
+                        isAccepted = true;
 
-            goToMainOnlineActivity();
+                        goToMainOnlineActivity();
+                    } else {
+                        long identifier = getRegisteredId((Map<String, Object>) dataSnapshot.getValue(), login);
+                        setUserPreferences(identifier, login, password, job);
+                        goToMainOnlineActivity();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), getResources()
-                            .getString(R.string.error_getting_data_from_firebase),
-                    Toast.LENGTH_SHORT).show();
+                            .getString(R.string.error_getting_data_from_firebase), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -280,11 +297,9 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
-                .registration_type_in_preferences)[0])) {
+        if (preferences.getString("type", "").equals(getResources().getStringArray(R.array.registration_type_in_preferences)[0])) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
-        } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
-                .registration_type_in_preferences)[1])) {
+        } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array.registration_type_in_preferences)[1])) {
             if (requestCode == RC_SIGN_IN) {
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 if (result.isSuccess()) {
@@ -292,8 +307,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                     successfulSignedInGoogle(result);
                 }
             }
-        } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array
-                .registration_type_in_preferences)[2])) {
+        } else if (preferences.getString("type", "").equals(getResources().getStringArray(R.array.registration_type_in_preferences)[2])) {
             if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
                 @Override
                 public void onResult(VKAccessToken res) {
@@ -324,34 +338,65 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
         final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, res.email);
         final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
-        saveToRealm(id, login);
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), login)) {
+                    saveToRealm(id, login);
 
-        setUserPreferences(id, login, password, job);
+                    setUserPreferences(id, login, password, job);
 
-        saveUserToFirebase(realm.where(User.class).findAll().last());
+                    saveUserToFirebase(realm.where(User.class).findAll().last());
 
-        isAccepted = true;
+                    isAccepted = true;
 
-        goToMainOnlineActivity();
+                    goToMainOnlineActivity();
+                } else {
+                    long identifier = getRegisteredId((Map<String, Object>) dataSnapshot.getValue(), login);
+                    setUserPreferences(identifier, login, password, job);
+                    goToMainOnlineActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void successfulSignedInGoogle(GoogleSignInResult result) {
         GoogleSignInAccount acct = result.getSignInAccount();
 
         final long id = System.currentTimeMillis();
-        final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct
-                .getEmail());
+        final String login = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, acct.getEmail());
         final String job = CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, "");
 
-        saveToRealm(id, login);
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!checkRegisteredUser((Map<String, Object>) dataSnapshot.getValue(), CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, login))) {
+                    saveToRealm(id, login);
 
-        setUserPreferences(id, login, password, job);
+                    setUserPreferences(id, login, password, job);
 
-        saveUserToFirebase(realm.where(User.class).findAll().last());
+                    saveUserToFirebase(realm.where(User.class).findAll().last());
 
-        isAccepted = true;
+                    isAccepted = true;
 
-        goToMainOnlineActivity();
+                    goToMainOnlineActivity();
+                } else {
+                    long identifier = getRegisteredId((Map<String, Object>) dataSnapshot.getValue(), login);
+                    setUserPreferences(identifier, login, password, job);
+                    goToMainOnlineActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void saveToRealm(long id, String login) {
@@ -366,6 +411,40 @@ public class LoginActivity extends AppCompatActivity implements FirebaseHelper, 
                 realm.copyToRealm(user);
             }
         });
+    }
+
+    private boolean checkRegisteredUser(Map<String, Object> users, String login) {
+        List<String> logins = new ArrayList<>();
+
+        for (Map.Entry<String, Object> entry : users.entrySet()){
+            Map singleUser = (Map) entry.getValue();
+
+            String log = CryptoUtils.decrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, (String) singleUser.get("userLogin"));
+
+            logins.add(log);
+        }
+
+        if (logins.contains(login)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private long getRegisteredId(Map<String, Object> users, String login) {
+        long identifier = -1;
+
+        for (Map.Entry<String, Object> entry : users.entrySet()){
+            Map singleUser = (Map) entry.getValue();
+
+            String log = (String) singleUser.get("userLogin");
+
+            if (log.equals(login)) {
+                identifier = (long) singleUser.get("userId");
+            }
+        }
+
+        return identifier;
     }
 
     @Override

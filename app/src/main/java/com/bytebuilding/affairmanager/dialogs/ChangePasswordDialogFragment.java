@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.bytebuilding.affairmanager.R;
 import com.bytebuilding.affairmanager.activities.SplashScreen;
 import com.bytebuilding.affairmanager.model.realm.User;
+import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.PasswordGenerator;
 
 import io.realm.Realm;
@@ -65,8 +66,6 @@ public class ChangePasswordDialogFragment extends DialogFragment {
         final EditText etPassword = (EditText) containerDialogFragment.findViewById(R.id.et_change_password);
         etPassword.setText(PasswordGenerator.newGeneratedPassword());
 
-        final String newPassword = etPassword.getText().toString();
-
         builder.setView(containerDialogFragment);
 
         builder.setTitle(getString(R.string.dialog_change_password_title));
@@ -74,14 +73,14 @@ public class ChangePasswordDialogFragment extends DialogFragment {
         builder.setPositiveButton(getString(R.string.button_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                preferences.edit().putString("password", newPassword).apply();
+                preferences.edit().putString("password", CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, etPassword.getText().toString())).apply();
                 Realm realm = Realm.getDefaultInstance();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
                         User user = realm.where(User.class).equalTo("userId", preferences.getLong("id", 0)).findFirst();
                         if (user != null) {
-                            user.setUserPassword(newPassword);
+                            user.setUserPassword(CryptoUtils.encrypt(CryptoUtils.KEY, CryptoUtils.VECTOR, etPassword.getText().toString()));
                             realm.insertOrUpdate(user);
                         }
                     }

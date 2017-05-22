@@ -432,7 +432,7 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
 
     @Override
     public void onPasswordChanged(String password, boolean flag) {
-
+        userReference.child(String.valueOf(preferences.getLong("id", 0))).child("userPassword").setValue(password);
     }
 
     @Override
