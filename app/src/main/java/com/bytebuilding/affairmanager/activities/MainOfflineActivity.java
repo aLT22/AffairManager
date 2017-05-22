@@ -2,6 +2,7 @@ package com.bytebuilding.affairmanager.activities;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bytebuilding.affairmanager.R;
@@ -27,6 +29,7 @@ import com.bytebuilding.affairmanager.model.realm.UserAffair;
 import com.bytebuilding.affairmanager.notifications.OfflineNotificationHelper;
 import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +53,9 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
     @BindView(R.id.search_view)
     SearchView searchView;
+
+    @BindView(R.id.imgbtn_enter)
+    ImageButton imageButtonEnter;
 
     private MainOfflineActivityPagerAdapter mainOfflineActivityPagerAdapter;
 
@@ -203,6 +209,49 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
         DialogFragment addingAffairDialogFragment = new AddingAffairDialogFragment();
 
         addingAffairDialogFragment.show(getFragmentManager(), "AddingAffairDialogFragment");
+    }
+
+    @OnClick(R.id.imgbtn_enter)
+    public void onGoOnlineClick() {
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog);
+            builder.setIcon(getResources().getDrawable(R.mipmap.ic_launcher));
+            builder.setTitle(getResources().getString(R.string.go_online_dialog_title));
+            builder.setMessage(getResources().getString(R.string.go_online_dialog_message));
+            String buttonEnterText = getResources().getString(R.string.go_online_dialog_enter);
+            String buttonRegistrationText = getResources().getString(R.string.go_online_dialog_registration);
+            builder.setPositiveButton(buttonEnterText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    goToEnterActivity();
+                }
+            });
+            builder.setNegativeButton(buttonRegistrationText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    goToLoginActivity();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
+    private void goToLoginActivity() {
+        LoginActivity loginActivity = new LoginActivity();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+
+    private void goToEnterActivity() {
+        EnterActivity enterActivity = new EnterActivity();
+        Intent intent = new Intent(getApplicationContext(), EnterActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     @Override

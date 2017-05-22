@@ -40,9 +40,17 @@
                     android:id="@+id/search_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:searchIcon="@drawable/ic_search_white_24dp"
                     app:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+                <ImageButton
+                    android:id="@+id/imgbtn_enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:src="@drawable/ic_go_to_online_white_24dp"
+                    android:background="@color/color_primary"/>
 
             </android.support.v7.widget.Toolbar>
 
