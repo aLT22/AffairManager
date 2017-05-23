@@ -40,6 +40,7 @@ public class OfflineNotificationHelper {
         intent.putExtra("timestamp", affair.getTimestamp());
         intent.putExtra("color", affair.getColor());
         intent.putExtra("description", affair.getDescription());
+        intent.putExtra("activity_type", "offline");
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
                 (int) affair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -62,6 +63,7 @@ public class OfflineNotificationHelper {
         intent.putExtra("timestamp", userAffair.getTimestamp());
         intent.putExtra("color", userAffair.getColor());
         intent.putExtra("description", userAffair.getDescription());
+        intent.putExtra("activity_type", "online");
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
                 (int) userAffair.getTimestamp(), intent, PendingIntent.FLAG_UPDATE_CURRENT);

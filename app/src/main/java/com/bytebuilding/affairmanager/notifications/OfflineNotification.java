@@ -22,6 +22,7 @@ import com.bytebuilding.affairmanager.activities.DetailAffairActivity;
 import com.bytebuilding.affairmanager.activities.MainOfflineActivity;
 import com.bytebuilding.affairmanager.activities.MainOnlineActivity;
 import com.bytebuilding.affairmanager.utils.AffairManagerApplication;
+import com.bytebuilding.affairmanager.utils.NetworkUtils;
 
 public class OfflineNotification extends BroadcastReceiver {
 
@@ -32,7 +33,12 @@ public class OfflineNotification extends BroadcastReceiver {
         long timestamp = intent.getLongExtra("timestamp", 0);
         int color = intent.getIntExtra("color", 0);
 
-        Intent result = new Intent(context, MainOfflineActivity.class);
+        Intent result = null;
+        if (NetworkUtils.isNetworkAvailable(context)) {
+            result = new Intent(context, MainOnlineActivity.class);
+        } else {
+            result = new Intent(context, MainOfflineActivity.class);
+        }
 
         if (AffairManagerApplication.isVisible()) result = intent;
         else result.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -41,8 +47,7 @@ public class OfflineNotification extends BroadcastReceiver {
         внутри него интенты от имени того приложения, а также с теми полномочиями, что важно, в котором этот
         PendingIntent создавался*/
         /*В случае нмже PendingIntent передает данные приложения сервису для реализации оповещения*/
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) timestamp, result,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) timestamp, result, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle(title);

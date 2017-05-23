@@ -237,6 +237,8 @@ public class MainOfflineActivity extends AppCompatActivity implements AddingAffa
 
             AlertDialog dialog = builder.create();
             dialog.show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Проверьте интернет соединение!", Toast.LENGTH_SHORT).show();
         }
     }
 

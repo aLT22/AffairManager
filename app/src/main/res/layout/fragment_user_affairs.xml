@@ -1,8 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bytebuilding.affairmanager.fragments.drawer.UserAffairsFragment">
@@ -25,7 +24,7 @@
             android:id="@+id/fragment_user_affairs_fab_add_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabSize="mini"
+            tools:fabSize="mini"
             fab:fab_colorNormal="@color/color_accent"
             fab:fab_colorPressed="@color/color_accent"
             fab:fab_icon="@drawable/add_group_icon"/>
@@ -34,7 +33,7 @@
             android:id="@+id/fragment_user_affairs_fab_add_affair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabSize="mini"
+            tools:fabSize="mini"
             fab:fab_colorNormal="@color/color_accent"
             fab:fab_colorPressed="@color/color_accent"
             fab:fab_icon="@drawable/add_affair_icon"/>
