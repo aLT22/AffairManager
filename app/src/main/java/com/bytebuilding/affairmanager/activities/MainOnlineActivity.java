@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.app.Fragment;
@@ -12,6 +13,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -36,6 +38,9 @@ import com.bytebuilding.affairmanager.utils.Advertisement;
 import com.bytebuilding.affairmanager.utils.CryptoUtils;
 import com.bytebuilding.affairmanager.utils.FirebaseHelper;
 import com.bytebuilding.affairmanager.utils.NetworkUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -108,6 +113,8 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
         unbinder = ButterKnife.bind(this);
 
         Advertisement.showBannerMainOnlineActivity(this);
+
+        new SyncShowInterstitial().execute();
 
         userAffairs = new ArrayList<>();
 
@@ -438,5 +445,56 @@ public class MainOnlineActivity extends AppCompatActivity implements FirebaseHel
     @Override
     public void onPasswordChangedCancel() {
 
+    }
+
+    public class SyncShowInterstitial extends AsyncTask<Void, Void, Void> {
+
+        AdRequest interstitialRequest;
+
+        InterstitialAd interstitialAd;
+
+        int interstitialTrigger;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            interstitialAd = new InterstitialAd(getApplicationContext());
+            interstitialAd.setAdUnitId(getString(R.string.interstitial_banner_id));
+
+            interstitialTrigger = Advertisement.loadTriggerValueFromPreferences(getApplicationContext(), Advertisement.ADMOB_PREFERENCES,
+                    Advertisement.INTERSTITIAL_TRIGGER);
+
+            if (interstitialTrigger == Advertisement.INTERSTITIAL_TRIGGER_VALUE) {
+                interstitialRequest = new AdRequest.Builder().build();
+
+                Advertisement.saveTriggerValueInPreferences(getApplicationContext(), Advertisement.ADMOB_PREFERENCES,
+                        Advertisement.INTERSTITIAL_TRIGGER, 1);
+            } else {
+                Advertisement.saveTriggerValueInPreferences(getApplicationContext(), Advertisement.ADMOB_PREFERENCES,
+                        Advertisement.INTERSTITIAL_TRIGGER, interstitialTrigger + 1);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (interstitialTrigger == Advertisement.INTERSTITIAL_TRIGGER_VALUE) {
+                interstitialAd.loadAd(interstitialRequest);
+                interstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        interstitialAd.show();
+                        Log.e("BANNER", "onAdLoaded: " + "true");
+                    }
+                });
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.bytebuilding.affairmanager.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 
 import com.bytebuilding.affairmanager.R;
@@ -13,6 +15,27 @@ import com.google.android.gms.ads.AdView;
  */
 
 public class Advertisement {
+
+    public static final String INTERSTITIAL_TRIGGER = "INTERSTITIAL_TRIGGER";
+
+    public static final int INTERSTITIAL_TRIGGER_VALUE = 1;
+
+    public static final String ADMOB_PREFERENCES = "ADMOB_PREFERENCES";
+
+    public static void saveTriggerValueInPreferences(Context context, String key, String param, int value) {
+        SharedPreferences preferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);
+        preferences.edit().putInt(param, value).apply();
+    }
+
+    public static int loadTriggerValueFromPreferences(Context context, String key, String param) {
+        SharedPreferences preferences = context.getSharedPreferences(key, Context.MODE_PRIVATE);
+
+        if (key.equals(ADMOB_PREFERENCES)) {
+            return preferences.getInt(param, 1);
+        } else {
+            return preferences.getInt(param, 1000);
+        }
+    }
 
     public static void showBannerEnterActivity(final Activity activity) {
         final AdView banner = (AdView) activity.findViewById(R.id.enterActivity_banner);
